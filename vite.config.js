@@ -14,6 +14,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         carta: resolve(__dirname, 'carta.html'),
         eventos: resolve(__dirname, 'eventos.html'),
+        galeria: resolve(__dirname, 'galeria.html'),
       },
     },
   },

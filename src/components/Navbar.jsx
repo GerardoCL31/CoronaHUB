@@ -44,7 +44,7 @@ function Navbar({ active = "inicio", cartaTarget = "_self" }) {
         <a className={`nav-pill ${active === "eventos" ? "is-active" : ""}`} href="/eventos.html" onClick={handleClose}>
           Eventos
         </a>
-        <a className={`nav-pill ${active === "galeria" ? "is-active" : ""}`} href="/index.html#galeria" onClick={handleClose}>
+        <a className={`nav-pill ${active === "galeria" ? "is-active" : ""}`} href="/galeria.html" onClick={handleClose}>
           Galeria
         </a>
         <a className={`nav-pill ${active === "opiniones" ? "is-active" : ""}`} href="/index.html#opiniones" onClick={handleClose}>
