@@ -1,43 +1,14 @@
 import "./App.css";
-import logo from "./assets/logo.png";
 import portada from "./assets/portada.png";
 import mapaImg from "./assets/mapa.png";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 
 function App() {
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <div className="logo-badge">
-            <img src={logo} alt="Bar Corona logo" />
-          </div>
-          <div className="brand-title">
-            <span className="brand-kicker">Intro</span>
-            <h1>Bar Corona</h1>
-          </div>
-        </div>
-        <nav className="nav">
-          <a className="nav-pill is-active" href="#inicio">
-            Inicio
-          </a>
-          <a className="nav-pill" href="#carta">
-            Carta
-          </a>
-          <a className="nav-pill" href="#eventos">
-            Eventos
-          </a>
-          <a className="nav-pill" href="#galeria">
-            Galeria
-          </a>
-          <a className="nav-pill" href="#opiniones">
-            Opiniones
-          </a>
-          <a className="nav-pill is-reserve" href="#reserva">
-            Reserva
-          </a>
-        </nav>
-      </header>
+      <Navbar active="inicio" cartaTarget="_blank" />
 
       <section className="hero" id="inicio">
         <div className="hero-media">
@@ -92,6 +63,7 @@ function App() {
 </div>
 
       </section>
+      <Footer />
     </div>
   );
 }
