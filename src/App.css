@@ -83,6 +83,27 @@
   justify-content: flex-end;
 }
 
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(47, 108, 153, 0.35);
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(47, 108, 153, 0.18);
+  cursor: pointer;
+  padding: 8px;
+  position: relative;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  margin: 6px 0;
+  background: var(--blue-dark);
+  border-radius: 999px;
+}
+
 .nav-pill {
   font-family: "Manrope", sans-serif;
   font-size: 13px;
@@ -268,10 +289,17 @@
   color: var(--muted);
 }
 
+.footer.footer--small {
+  margin-top: 8px;
+  font-size: 10px;
+}
+
 @media (max-width: 960px) {
   .topbar {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
   }
 
   .hero {
@@ -289,8 +317,8 @@
   }
 
   .brand {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
   }
 
   .brand-title h1 {
@@ -298,8 +326,29 @@
   }
 
   .nav {
-    width: 100%;
-    justify-content: flex-start;
+    position: absolute;
+    right: 0;
+    top: 64px;
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 16px 30px rgba(35, 33, 24, 0.18);
+    border: 1px solid rgba(47, 108, 153, 0.2);
+    display: none;
+    min-width: 180px;
+    z-index: 5;
+  }
+
+  .nav.is-open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-media {

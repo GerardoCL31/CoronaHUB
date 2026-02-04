@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         carta: resolve(__dirname, 'carta.html'),
+        eventos: resolve(__dirname, 'eventos.html'),
       },
     },
   },

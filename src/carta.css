@@ -61,6 +61,24 @@ body {
   align-items: start;
 }
 
+.carta-left {
+  display: grid;
+  gap: 16px;
+}
+
+.carta-banner {
+  justify-self: center;
+  width: min(360px, 90%);
+  background: #f1dca6;
+  border-radius: 20px;
+  padding: 16px 20px;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  box-shadow: 0 12px 24px rgba(98, 74, 20, 0.2);
+  border: 1px solid rgba(198, 146, 34, 0.28);
+}
+
 .carta-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
