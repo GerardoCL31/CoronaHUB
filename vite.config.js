@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+﻿import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
@@ -15,6 +15,8 @@ export default defineConfig({
         carta: resolve(__dirname, 'carta.html'),
         eventos: resolve(__dirname, 'eventos.html'),
         galeria: resolve(__dirname, 'galeria.html'),
+        opiniones: resolve(__dirname, 'opiniones.html'),
+        reserva: resolve(__dirname, 'reserva.html'),
       },
     },
   },

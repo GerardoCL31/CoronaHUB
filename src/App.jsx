@@ -1,9 +1,8 @@
-import "./App.css";
+﻿import "./App.css";
 import portada from "./assets/portada.png";
 import mapaImg from "./assets/mapa.png";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-
 
 function App() {
   return (
@@ -50,19 +49,16 @@ function App() {
           <p>Domingo: 8:00 am - 12:00 pm</p>
         </div>
         <div className="map-card">
-  <a
-    href="https://share.google/fyJ2NpJ85uG2Vk8NH"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img
-      src={mapaImg}
-      alt="Mapa de ubicación de Bar Corona"
-    />
-  </a>
-</div>
-
+          <a
+            href="https://share.google/fyJ2NpJ85uG2Vk8NH"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" />
+          </a>
+        </div>
       </section>
+
       <Footer />
     </div>
   );

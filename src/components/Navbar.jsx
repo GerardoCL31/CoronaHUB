@@ -47,10 +47,10 @@ function Navbar({ active = "inicio", cartaTarget = "_self" }) {
         <a className={`nav-pill ${active === "galeria" ? "is-active" : ""}`} href="/galeria.html" onClick={handleClose}>
           Galeria
         </a>
-        <a className={`nav-pill ${active === "opiniones" ? "is-active" : ""}`} href="/index.html#opiniones" onClick={handleClose}>
+        <a className={`nav-pill ${active === "opiniones" ? "is-active" : ""}`} href="/opiniones.html" onClick={handleClose}>
           Opiniones
         </a>
-        <a className="nav-pill is-reserve" href="/index.html#reserva" onClick={handleClose}>
+        <a className={`nav-pill is-reserve ${active === "reserva" ? "is-active" : ""}`} href="/reserva.html" onClick={handleClose}>
           Reserva
         </a>
       </nav>
