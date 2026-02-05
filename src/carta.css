@@ -155,8 +155,10 @@ body {
 
 @media (max-width: 1000px) {
   .topbar {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
   }
 
   .carta-main {

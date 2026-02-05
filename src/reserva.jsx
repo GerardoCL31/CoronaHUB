@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./App.css";
 import "./reserva.css";
 import mesaComida from "./assets/mesaComida.png";
+import quesoUvas from "./assets/quesoUvas.png";
+import comidaBarra from "./assets/comidaBarra.png";
 import chimenea1 from "./assets/chimenea1.png";
 import Navbar from "./components/Navbar.jsx";
 import FooterSmall from "./components/FooterSmall.jsx";
@@ -146,7 +148,7 @@ function Reserva() {
       <main className="reserva-main">
         <aside className="reserva-side">
           <img src={chimenea1} alt="Mesa con tapas" />
-          <img src={mesaComida} alt="Platos para compartir" />
+          <img src={comidaBarra} alt="Comida en barra" />
         </aside>
 
         <section className="reserva-center">
@@ -258,7 +260,7 @@ function Reserva() {
         </section>
 
         <aside className="reserva-side">
-          <img src={mesaComida} alt="Tabla de jamon" />
+          <img src={quesoUvas} alt="Queso con uvas" />
         </aside>
       </main>
 

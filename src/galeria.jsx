@@ -18,7 +18,7 @@ import FooterSmall from "./components/FooterSmall.jsx";
 function Galeria() {
   return (
     <div className="galeria-page">
-      <Navbar active="galeria" cartaTarget="_blank" />
+      <Navbar active="galeria" cartaTarget="_self" />
 
       <main className="galeria-main">
         <div className="galeria-left">

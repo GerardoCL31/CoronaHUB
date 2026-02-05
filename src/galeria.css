@@ -107,7 +107,24 @@ body {
     padding: 20px 16px 12px;
   }
 
+  .galeria-left,
+  .galeria-right {
+    display: none;
+  }
+
   .galeria-grid {
     grid-template-columns: 1fr;
+  }
+
+  .galeria-left img,
+  .galeria-right img {
+    display: none;
+  }
+
+  .galeria-grid img,
+  .galeria-bottom img {
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    background: #000;
   }
 }

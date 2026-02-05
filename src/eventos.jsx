@@ -11,7 +11,7 @@ import FooterSmall from "./components/FooterSmall.jsx";
 function Eventos() {
   return (
     <div className="eventos-page">
-      <Navbar active="eventos" cartaTarget="_blank" />
+      <Navbar active="eventos" cartaTarget="_self" />
 
       <main className="eventos-main">
         <section className="eventos-column">

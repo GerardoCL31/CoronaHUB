@@ -2,9 +2,7 @@
 import { createRoot } from "react-dom/client";
 import "./App.css";
 import "./opiniones.css";
-import mesaComida from "./assets/mesaComida.png";
-import chimenea1 from "./assets/chimenea1.png";
-import salon from "./assets/salon.png";
+import mesaChimenea from "./assets/mesaChimenea.png";
 import Navbar from "./components/Navbar.jsx";
 import FooterSmall from "./components/FooterSmall.jsx";
 
@@ -152,7 +150,7 @@ function Opiniones() {
         </section>
 
         <aside className="opinions-gallery">
-          <img className="opinions-photo" src={mesaComida} alt="Tabla y desayuno" />
+          <img className="opinions-photo" src={mesaChimenea} alt="Mesa junto a chimenea" />
         </aside>
       </main>
 

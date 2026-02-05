@@ -7,7 +7,7 @@ import Footer from "./components/Footer.jsx";
 function App() {
   return (
     <div className="page">
-      <Navbar active="inicio" cartaTarget="_blank" />
+      <Navbar active="inicio" cartaTarget="_self" />
 
       <section className="hero" id="inicio">
         <div className="hero-media">
