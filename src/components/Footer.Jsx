@@ -1,7 +1,7 @@
-function Footer() {
+﻿function Footer() {
   return (
     <footer className="footer">
-      <p>© 2025 BarCorona. Todos los derechos reservados.</p>
+      <p>&copy; 2025 BarCorona. Todos los derechos reservados.</p>
     </footer>
   );
 }
