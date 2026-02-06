@@ -1,0 +1,88 @@
+:root {
+  font-family: "Manrope", system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: #f7ead2;
+  color: #2a241b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 24px;
+  background: #fff7e8;
+  border-bottom: 1px solid #e5d6c3;
+}
+
+.admin-header nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-header button {
+  background: #2f6c99;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.admin-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.admin-card {
+  background: #fff7e8;
+  border: 1px solid #ecdcc8;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 24px rgba(42, 36, 27, 0.08);
+}
+
+.admin-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-item {
+  background: #fffdf8;
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(42, 36, 27, 0.1);
+}
+
+.admin-item .actions button {
+  background: #2f6c99;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.admin-item .actions button:last-child {
+  background: #b55b3f;
+}

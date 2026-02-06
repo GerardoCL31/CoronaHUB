@@ -1,0 +1,62 @@
+{
+  "reviews": [
+    {
+      "id": "1770378769331-797775",
+      "name": "Cesoti",
+      "rating": 5,
+      "comment": "todo perfecto me gusta mucho mucho un saludo",
+      "status": "APPROVED",
+      "ipHash": "4bc711ee064ac2d6f6a2d95faedae7e8119320bb8d2d5be0fbdbeb17db4fbc38",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+      "createdAt": "2026-02-06T11:52:49.331Z",
+      "updatedAt": "2026-02-06T11:53:01.236Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1770378818705-987570",
+      "name": "cesoti",
+      "email": "gerardotrajano@alumnos.cei.es",
+      "phone": "666 666 666",
+      "date": "2026-02-06",
+      "time": "13:30",
+      "people": 4,
+      "notes": "Mesa: S1",
+      "status": "CONFIRMED",
+      "ipHash": "4bc711ee064ac2d6f6a2d95faedae7e8119320bb8d2d5be0fbdbeb17db4fbc38",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+      "createdAt": "2026-02-06T11:53:38.705Z",
+      "updatedAt": "2026-02-06T11:54:18.190Z"
+    },
+    {
+      "id": "1770378913414-842026",
+      "name": "pepe",
+      "email": "gerardotrajano@alumnos.cei.es",
+      "phone": "666 666 666",
+      "date": "2026-02-06",
+      "time": "14:00",
+      "people": 2,
+      "notes": "Mesa: S2",
+      "status": "PENDING",
+      "ipHash": "4bc711ee064ac2d6f6a2d95faedae7e8119320bb8d2d5be0fbdbeb17db4fbc38",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+      "createdAt": "2026-02-06T11:55:13.414Z",
+      "updatedAt": "2026-02-06T11:55:13.414Z"
+    },
+    {
+      "id": "1770378995893-955403",
+      "name": "pepe",
+      "email": "gerardotrajano@alumnos.cei.es",
+      "phone": "666 666 666",
+      "date": "2026-02-06",
+      "time": "14:30",
+      "people": 2,
+      "notes": "Mesa: S4",
+      "status": "PENDING",
+      "ipHash": "4bc711ee064ac2d6f6a2d95faedae7e8119320bb8d2d5be0fbdbeb17db4fbc38",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+      "createdAt": "2026-02-06T11:56:35.893Z",
+      "updatedAt": "2026-02-06T11:56:35.893Z"
+    }
+  ]
+}

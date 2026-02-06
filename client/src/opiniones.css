@@ -1,0 +1,243 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600&display=swap");
+
+:root {
+  --sand: #f7ead2;
+  --cream: #fff7e8;
+  --sky: #bcd5e6;
+  --blue: #2f6c99;
+  --blue-dark: #235475;
+  --gold: #d5aa3a;
+  --ink: #2a241b;
+  --muted: #6b5f4c;
+  --shadow: 0 20px 40px rgba(34, 28, 18, 0.15);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.opiniones-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--sand) 0%, #f3dfbe 40%, #e7f0f6 100%);
+  color: var(--ink);
+  padding: 36px 20px 60px;
+}
+
+.opiniones-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.opinions-panel {
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(42, 36, 27, 0.08);
+}
+
+.opinions-header h2 {
+  margin: 0 0 8px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 24px;
+}
+
+.opinions-header p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+}
+
+.review-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.review-field {
+  display: grid;
+  gap: 6px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.review-field input,
+.review-field select,
+.review-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(47, 108, 153, 0.25);
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  background: #fff;
+}
+
+.review-field--full {
+  grid-column: 1 / -1;
+}
+
+.review-field--stars {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.review-field--stars legend {
+  padding: 0;
+  margin: 0 0 6px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.star-rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: 6px;
+}
+
+.star-rating input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.star-rating label {
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.star-rating label::before {
+  content: "★";
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: var(--gold);
+}
+
+.star-rating input:checked ~ label {
+  color: var(--gold);
+}
+
+.star-rating label:hover {
+  transform: translateY(-1px);
+}
+
+.review-submit {
+  grid-column: 1 / -1;
+  border: none;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 18px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(47, 108, 153, 0.25);
+}
+
+.opinions-list {
+  display: grid;
+  gap: 16px;
+}
+
+.review-card {
+  background: #fffdf8;
+  border-radius: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(42, 36, 27, 0.08);
+  box-shadow: 0 12px 22px rgba(34, 28, 18, 0.08);
+}
+
+.review-stars {
+  color: var(--gold);
+  font-size: 14px;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.review-text {
+  margin: 0 0 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.review-meta {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.opinions-gallery {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.opinions-photo {
+  width: min(100%, 300px);
+  height: auto;
+  max-height: none;
+  border-radius: 18px;
+  border: 1px solid rgba(42, 36, 27, 0.1);
+  box-shadow: 0 18px 28px rgba(34, 28, 18, 0.14);
+  object-fit: contain;
+  display: block;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footer.footer--small {
+  margin-top: 8px;
+  font-size: 10px;
+}
+
+@media (max-width: 960px) {
+  .opiniones-main {
+    grid-template-columns: 1fr;
+  }
+
+  .opinions-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .opiniones-page {
+    padding: 24px 16px 48px;
+  }
+
+  .review-form {
+    grid-template-columns: 1fr;
+  }
+
+  .opinions-gallery {
+    grid-template-columns: 1fr;
+  }
+}
