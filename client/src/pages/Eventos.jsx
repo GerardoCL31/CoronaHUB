@@ -5,6 +5,7 @@ import navidadSalon from "../assets/navidadSalon.png";
 import navidadSalon2 from "../assets/navidadSalon2.png";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
+import ImageStack from "../components/ImageStack.jsx";
 
 export default function Eventos() {
   return (
@@ -21,10 +22,13 @@ export default function Eventos() {
               para disfrutar en pareja o con amigos.
             </p>
           </div>
-          <div className="eventos-photos">
-            <img src={corazonSanValentin} alt="Decoracion romantica en Bar Corona" />
-            <img src={sanValentinSalon} alt="Mesa especial de San Valentin" />
-          </div>
+          <ImageStack
+            className="eventos-photos"
+            images={[
+              { src: corazonSanValentin, alt: "Decoracion romantica en Bar Corona" },
+              { src: sanValentinSalon, alt: "Mesa especial de San Valentin" },
+            ]}
+          />
         </section>
 
         <div className="eventos-divider" aria-hidden="true" />
@@ -38,10 +42,13 @@ export default function Eventos() {
               calido y familiar. Ideal para una celebracion especial.
             </p>
           </div>
-          <div className="eventos-photos">
-            <img src={navidadSalon} alt="Mesa navidena en Bar Corona" />
-            <img src={navidadSalon2} alt="Cena festiva en Bar Corona" />
-          </div>
+          <ImageStack
+            className="eventos-photos"
+            images={[
+              { src: navidadSalon, alt: "Mesa navidena en Bar Corona" },
+              { src: navidadSalon2, alt: "Cena festiva en Bar Corona" },
+            ]}
+          />
         </section>
       </main>
 

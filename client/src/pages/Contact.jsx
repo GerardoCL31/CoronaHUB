@@ -4,6 +4,8 @@ import "../opiniones.css";
 import mesaChimenea from "../assets/mesaChimenea.png";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
+import ImageStack from "../components/ImageStack.jsx";
+import FormFeedback from "../components/FormFeedback.jsx";
 import { createReview, getApprovedReviews } from "../services/reviews.service.js";
 
 export default function Contact() {
@@ -91,16 +93,7 @@ export default function Contact() {
                 required
               />
             </label>
-            {error && (
-              <p className="form-error" role="alert">
-                {error}
-              </p>
-            )}
-            {status && (
-              <p className="form-note" role="status">
-                {status}
-              </p>
-            )}
+            <FormFeedback error={error} status={status} />
             <button className="review-submit" type="submit">
               Enviar opinion
             </button>
@@ -124,9 +117,12 @@ export default function Contact() {
           </div>
         </section>
 
-        <aside className="opinions-gallery">
-          <img className="opinions-photo" src={mesaChimenea} alt="Mesa junto a chimenea" />
-        </aside>
+        <ImageStack
+          as="aside"
+          className="opinions-gallery"
+          imageClassName="opinions-photo"
+          images={[{ src: mesaChimenea, alt: "Mesa junto a chimenea" }]}
+        />
       </main>
 
       <FooterSmall />

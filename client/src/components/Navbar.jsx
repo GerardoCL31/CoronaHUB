@@ -20,7 +20,7 @@ function Navbar({ active = "inicio" }) {
           <img src={logo} alt="Bar Corona logo" />
         </div>
         <div className="brand-title">
-          <span className="brand-kicker">Intro</span>
+          <span className="brand-kicker"></span>
           <h1>Bar Corona</h1>
         </div>
       </div>

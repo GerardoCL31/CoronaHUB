@@ -6,6 +6,8 @@ import comidaBarra from "../assets/comidaBarra.png";
 import chimenea1 from "../assets/chimenea1.png";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
+import ImageStack from "../components/ImageStack.jsx";
+import FormFeedback from "../components/FormFeedback.jsx";
 import { createReservation } from "../services/reservations.service.js";
 
 const tableGroups = [
@@ -118,10 +120,14 @@ export default function Reservation() {
       <Navbar active="reserva" />
 
       <main className="reserva-main">
-        <aside className="reserva-side">
-          <img src={chimenea1} alt="Mesa con tapas" />
-          <img src={comidaBarra} alt="Comida en barra" />
-        </aside>
+        <ImageStack
+          as="aside"
+          className="reserva-side"
+          images={[
+            { src: chimenea1, alt: "Mesa con tapas" },
+            { src: comidaBarra, alt: "Comida en barra" },
+          ]}
+        />
 
         <section className="reserva-center">
           <div className="reserva-status">
@@ -245,14 +251,15 @@ export default function Reservation() {
                 Mesa <strong>{selectedTable}</strong> para el {formatDate(date)} a las {time}
               </p>
             )}
-            {error && <p className="form-error">{error}</p>}
-            {status && <p className="form-note">{status}</p>}
+            <FormFeedback error={error} status={status} />
           </div>
         </section>
 
-        <aside className="reserva-side">
-          <img src={quesoUvas} alt="Queso con uvas" />
-        </aside>
+        <ImageStack
+          as="aside"
+          className="reserva-side"
+          images={[{ src: quesoUvas, alt: "Queso con uvas" }]}
+        />
       </main>
 
       <FooterSmall />
