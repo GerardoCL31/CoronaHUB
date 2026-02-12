@@ -137,3 +137,48 @@ body {
   margin: 0;
   font-size: 16px;
 }
+
+.admin-subtitle {
+  margin: 8px 0 0;
+  font-size: 16px;
+}
+
+.admin-events-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-events-item {
+  border: 1px solid rgba(42, 36, 27, 0.1);
+  border-radius: 12px;
+  background: #fffdf8;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.admin-events-item h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.admin-photo-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-inline-input {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.admin-inline-input button {
+  border: 1px solid #d8c8b2;
+  border-radius: 10px;
+  padding: 0 12px;
+  background: #fff7e8;
+  color: #2a241b;
+  font: inherit;
+}

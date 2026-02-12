@@ -8,6 +8,7 @@ import helmet from "helmet";
 import reviewsRoutes from "./routes/reviews.routes.js";
 import reservationsRoutes from "./routes/reservations.routes.js";
 import menuRoutes from "./routes/menu.routes.js";
+import eventsRoutes from "./routes/events.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,7 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/reservations", reservationsRoutes);
 app.use("/api/menu", menuRoutes);
+app.use("/api/events", eventsRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use((err, _req, res, _next) => {

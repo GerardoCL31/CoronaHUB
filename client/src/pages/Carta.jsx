@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../carta.css";
-import mesaComida from "../assets/mesaComida.png";
+import { mesaComida } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 
@@ -119,3 +119,4 @@ export default function Carta() {
     </div>
   );
 }
+

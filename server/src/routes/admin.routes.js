@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { readDb, writeDb } from "../db.js";
 import { defaultMenu } from "../menu.default.js";
+import { defaultEvents } from "../events.default.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
@@ -50,6 +51,34 @@ const menuSchema = z.object({
   combos: z.array(z.string().min(1)).min(1).max(20),
 });
 
+const eventPhotoSchema = z.object({
+  id: z.string().min(1),
+  imageUrl: z.string().max(500),
+  imageAlt: z.string().min(1).max(120),
+});
+
+const eventHomeCardSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1).max(80),
+  schedule: z.string().min(1).max(80),
+  note: z.string().min(1).max(180),
+  imageUrl: z.string().max(500),
+  imageAlt: z.string().min(1).max(120),
+});
+
+const eventPageItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1).max(120),
+  description: z.string().min(1).max(500),
+  photos: z.array(eventPhotoSchema).length(2),
+});
+
+const eventsSchema = z.object({
+  homeTitle: z.string().min(1).max(80),
+  homeCards: z.array(eventHomeCardSchema).length(2),
+  pageItems: z.array(eventPageItemSchema).length(2),
+});
+
 router.get("/menu", async (_req, res, next) => {
   try {
     const db = await readDb();
@@ -70,6 +99,31 @@ router.put("/menu", async (req, res, next) => {
     db.menu = parsed.data;
     await writeDb(db);
     res.json({ ok: true, data: db.menu });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/events", async (_req, res, next) => {
+  try {
+    const db = await readDb();
+    res.json({ ok: true, data: db.events || defaultEvents });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/events", async (req, res, next) => {
+  const parsed = eventsSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ ok: false, errors: parsed.error.flatten() });
+  }
+
+  try {
+    const db = await readDb();
+    db.events = parsed.data;
+    await writeDb(db);
+    res.json({ ok: true, data: db.events });
   } catch (error) {
     next(error);
   }

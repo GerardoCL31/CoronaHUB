@@ -1,4 +1,4 @@
-﻿import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { adminGetReviews, adminUpdateReview } from "../../services/reviews.service.js";
 import {
@@ -6,6 +6,7 @@ import {
   adminUpdateReservation,
 } from "../../services/reservations.service.js";
 import { adminGetMenu, adminUpdateMenu } from "../../services/menu.service.js";
+import { adminGetEvents, adminUpdateEvents } from "../../services/events.service.js";
 import { logout } from "../../services/auth.service.js";
 
 export default function AdminDashboard() {
@@ -13,20 +14,24 @@ export default function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [menu, setMenu] = useState(null);
+  const [events, setEvents] = useState(null);
   const [error, setError] = useState("");
   const [menuState, setMenuState] = useState({ saving: false, message: "" });
+  const [eventsState, setEventsState] = useState({ saving: false, message: "" });
 
   const loadAll = async () => {
     setError("");
     try {
-      const [reviewData, reservationData, menuData] = await Promise.all([
+      const [reviewData, reservationData, menuData, eventsData] = await Promise.all([
         adminGetReviews(),
         adminGetReservations(),
         adminGetMenu(),
+        adminGetEvents(),
       ]);
       setReviews(reviewData);
       setReservations(reservationData);
       setMenu(menuData);
+      setEvents(eventsData);
     } catch (err) {
       setError(err.message);
     }
@@ -96,6 +101,82 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateEventsField = (field, value) => {
+    setEvents((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const updateHomeCard = (cardId, field, value) => {
+    setEvents((prev) => ({
+      ...prev,
+      homeCards: prev.homeCards.map((card) =>
+        card.id === cardId
+          ? {
+              ...card,
+              [field]: value,
+            }
+          : card
+      ),
+    }));
+  };
+
+  const updatePageItem = (itemId, field, value) => {
+    setEvents((prev) => ({
+      ...prev,
+      pageItems: prev.pageItems.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              [field]: value,
+            }
+          : item
+      ),
+    }));
+  };
+
+  const updatePhoto = (itemId, photoId, field, value) => {
+    setEvents((prev) => ({
+      ...prev,
+      pageItems: prev.pageItems.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              photos: item.photos.map((photo) =>
+                photo.id === photoId
+                  ? {
+                      ...photo,
+                      [field]: value,
+                    }
+                  : photo
+              ),
+            }
+          : item
+      ),
+    }));
+  };
+
+  const pasteFromClipboard = async (onValue) => {
+    try {
+      const text = await navigator.clipboard.readText();
+      onValue(text);
+    } catch {
+      setEventsState({
+        saving: false,
+        message: "No se pudo leer el portapapeles. Pega manualmente.",
+      });
+    }
+  };
+
+  const saveEvents = async () => {
+    if (!events) return;
+    setEventsState({ saving: true, message: "" });
+    try {
+      await adminUpdateEvents(events);
+      setEventsState({ saving: false, message: "Eventos guardados." });
+    } catch (err) {
+      setEventsState({ saving: false, message: err.message });
+    }
+  };
+
   const pendingReviews = reviews.filter((item) => item.status === "PENDING");
   const pendingReservations = reservations.filter((item) => item.status === "PENDING");
 
@@ -142,7 +223,7 @@ export default function AdminDashboard() {
               <div key={reserva.id} className="card admin-item">
                 <strong>{reserva.name}</strong>
                 <p>
-                  {reserva.date} {reserva.time} · {reserva.people} personas
+                  {reserva.date} {reserva.time} � {reserva.people} personas
                 </p>
                 <p>{reserva.email}</p>
                 {reserva.phone && <p>Telefono: {reserva.phone}</p>}
@@ -241,7 +322,187 @@ export default function AdminDashboard() {
             </div>
           )}
         </section>
+
+        <section className="card admin-card" style={{ marginTop: 16 }}>
+          <h2>Editar eventos</h2>
+          {!events && <p>Cargando eventos...</p>}
+          {events && (
+            <div className="admin-menu-editor">
+              <label className="admin-field">
+                <span>Titulo en inicio</span>
+                <input
+                  type="text"
+                  value={events.homeTitle}
+                  onChange={(event) => updateEventsField("homeTitle", event.target.value)}
+                />
+              </label>
+
+              <h3 className="admin-subtitle">Eventos de inicio</h3>
+              <div className="admin-menu-grid">
+                {events.homeCards.map((card) => (
+                  <article key={card.id} className="admin-menu-day">
+                    <h3>{card.id}</h3>
+                    <label className="admin-field">
+                      <span>Titulo</span>
+                      <input
+                        type="text"
+                        value={card.title}
+                        onChange={(event) =>
+                          updateHomeCard(card.id, "title", event.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="admin-field">
+                      <span>Horario</span>
+                      <input
+                        type="text"
+                        value={card.schedule}
+                        onChange={(event) =>
+                          updateHomeCard(card.id, "schedule", event.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="admin-field">
+                      <span>Descripcion corta</span>
+                      <textarea
+                        rows={3}
+                        value={card.note}
+                        onChange={(event) =>
+                          updateHomeCard(card.id, "note", event.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="admin-field">
+                      <span>URL icono (opcional)</span>
+                      <div className="admin-inline-input">
+                        <input
+                          type="url"
+                          value={card.imageUrl}
+                          onChange={(event) =>
+                            updateHomeCard(card.id, "imageUrl", event.target.value)
+                          }
+                          placeholder="https://..."
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            pasteFromClipboard((value) =>
+                              updateHomeCard(card.id, "imageUrl", value)
+                            )
+                          }
+                        >
+                          Pegar
+                        </button>
+                      </div>
+                    </label>
+                    <label className="admin-field">
+                      <span>Texto alternativo</span>
+                      <input
+                        type="text"
+                        value={card.imageAlt}
+                        onChange={(event) =>
+                          updateHomeCard(card.id, "imageAlt", event.target.value)
+                        }
+                      />
+                    </label>
+                  </article>
+                ))}
+              </div>
+
+              <h3 className="admin-subtitle">Pagina de eventos</h3>
+              <div className="admin-events-list">
+                {events.pageItems.map((item) => (
+                  <article key={item.id} className="admin-events-item">
+                    <h3>{item.id}</h3>
+                    <label className="admin-field">
+                      <span>Titulo bloque</span>
+                      <input
+                        type="text"
+                        value={item.title}
+                        onChange={(event) =>
+                          updatePageItem(item.id, "title", event.target.value)
+                        }
+                      />
+                    </label>
+                    <label className="admin-field">
+                      <span>Descripcion</span>
+                      <textarea
+                        rows={4}
+                        value={item.description}
+                        onChange={(event) =>
+                          updatePageItem(item.id, "description", event.target.value)
+                        }
+                      />
+                    </label>
+
+                    <div className="admin-photo-grid">
+                      {item.photos.map((photo) => (
+                        <div key={photo.id} className="admin-menu-day">
+                          <h3>{photo.id}</h3>
+                          <label className="admin-field">
+                            <span>URL imagen (opcional)</span>
+                            <div className="admin-inline-input">
+                              <input
+                                type="url"
+                                value={photo.imageUrl}
+                                onChange={(event) =>
+                                  updatePhoto(
+                                    item.id,
+                                    photo.id,
+                                    "imageUrl",
+                                    event.target.value
+                                  )
+                                }
+                                placeholder="https://..."
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  pasteFromClipboard((value) =>
+                                    updatePhoto(item.id, photo.id, "imageUrl", value)
+                                  )
+                                }
+                              >
+                                Pegar
+                              </button>
+                            </div>
+                          </label>
+                          <label className="admin-field">
+                            <span>Texto alternativo</span>
+                            <input
+                              type="text"
+                              value={photo.imageAlt}
+                              onChange={(event) =>
+                                updatePhoto(
+                                  item.id,
+                                  photo.id,
+                                  "imageAlt",
+                                  event.target.value
+                                )
+                              }
+                            />
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className="actions">
+                <button type="button" onClick={saveEvents} disabled={eventsState.saving}>
+                  {eventsState.saving ? "Guardando..." : "Guardar eventos"}
+                </button>
+              </div>
+              {eventsState.message && <p>{eventsState.message}</p>}
+            </div>
+          )}
+        </section>
       </main>
     </>
   );
 }
+
+
+
+

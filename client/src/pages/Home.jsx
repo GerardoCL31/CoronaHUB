@@ -1,10 +1,35 @@
+import { useEffect, useState } from "react";
 import "../App.css";
-import portada from "../assets/portada.png";
-import mapaImg from "../assets/mapa.png";
+import { cerveza, mapa as mapaImg, portada, sol } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import { fallbackEvents } from "../constants/eventsFallback.js";
+import { getEvents } from "../services/events.service.js";
+
+const getHomeIcon = (card, index) => {
+  const custom = card.imageUrl?.trim();
+  if (custom) return custom;
+  return index % 2 === 0 ? cerveza : sol;
+};
 
 export default function Home() {
+  const [eventsData, setEventsData] = useState(fallbackEvents);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const data = await getEvents();
+        if (data) {
+          setEventsData(data);
+        }
+      } catch {
+        // Keep local fallback if API is not reachable.
+      }
+    };
+
+    loadEvents();
+  }, []);
+
   return (
     <div className="page">
       <Navbar active="inicio" />
@@ -14,27 +39,19 @@ export default function Home() {
           <img className="hero-photo" src={portada} alt="Fachada de Bar Corona" />
         </div>
         <aside className="events" id="eventos">
-          <h2>Proximos eventos</h2>
-          <div className="event-card">
-            <div className="event-icon beer" aria-hidden="true" />
-            <div>
-              <h3>Tardeo Cervecero</h3>
-              <p>Viernes - 2:00 pm a 5:00 pm</p>
-              <p className="event-note">
-                Degustacion con cervezas especiales y musica suave.
-              </p>
+          <h2>{eventsData.homeTitle}</h2>
+          {eventsData.homeCards.map((card, index) => (
+            <div className="event-card" key={card.id}>
+              <div className="event-icon" aria-hidden="true">
+                <img src={getHomeIcon(card, index)} alt="" />
+              </div>
+              <div>
+                <h3>{card.title}</h3>
+                <p>{card.schedule}</p>
+                <p className="event-note">{card.note}</p>
+              </div>
             </div>
-          </div>
-          <div className="event-card">
-            <div className="event-icon sun" aria-hidden="true" />
-            <div>
-              <h3>Brunch & Beats</h3>
-              <p>Sabado - 11:00 am a 4:30 pm</p>
-              <p className="event-note">
-                Combos de brunch, mimosas ilimitadas por hora.
-              </p>
-            </div>
-          </div>
+          ))}
         </aside>
       </section>
 

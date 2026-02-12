@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
+import { logo } from "../constants/cloudinaryAssets.js";
 
 function Navbar({ active = "inicio" }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,3 +78,4 @@ function Navbar({ active = "inicio" }) {
 }
 
 export default Navbar;
+

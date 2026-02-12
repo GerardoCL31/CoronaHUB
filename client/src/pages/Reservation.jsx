@@ -1,9 +1,7 @@
 import { useMemo, useState } from "react";
 import "../App.css";
 import "../reserva.css";
-import quesoUvas from "../assets/quesoUvas.png";
-import comidaBarra from "../assets/comidaBarra.png";
-import chimenea1 from "../assets/chimenea1.png";
+import { chimenea1, comidaBarra, quesoUvas } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 import ImageStack from "../components/ImageStack.jsx";

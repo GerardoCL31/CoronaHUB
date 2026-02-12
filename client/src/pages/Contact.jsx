@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 import "../opiniones.css";
-import mesaChimenea from "../assets/mesaChimenea.png";
+import { mesaChimenea } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 import ImageStack from "../components/ImageStack.jsx";
@@ -129,3 +129,4 @@ export default function Contact() {
     </div>
   );
 }
+

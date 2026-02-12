@@ -231,13 +231,13 @@
 }
 
 .event-icon.beer {
-  background-image: url("/src/assets/cerveza.png");
+  background-image: url("https://res.cloudinary.com/djuisin8z/image/upload/v1770895089/cerveza_p5cjk0.png");
 }
 
 
 
 .event-icon.sun::after {
-  background-image: url("/src/assets/sol.png");
+  background-image: url("https://res.cloudinary.com/djuisin8z/image/upload/v1770895086/sol_xvukir.png");
 }
 
 .info-strip {
@@ -371,3 +371,5 @@
     grid-template-columns: 1fr;
   }
 }
+
+

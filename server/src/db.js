@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { defaultMenu } from "./menu.default.js";
+import { defaultEvents } from "./events.default.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,6 +11,7 @@ const defaultDb = {
   reviews: [],
   reservations: [],
   menu: defaultMenu,
+  events: defaultEvents,
 };
 
 const ensureDb = async () => {
@@ -29,6 +31,7 @@ export const readDb = async () => {
     reviews: Array.isArray(parsed.reviews) ? parsed.reviews : [],
     reservations: Array.isArray(parsed.reservations) ? parsed.reservations : [],
     menu: parsed.menu || defaultMenu,
+    events: parsed.events || defaultEvents,
   };
 };
 

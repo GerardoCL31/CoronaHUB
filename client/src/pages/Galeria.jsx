@@ -1,15 +1,17 @@
 import "../galeria.css";
-import saborConTradicion from "../assets/saborConTradicion.png";
-import saborConTradicion2 from "../assets/saborConTradicion2.png";
-import quesoAceitunasJamon from "../assets/quesoAceitunasJamon.png";
-import TostasdaJamon from "../assets/TostasdaJamon.png";
-import CasaFundada from "../assets/CasaFundada.png";
-import mesa1 from "../assets/mesa1.png";
-import mesa2 from "../assets/mesa2.png";
-import salon from "../assets/salon.png";
-import abanico2 from "../assets/abanico2.png";
-import chimenea1 from "../assets/chimenea1.png";
-import chimenea2 from "../assets/chimenea2.png";
+import {
+  abanico2,
+  CasaFundada,
+  chimenea1,
+  chimenea2,
+  mesa1,
+  mesa2,
+  quesoAceitunasJamon,
+  saborConTradicion,
+  saborConTradicion2,
+  salon,
+  TostasdaJamon,
+} from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 
