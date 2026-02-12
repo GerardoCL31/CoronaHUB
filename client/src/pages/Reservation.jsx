@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import "../App.css";
 import "../reserva.css";
-import mesaComida from "../assets/mesaComida.png";
 import quesoUvas from "../assets/quesoUvas.png";
 import comidaBarra from "../assets/comidaBarra.png";
 import chimenea1 from "../assets/chimenea1.png";
@@ -253,7 +252,6 @@ export default function Reservation() {
 
         <aside className="reserva-side">
           <img src={quesoUvas} alt="Queso con uvas" />
-          <img src={mesaComida} alt="Mesa con comida" />
         </aside>
       </main>
 

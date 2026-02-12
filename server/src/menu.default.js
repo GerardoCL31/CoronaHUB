@@ -1,0 +1,55 @@
+export const defaultMenu = {
+  banner: "Menu diario 9EUR con bebida",
+  days: [
+    {
+      id: "lunes",
+      title: "Lunes",
+      first: "Sopa de pollo / Macarrones",
+      second: "Pollo plancha / Merluza",
+      dessert: "Flan / Fruta",
+    },
+    {
+      id: "martes",
+      title: "Martes",
+      first: "Ensaladilla / Arroz 3 delicias",
+      second: "Lomo en salsa / Pescado frito",
+      dessert: "Yogur / Fruta",
+    },
+    {
+      id: "miercoles",
+      title: "Miercoles",
+      first: "Gazpacho / Pasta bolonesa",
+      second: "Pechuga empanada / Bacalao",
+      dessert: "Natillas / Fruta",
+    },
+    {
+      id: "jueves",
+      title: "Jueves",
+      first: "Pure verduras / Ensalada campera",
+      second: "Albondigas / Calamares",
+      dessert: "Flan / Yogur",
+    },
+    {
+      id: "viernes",
+      title: "Viernes",
+      first: "Sopa marisco / Espaguetis",
+      second: "Carne mechada / Merluza plancha",
+      dessert: "Tarta / Fruta",
+    },
+    {
+      id: "sabado",
+      title: "Sabado",
+      first: "Paella / Salmorejo",
+      second: "Chuleta cerdo / Pescado del dia",
+      dessert: "Natillas / Yogur",
+    },
+  ],
+  combosTitle: "Platos combinados",
+  combos: [
+    "Huevos fritos + patatas + chorizo",
+    "Pechuga plancha + ensalada",
+    "Lomo + huevo + patatas",
+    "Tortilla francesa + ensalada",
+    "Hamburguesa + patatas",
+  ],
+};

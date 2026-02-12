@@ -33,6 +33,7 @@ npm run dev
 ## 4) Uso basico
 - Opiniones: se envian como PENDING y se aprueban en `/admin/dashboard`
 - Reservas: se envian como PENDING y se confirman en `/admin/dashboard`
+- Carta: se edita en `/admin/dashboard` y se publica en `/api/menu`
 
 ## Solucion de problemas
 - Si `concurrently` falla: ejecuta `npm install` en la raiz.

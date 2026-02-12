@@ -1,9 +1,8 @@
-﻿import { StrictMode, useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
-import "./carta.css";
-import mesaComida from "./assets/mesaComida.png";
-import Navbar from "./components/Navbar.jsx";
-import FooterSmall from "./components/FooterSmall.jsx";
+import { useEffect, useState } from "react";
+import "../carta.css";
+import mesaComida from "../assets/mesaComida.png";
+import Navbar from "../components/Navbar.jsx";
+import FooterSmall from "../components/FooterSmall.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
@@ -63,7 +62,7 @@ const fallbackMenu = {
   ],
 };
 
-function Carta() {
+export default function Carta() {
   const [menu, setMenu] = useState(fallbackMenu);
 
   useEffect(() => {
@@ -84,7 +83,7 @@ function Carta() {
 
   return (
     <div className="carta-page">
-      <Navbar active="carta" cartaTarget="_self" />
+      <Navbar active="carta" />
 
       <main className="carta-main">
         <div className="carta-left">
@@ -120,11 +119,3 @@ function Carta() {
     </div>
   );
 }
-
-export default Carta;
-
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Carta />
-  </StrictMode>
-);

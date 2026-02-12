@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600&display=swap");
+@import "./App.css";
+
+:root {
+  --sand: #f7ead2;
+  --cream: #fff7e8;
+  --sky: #bcd5e6;
+  --blue: #2f6c99;
+  --blue-dark: #235475;
+  --gold: #d5aa3a;
+  --ink: #2a241b;
+  --muted: #6b5f4c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  background: linear-gradient(180deg, var(--sand) 0%, #f3dfbe 45%, #e7f0f6 100%);
+  color: var(--ink);
+}
+
+.carta-page {
+  min-height: 100vh;
+  padding: 32px 20px 48px;
+}
+
+.carta-main {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 28px;
+  align-items: start;
+}
+
+.carta-left {
+  display: grid;
+  gap: 16px;
+}
+
+.carta-banner {
+  justify-self: center;
+  width: min(360px, 90%);
+  background: #f1dca6;
+  border-radius: 20px;
+  padding: 16px 20px;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  box-shadow: 0 12px 24px rgba(98, 74, 20, 0.2);
+  border: 1px solid rgba(198, 146, 34, 0.28);
+}
+
+.carta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.carta-card {
+  background: #f1dca6;
+  border-radius: 18px;
+  padding: 20px 22px;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(98, 74, 20, 0.2);
+}
+
+.carta-card p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.carta-pill-title {
+  display: inline-block;
+  background: #fff5dd;
+  color: #c69222;
+  padding: 6px 22px;
+  border-radius: 999px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 16px rgba(98, 74, 20, 0.15);
+}
+
+.carta-combos {
+  grid-column: span 2;
+  padding-bottom: 18px;
+}
+
+.carta-combos ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 10px 0 0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.carta-combos li {
+  margin: 6px 0;
+}
+
+.carta-photo {
+  background: #d1ae3a;
+  border-radius: 26px;
+  padding: 10px;
+  box-shadow: 0 18px 30px rgba(97, 70, 18, 0.25);
+}
+
+.carta-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 20px;
+  object-fit: cover;
+  aspect-ratio: 3 / 6;
+  border: 6px solid #c79d2b;
+  background: #f6e8c7;
+}
+
+@media (max-width: 1000px) {
+  .topbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .carta-main {
+    grid-template-columns: 1fr;
+  }
+
+  .carta-photo {
+    order: -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .carta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .carta-combos {
+    grid-column: span 1;
+  }
+
+  .carta-page {
+    padding: 24px 16px 40px;
+  }
+}

@@ -38,6 +38,13 @@ function Navbar({ active = "inicio" }) {
           Inicio
         </Link>
         <Link
+          className={`nav-pill ${active === "carta" ? "is-active" : ""}`}
+          to="/carta"
+          onClick={handleClose}
+        >
+          Carta
+        </Link>
+        <Link
           className={`nav-pill ${active === "eventos" ? "is-active" : ""}`}
           to="/eventos"
           onClick={handleClose}

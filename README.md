@@ -32,7 +32,10 @@ npm run dev
 - POST `/api/reviews`
 - GET `/api/reviews`
 - POST `/api/reservations`
+- GET `/api/menu`
 - POST `/api/admin/login`
+- GET `/api/admin/menu`
+- PUT `/api/admin/menu`
 - GET `/api/admin/reviews`
 - PATCH `/api/admin/reviews/:id`
 - GET `/api/admin/reservations`

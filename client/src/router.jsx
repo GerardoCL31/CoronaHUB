@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
+import Carta from "./pages/Carta.jsx";
 import Contact from "./pages/Contact.jsx";
 import Reservation from "./pages/Reservation.jsx";
 import Eventos from "./pages/Eventos.jsx";
@@ -21,6 +22,7 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/carta" element={<Carta />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/galeria" element={<Galeria />} />
         <Route path="/contact" element={<Contact />} />

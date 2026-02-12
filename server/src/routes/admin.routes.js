@@ -2,6 +2,7 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { readDb, writeDb } from "../db.js";
+import { defaultMenu } from "../menu.default.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
@@ -33,6 +34,46 @@ router.post("/login", (req, res) => {
 });
 
 router.use(authMiddleware);
+
+const menuDaySchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  first: z.string().min(1),
+  second: z.string().min(1),
+  dessert: z.string().min(1),
+});
+
+const menuSchema = z.object({
+  banner: z.string().min(1).max(120),
+  days: z.array(menuDaySchema).length(6),
+  combosTitle: z.string().min(1).max(80),
+  combos: z.array(z.string().min(1)).min(1).max(20),
+});
+
+router.get("/menu", async (_req, res, next) => {
+  try {
+    const db = await readDb();
+    res.json({ ok: true, data: db.menu || defaultMenu });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/menu", async (req, res, next) => {
+  const parsed = menuSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ ok: false, errors: parsed.error.flatten() });
+  }
+
+  try {
+    const db = await readDb();
+    db.menu = parsed.data;
+    await writeDb(db);
+    res.json({ ok: true, data: db.menu });
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/reviews", async (_req, res, next) => {
   try {

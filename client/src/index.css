@@ -86,3 +86,54 @@ body {
 .admin-item .actions button:last-child {
   background: #b55b3f;
 }
+
+.admin-menu-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-field {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-field span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4f463b;
+}
+
+.admin-field input,
+.admin-field textarea {
+  width: 100%;
+  border: 1px solid #d8c8b2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fffdf8;
+  color: #2a241b;
+  font: inherit;
+}
+
+.admin-field textarea {
+  resize: vertical;
+}
+
+.admin-menu-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-menu-day {
+  border: 1px solid rgba(42, 36, 27, 0.1);
+  border-radius: 12px;
+  background: #fffdf8;
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.admin-menu-day h3 {
+  margin: 0;
+  font-size: 16px;
+}
