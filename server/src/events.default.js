@@ -3,17 +3,17 @@ export const defaultEvents = {
   homeCards: [
     {
       id: "home-1",
-      title: "Noche de amor",
-      schedule: "Viernes - 20:00 a 23:30",
-      note: "Cena especial para parejas con ambiente romantico.",
+      title: "Cervecitas a mediodia",
+      schedule: "Viernes - 13:00 a 16:00",
+      note: "Cervezas frias, tapas y buen ambiente al mediodia.",
       imageUrl: "",
       imageAlt: "Cena romantica en Bar Corona"
     },
     {
       id: "home-2",
-      title: "Comida navidena",
-      schedule: "Sabado - 14:00 a 17:00",
-      note: "Menu festivo para grupos y familias.",
+      title: "Brunch con musica chill",
+      schedule: "Sabado - 11:00 a 14:30",
+      note: "Brunch con musica chill, cafes especiales y buen rollo.",
       imageUrl: "",
       imageAlt: "Mesa navidena en Bar Corona"
     }
@@ -57,3 +57,4 @@ export const defaultEvents = {
     }
   ]
 };
+
