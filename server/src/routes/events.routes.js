@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { readDb } from "../db.js";
-import { defaultEvents } from "../events.default.js";
+import { getEvents } from "../db.js";
 
 const router = Router();
 
 router.get("/", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    res.json({ ok: true, data: db.events || defaultEvents });
+    const events = await getEvents();
+    res.json({ ok: true, data: events });
   } catch (error) {
     next(error);
   }

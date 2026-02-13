@@ -2,7 +2,7 @@ import { Router } from "express";
 import { reservationSchema } from "../validators/reservation.schema.js";
 import { buildRateLimiter } from "../middlewares/rateLimit.js";
 import { hashIp } from "../utils/hash.js";
-import { readDb, writeDb, createId } from "../db.js";
+import { createReservation } from "../db.js";
 
 const router = Router();
 
@@ -15,12 +15,9 @@ router.post("/", limiter, async (req, res, next) => {
   }
 
   try {
-    const db = await readDb();
     const ipHash = hashIp(req.ip || "");
     const userAgent = req.get("user-agent") || "";
-
-    const reservation = {
-      id: createId(),
+    const reservation = await createReservation({
       name: parsed.data.name,
       email: parsed.data.email,
       phone: parsed.data.phone || null,
@@ -31,12 +28,7 @@ router.post("/", limiter, async (req, res, next) => {
       status: "PENDING",
       ipHash,
       userAgent,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    db.reservations.push(reservation);
-    await writeDb(db);
+    });
 
     res.status(201).json({ ok: true, data: reservation });
   } catch (error) {

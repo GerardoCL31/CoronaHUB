@@ -1,9 +1,16 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { readDb, writeDb } from "../db.js";
-import { defaultMenu } from "../menu.default.js";
-import { defaultEvents } from "../events.default.js";
+import {
+  getMenu,
+  setMenu,
+  getEvents,
+  setEvents,
+  listAllReviews,
+  updateReviewStatus,
+  listAllReservations,
+  updateReservationStatus,
+} from "../db.js";
 import { authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
@@ -81,8 +88,8 @@ const eventsSchema = z.object({
 
 router.get("/menu", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    res.json({ ok: true, data: db.menu || defaultMenu });
+    const menu = await getMenu();
+    res.json({ ok: true, data: menu });
   } catch (error) {
     next(error);
   }
@@ -95,10 +102,8 @@ router.put("/menu", async (req, res, next) => {
   }
 
   try {
-    const db = await readDb();
-    db.menu = parsed.data;
-    await writeDb(db);
-    res.json({ ok: true, data: db.menu });
+    const menu = await setMenu(parsed.data);
+    res.json({ ok: true, data: menu });
   } catch (error) {
     next(error);
   }
@@ -106,8 +111,8 @@ router.put("/menu", async (req, res, next) => {
 
 router.get("/events", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    res.json({ ok: true, data: db.events || defaultEvents });
+    const events = await getEvents();
+    res.json({ ok: true, data: events });
   } catch (error) {
     next(error);
   }
@@ -120,10 +125,8 @@ router.put("/events", async (req, res, next) => {
   }
 
   try {
-    const db = await readDb();
-    db.events = parsed.data;
-    await writeDb(db);
-    res.json({ ok: true, data: db.events });
+    const events = await setEvents(parsed.data);
+    res.json({ ok: true, data: events });
   } catch (error) {
     next(error);
   }
@@ -131,10 +134,7 @@ router.put("/events", async (req, res, next) => {
 
 router.get("/reviews", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    const reviews = [...db.reviews].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
+    const reviews = await listAllReviews();
     res.json({ ok: true, data: reviews });
   } catch (error) {
     next(error);
@@ -151,15 +151,10 @@ router.patch("/reviews/:id", async (req, res, next) => {
   }
 
   try {
-    const db = await readDb();
-    const review = db.reviews.find((item) => item.id === req.params.id);
+    const review = await updateReviewStatus(req.params.id, parsed.data.status);
     if (!review) {
       return res.status(404).json({ ok: false, message: "Resena no encontrada" });
     }
-
-    review.status = parsed.data.status;
-    review.updatedAt = new Date().toISOString();
-    await writeDb(db);
 
     res.json({ ok: true, data: review });
   } catch (error) {
@@ -169,10 +164,7 @@ router.patch("/reviews/:id", async (req, res, next) => {
 
 router.get("/reservations", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    const reservations = [...db.reservations].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
+    const reservations = await listAllReservations();
     res.json({ ok: true, data: reservations });
   } catch (error) {
     next(error);
@@ -189,15 +181,10 @@ router.patch("/reservations/:id", async (req, res, next) => {
   }
 
   try {
-    const db = await readDb();
-    const reservation = db.reservations.find((item) => item.id === req.params.id);
+    const reservation = await updateReservationStatus(req.params.id, parsed.data.status);
     if (!reservation) {
       return res.status(404).json({ ok: false, message: "Reserva no encontrada" });
     }
-
-    reservation.status = parsed.data.status;
-    reservation.updatedAt = new Date().toISOString();
-    await writeDb(db);
 
     res.json({ ok: true, data: reservation });
   } catch (error) {

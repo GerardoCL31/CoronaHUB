@@ -91,6 +91,9 @@
   border: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .review-field--stars legend {
@@ -105,6 +108,7 @@
   display: inline-flex;
   flex-direction: row-reverse;
   gap: 6px;
+  margin-top: 2px;
 }
 
 .star-rating input {

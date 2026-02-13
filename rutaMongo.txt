@@ -1,0 +1,43 @@
+"C:\Users\PC\Downloads\mongosh-2.7.0-win32-x64\bin\mongosh.exe" "mongodb://127.0.0.1:27017"
+
+Instala MongoDB Server (obligatorio)
+Descarga e instala MongoDB Community Server (MSI).
+En el instalador elige:
+Complete
+Install MongoD as a Service (muy importante)
+Instala Compass (opcional, recomendado)
+MongoDB Compass te sirve para ver datos visualmente.
+Compass no sustituye al Server.
+Verifica que el servicio existe
+Abre PowerShell como Admin:
+Get-Service *mongo*
+Resultado esperado: aparece MongoDB.
+
+Inicia MongoDB
+Start-Service MongoDB
+Si ya está encendido, no pasa nada.
+
+Configura el proyecto
+En server/.env:
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB=coronahub
+Arranca la app
+En la raíz del proyecto:
+npm run dev
+Comprueba conexión
+Backend: http://localhost:4000/api/health
+Compass: conecta a mongodb://127.0.0.1:27017
+Debe aparecer la DB coronahub cuando la app escriba datos.
+Errores típicos y solución
+NoServiceFoundForGivenName
+No está instalado MongoDB Community Server.
+ECONNREFUSED 127.0.0.1 (line 27017)
+Servicio Mongo parado.
+Solución: Start-Service MongoDB
+mongosh no se reconoce
+No está en PATH.
+Solución rápida: usa Compass (no necesitas mongosh para trabajar).
+Recomendación para no repetir este lío
+Si quieres cero setup local en futuros equipos, usa MongoDB Atlas y en server/.env pones MONGODB_URI=mongodb+srv://....
+
+Si quieres, te lo dejo en un MONGO_SETUP.md dentro del repo con este mismo formato.

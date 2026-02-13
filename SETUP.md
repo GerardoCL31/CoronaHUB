@@ -1,41 +1,84 @@
-# CoronaHUB - Setup Rapido
+REQUISITOS
 
-## Requisitos
-- Node.js 18+ (ideal 20/24)
+Node.js 18+ (mejor LTS)
+Git
+MongoDB Community Server (OBLIGATORIO)
+MongoDB Compass (opcional, recomendado)
+IMPORTANTE
 
-## 1) Instalar dependencias
-Desde la raiz del repo:
+Compass NO levanta la base de datos.
+El que levanta la BBDD es MongoDB Community Server (servicio MongoDB).
+PASOS COMPLETOS
 
-```bash
+Instalar MongoDB en Windows
+Instalar MongoDB Community Server (MSI).
+En la instalación marcar:
+Complete
+Install MongoD as a Service
+Verificar servicio MongoDB
+Abrir PowerShell como Administrador y ejecutar:
+Get-Service mongo
+Si aparece MongoDB, arrancar:
+Start-Service MongoDB
+
+Clonar proyecto
+git clone <TU_REPO>
+cd CoronaHUB
+
+Instalar dependencias
 npm install
 npm run install:all
-```
 
-## 2) Configurar variables
-Revisa `server/.env` y ajusta:
-- `ADMIN_EMAIL`
-- `ADMIN_PASSWORD`
-- `JWT_SECRET`
-- `IP_HASH_SALT`
-- `CORS_ORIGIN` (por defecto http://localhost:5173)
+Configurar variables backend
+Editar archivo: server/.env
+Contenido mínimo recomendado:
 
-## 3) Ejecutar en desarrollo
-En la raiz:
+PORT=4000
+CORS_ORIGIN=http://localhost:5173
+JWT_SECRET=tu_secret_seguro
+ADMIN_EMAIL=tu_email_admin
+ADMIN_PASSWORD=tu_password_admin
+IP_HASH_SALT=tu_salt_seguro
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB=coronahub
 
-```bash
+Levantar proyecto
+Desde la raíz del repo:
 npm run dev
-```
+URLs:
 
-- Frontend: http://localhost:5173
-- Backend: http://localhost:4000
-- Health check: http://localhost:4000/api/health
+Frontend: http://localhost:5173
+Backend: http://localhost:4000
+Health: http://localhost:4000/api/health
+Comprobar en Compass
+Add new connection
+URI: mongodb://127.0.0.1:27017
+Connect
+Debe aparecer la base coronahub cuando la app guarde datos.
+ERRORES TÍPICOS Y SOLUCIÓN
 
-## 4) Uso basico
-- Opiniones: se envian como PENDING y se aprueban en `/admin/dashboard`
-- Reservas: se envian como PENDING y se confirman en `/admin/dashboard`
-- Carta: se edita en `/admin/dashboard` y se publica en `/api/menu`
+Error: NoServiceFoundForGivenName
 
-## Solucion de problemas
-- Si `concurrently` falla: ejecuta `npm install` en la raiz.
-- Si el front no carga: revisa `client/.env` con `VITE_API_URL`.
-- Si el backend no arranca: revisa `server/.env`.
+MongoDB Community Server no está instalado.
+Error: ECONNREFUSED 127.0.0.1:27017
+
+El servicio MongoDB está apagado.
+Solución: Start-Service MongoDB
+Error: 'mongosh' no se reconoce
+
+mongosh no está en PATH.
+Puedes usar Compass directamente sin problema.
+BACKUP / MIGRACIÓN DE DATOS (opcional)
+
+Para llevar datos de un equipo a otro:
+Opción A: mongodump/mongorestore
+Opción B: conservar server/data/db.json como respaldo temporal
+RESUMEN CORTO
+
+Instalas MongoDB Server + Node
+Clonas repo
+npm install + npm run install:all
+Configuras server/.env
+Start-Service MongoDB
+npm run dev
+Verificas en Compass

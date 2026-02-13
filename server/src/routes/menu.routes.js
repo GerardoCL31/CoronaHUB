@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { readDb } from "../db.js";
+import { getMenu } from "../db.js";
 
 const router = Router();
 
 router.get("/", async (_req, res, next) => {
   try {
-    const db = await readDb();
-    res.json({ ok: true, data: db.menu });
+    const menu = await getMenu();
+    res.json({ ok: true, data: menu });
   } catch (error) {
     next(error);
   }
