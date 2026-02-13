@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { logo } from "../constants/cloudinaryAssets.js";
+import coronaButtonIcon from "../../../src/assets/Corona.png";
 
 function Navbar({ active = "inicio" }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,9 +26,7 @@ function Navbar({ active = "inicio" }) {
         </div>
       </div>
       <button className="nav-toggle" type="button" onClick={handleToggle} aria-expanded={isOpen} aria-label="Abrir menu">
-        <span />
-        <span />
-        <span />
+        <img src={coronaButtonIcon} alt="" aria-hidden="true" />
       </button>
       <nav className={`nav ${isOpen ? "is-open" : ""}`}>
         <Link
