@@ -3,7 +3,7 @@
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, var(--sand) 0%, #f3dfbe 45%, #e7f0f6 100%);
+  background: linear-gradient(180deg, #050505 0%, #111112 45%, #1a1510 100%);
   color: var(--ink);
   font-family: "Manrope", sans-serif;
 }
@@ -46,7 +46,7 @@ body {
 
 .eventos-divider {
   width: 1px;
-  background: rgba(42, 36, 27, 0.4);
+  background: rgba(212, 175, 55, 0.3);
   align-self: stretch;
 }
 
@@ -63,7 +63,7 @@ body {
   border-radius: 18px;
   object-fit: cover;
   box-shadow: 0 10px 20px rgba(35, 33, 24, 0.18);
-  border: 1px solid rgba(42, 36, 27, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .footer {

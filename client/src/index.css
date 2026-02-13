@@ -2,8 +2,8 @@
   font-family: "Manrope", system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: #f7ead2;
-  color: #2a241b;
+  background-color: #0d0d0f;
+  color: #f5ecd6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -31,8 +31,8 @@ body {
   gap: 16px;
   align-items: center;
   padding: 16px 24px;
-  background: #fff7e8;
-  border-bottom: 1px solid #e5d6c3;
+  background: #171717;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
 }
 
 .admin-header nav {
@@ -42,8 +42,8 @@ body {
 }
 
 .admin-header button {
-  background: #2f6c99;
-  color: #fff;
+  background: #d4af37;
+  color: #1a1408;
   border: none;
   border-radius: 8px;
   padding: 6px 12px;
@@ -56,11 +56,11 @@ body {
 }
 
 .admin-card {
-  background: #fff7e8;
-  border: 1px solid #ecdcc8;
+  background: #181819;
+  border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: 18px;
   padding: 16px;
-  box-shadow: 0 12px 24px rgba(42, 36, 27, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 .admin-list {
@@ -69,22 +69,23 @@ body {
 }
 
 .admin-item {
-  background: #fffdf8;
+  background: #121214;
   border-radius: 14px;
   padding: 12px 14px;
-  border: 1px solid rgba(42, 36, 27, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.18);
 }
 
 .admin-item .actions button {
-  background: #2f6c99;
-  color: #fff;
+  background: #d4af37;
+  color: #1a1408;
   border: none;
   border-radius: 8px;
   padding: 8px 12px;
 }
 
 .admin-item .actions button:last-child {
-  background: #b55b3f;
+  background: #8d372a;
+  color: #f8ede3;
 }
 
 .admin-menu-editor {
@@ -100,17 +101,17 @@ body {
 .admin-field span {
   font-size: 13px;
   font-weight: 700;
-  color: #4f463b;
+  color: #c2b590;
 }
 
 .admin-field input,
 .admin-field textarea {
   width: 100%;
-  border: 1px solid #d8c8b2;
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 10px;
   padding: 10px 12px;
-  background: #fffdf8;
-  color: #2a241b;
+  background: #0f0f10;
+  color: #f5ecd6;
   font: inherit;
 }
 
@@ -125,9 +126,9 @@ body {
 }
 
 .admin-menu-day {
-  border: 1px solid rgba(42, 36, 27, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 12px;
-  background: #fffdf8;
+  background: #121214;
   padding: 10px;
   display: grid;
   gap: 10px;
@@ -149,9 +150,9 @@ body {
 }
 
 .admin-events-item {
-  border: 1px solid rgba(42, 36, 27, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 12px;
-  background: #fffdf8;
+  background: #121214;
   padding: 12px;
   display: grid;
   gap: 10px;
@@ -175,10 +176,10 @@ body {
 }
 
 .admin-inline-input button {
-  border: 1px solid #d8c8b2;
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 10px;
   padding: 0 12px;
-  background: #fff7e8;
-  color: #2a241b;
+  background: #1a1a1c;
+  color: #f5ecd6;
   font: inherit;
 }

@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600&display=swap");
 
 :root {
-  --sand: #f7ead2;
-  --cream: #fff7e8;
-  --sky: #bcd5e6;
-  --blue: #2f6c99;
-  --blue-dark: #235475;
-  --gold: #d5aa3a;
-  --ink: #2a241b;
-  --muted: #6b5f4c;
-  --shadow: 0 20px 40px rgba(34, 28, 18, 0.15);
+  --sand: #0d0d0f;
+  --cream: #181819;
+  --sky: #222226;
+  --blue: #c79a3d;
+  --blue-dark: #f0cf83;
+  --gold: #d4af37;
+  --ink: #f5ecd6;
+  --muted: #c2b590;
+  --shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
   --radius-lg: 24px;
   --radius-md: 16px;
 }
@@ -20,7 +20,7 @@
 
 .page {
   min-height: 100vh;
-  background: linear-gradient(180deg, var(--sand) 0%, #f3dfbe 40%, #e7f0f6 100%);
+  background: linear-gradient(180deg, #050505 0%, #111112 40%, #1a1510 100%);
   color: var(--ink);
   padding: 36px 20px 60px;
 }
@@ -88,9 +88,9 @@
   width: 44px;
   height: 44px;
   border-radius: 14px;
-  border: 1px solid rgba(47, 108, 153, 0.35);
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(47, 108, 153, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  background: #171717;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
   cursor: pointer;
   padding: 8px;
   position: relative;
@@ -111,31 +111,31 @@
   letter-spacing: 0.1em;
   padding: 9px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(47, 108, 153, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.35);
   color: var(--blue-dark);
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(47, 108, 153, 0.18);
+  background: #171717;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .nav-pill:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(47, 108, 153, 0.25);
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.22);
 }
 
 .nav-pill.is-active {
-  background: var(--blue);
-  color: #fff;
+  background: #2a210f;
+  color: var(--blue-dark);
   border-color: transparent;
-  box-shadow: 0 12px 24px rgba(35, 84, 117, 0.28);
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.24);
 }
 
 .nav-pill.is-reserve {
   background: var(--gold);
-  color: #fff;
+  color: #1a1408;
   border-color: transparent;
-  box-shadow: 0 12px 24px rgba(175, 128, 24, 0.28);
+  box-shadow: 0 12px 24px rgba(175, 128, 24, 0.4);
 }
 
 .hero {
@@ -158,7 +158,7 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.24);
   display: block;
 
   
@@ -180,18 +180,18 @@
 }
 
 .event-card {
-  background: #d9b43c;
+  background: #2a210f;
   border-radius: var(--radius-md);
   padding: 18px;
-  color: #fff;
+  color: var(--ink);
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 12px;
-  box-shadow: 0 10px 20px rgba(120, 87, 20, 0.25);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
 }
 
 .event-card:nth-of-type(2) {
-  background: #d2a734;
+  background: #3a2c12;
 }
 
 .event-card h3 {
@@ -217,7 +217,7 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(212, 175, 55, 0.22);
   position: relative;
 }
 
@@ -247,7 +247,8 @@
   grid-template-columns: 1fr 260px;
   gap: 24px;
   align-items: center;
-  background: rgba(227, 239, 248, 0.9);
+  background: rgba(24, 24, 25, 0.92);
+  border: 1px solid rgba(212, 175, 55, 0.24);
   border-radius: 20px;
   padding: 18px 24px;
 }
@@ -271,8 +272,8 @@
   height: 140px;
   border-radius: 16px;
   overflow: hidden;
-  background: #eef2f6;
-  border: 1px solid rgba(45, 66, 86, 0.2);
+  background: #121214;
+  border: 1px solid rgba(212, 175, 55, 0.24);
 }
 
 .map-card img {
@@ -343,11 +344,11 @@
     top: 64px;
     flex-direction: column;
     align-items: stretch;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(16, 16, 17, 0.96);
     border-radius: 18px;
     padding: 12px;
-    box-shadow: 0 16px 30px rgba(35, 33, 24, 0.18);
-    border: 1px solid rgba(47, 108, 153, 0.2);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.28);
     display: none;
     min-width: 180px;
     z-index: 5;
