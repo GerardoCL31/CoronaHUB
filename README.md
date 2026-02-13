@@ -1,5 +1,8 @@
 # CoronaHUB Monorepo
 
+<img width="1902" height="945" alt="image" src="https://github.com/user-attachments/assets/95495fe7-7ec3-47ad-a98d-253c0cc30fa4" />
+
+
 ## Requisitos
 - Node.js 18+
 
