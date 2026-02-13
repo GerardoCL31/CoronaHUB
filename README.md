@@ -10,15 +10,6 @@
 ```bash
 npm run install:all
 ```
-
-3. Genera la base de datos:
-
-```bash
-cd server
-npx prisma migrate dev --name init
-npx prisma generate
-```
-
 ## Desarrollo
 
 ```bash
