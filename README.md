@@ -8,7 +8,11 @@
 
 ## Configuracion
 1. Edita `server/.env` con tus credenciales.
-2. Instala dependencias:
+2. Define `DB_MODE` segun tu entorno:
+   - `DB_MODE=mongo` para produccion (recomendado en dominio propio).
+   - `DB_MODE=file` para desarrollo local con `server/data/db.json`.
+   - `DB_MODE=auto` (default): usa Mongo y si falla, hace fallback a archivo.
+3. Instala dependencias:
 
 ```bash
 npm run install:all

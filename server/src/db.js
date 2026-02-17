@@ -8,6 +8,8 @@ import { defaultEvents } from "./events.default.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const fileDbPath = path.resolve(__dirname, "..", "data", "db.json");
+const rawDbMode = (process.env.DB_MODE || "auto").trim().toLowerCase();
+const DB_MODE = ["auto", "mongo", "file"].includes(rawDbMode) ? rawDbMode : "auto";
 
 let clientPromise;
 let mongoUnavailable = false;
@@ -47,7 +49,14 @@ const writeFileDb = async (state) => {
 };
 
 const getClient = async () => {
+  if (DB_MODE === "file") {
+    return null;
+  }
+
   if (mongoUnavailable) {
+    if (DB_MODE === "mongo") {
+      throw new Error("MongoDB no disponible y DB_MODE=mongo. Revisa MONGODB_URI.");
+    }
     return null;
   }
 
@@ -61,6 +70,9 @@ const getClient = async () => {
     return await clientPromise;
   } catch (error) {
     mongoUnavailable = true;
+    if (DB_MODE === "mongo") {
+      throw new Error(`MongoDB no disponible y DB_MODE=mongo: ${error.message}`);
+    }
     if (!mongoFallbackWarned) {
       console.warn("MongoDB no disponible, usando file DB fallback", error.message);
       mongoFallbackWarned = true;

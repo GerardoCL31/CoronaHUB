@@ -35,12 +35,18 @@ Contenido mínimo recomendado:
 
 PORT=4000
 CORS_ORIGIN=http://localhost:5173
+DB_MODE=auto
 JWT_SECRET=tu_secret_seguro
 ADMIN_EMAIL=tu_email_admin
 ADMIN_PASSWORD=tu_password_admin
 IP_HASH_SALT=tu_salt_seguro
 MONGODB_URI=mongodb://127.0.0.1:27017
 MONGODB_DB=coronahub
+
+Modos de base de datos:
+- DB_MODE=mongo -> usa solo MongoDB (recomendado para dominio propio/produccion).
+- DB_MODE=file -> usa solo server/data/db.json.
+- DB_MODE=auto -> intenta Mongo y si falla usa archivo.
 
 Levantar proyecto
 Desde la raíz del repo:
