@@ -8,7 +8,7 @@ import FooterSmall from "./components/FooterSmall.jsx";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 const fallbackMenu = {
-  banner: "Menu diario 9EUR con bebida",
+  banner: "Menu diario 9€ con bebida",
   days: [
     {
       id: "lunes",
