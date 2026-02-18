@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import "../carta.css";
 import { mesaComida } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
@@ -7,7 +7,7 @@ import FooterSmall from "../components/FooterSmall.jsx";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 const fallbackMenu = {
-  banner: "Menu diario 9€ con bebida",
+  banner: "Menú diario 9€ con bebida",
   days: [
     {
       id: "lunes",
@@ -25,16 +25,16 @@ const fallbackMenu = {
     },
     {
       id: "miercoles",
-      title: "Miercoles",
-      first: "Gazpacho / Pasta bolonesa",
+      title: "Miércoles",
+      first: "Gazpacho / Pasta boloñesa",
       second: "Pechuga empanada / Bacalao",
       dessert: "Natillas / Fruta",
     },
     {
       id: "jueves",
       title: "Jueves",
-      first: "Pure verduras / Ensalada campera",
-      second: "Albondigas / Calamares",
+      first: "Puré de verduras / Ensalada campera",
+      second: "Albóndigas / Calamares",
       dessert: "Flan / Yogur",
     },
     {
@@ -46,9 +46,9 @@ const fallbackMenu = {
     },
     {
       id: "sabado",
-      title: "Sabado",
+      title: "Sábado",
       first: "Paella / Salmorejo",
-      second: "Chuleta cerdo / Pescado del dia",
+      second: "Chuleta de cerdo / Pescado del día",
       dessert: "Natillas / Yogur",
     },
   ],
@@ -94,8 +94,8 @@ export default function Carta() {
             {menu.days.map((day) => (
               <article key={day.id} className="carta-card">
                 <span className="carta-pill-title">{day.title}</span>
-                <p>1o: {day.first}</p>
-                <p>2o: {day.second}</p>
+                <p>1º: {day.first}</p>
+                <p>2º: {day.second}</p>
                 <p>Postre: {day.dessert}</p>
               </article>
             ))}
@@ -119,4 +119,5 @@ export default function Carta() {
     </div>
   );
 }
+
 

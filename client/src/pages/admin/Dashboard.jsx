@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+﻿import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { adminGetReviews, adminUpdateReview } from "../../services/reviews.service.js";
 import {
@@ -8,6 +8,8 @@ import {
 import { adminGetMenu, adminUpdateMenu } from "../../services/menu.service.js";
 import { adminGetEvents, adminUpdateEvents } from "../../services/events.service.js";
 import { logout } from "../../services/auth.service.js";
+
+const toTimestamp = (item) => new Date(`${item.date}T${item.time}:00`).getTime();
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -179,6 +181,15 @@ export default function AdminDashboard() {
 
   const pendingReviews = reviews.filter((item) => item.status === "PENDING");
   const pendingReservations = reservations.filter((item) => item.status === "PENDING");
+  const now = Date.now();
+  const upcomingReservations = reservations
+    .filter(
+      (item) =>
+        ["PENDING", "CONFIRMED"].includes(item.status) &&
+        Number.isFinite(toTimestamp(item)) &&
+        toTimestamp(item) >= now
+    )
+    .sort((a, b) => toTimestamp(a) - toTimestamp(b));
 
   return (
     <>
@@ -223,10 +234,12 @@ export default function AdminDashboard() {
               <div key={reserva.id} className="card admin-item">
                 <strong>{reserva.name}</strong>
                 <p>
-                  {reserva.date} {reserva.time} � {reserva.people} personas
+                  {reserva.date} {reserva.time} · {reserva.people} personas
                 </p>
                 <p>{reserva.email}</p>
-                {reserva.phone && <p>Telefono: {reserva.phone}</p>}
+                {reserva.tableId && <p>Mesa: {reserva.tableId}</p>}
+                {reserva.phone && <p>Teléfono: {reserva.phone}</p>}
+                {reserva.notes && <p>Alergias / notas: {reserva.notes}</p>}
                 <div className="actions">
                   <button onClick={() => updateReservation(reserva.id, "CONFIRMED")}>
                     Confirmar
@@ -238,6 +251,61 @@ export default function AdminDashboard() {
               </div>
             ))}
             {pendingReservations.length === 0 && <p>No hay pendientes.</p>}
+          </div>
+        </section>
+
+        <section className="card admin-card" style={{ marginTop: 16 }}>
+          <h2>Próximas reservas</h2>
+          <div className="list admin-list">
+            {upcomingReservations.map((reserva) => (
+              <div key={reserva.id} className="card admin-item">
+                <strong>{reserva.name}</strong>
+                <div className="admin-details-grid">
+                  <p>
+                    <span>Fecha:</span> {reserva.date}
+                  </p>
+                  <p>
+                    <span>Hora:</span> {reserva.time}
+                  </p>
+                  <p>
+                    <span>Mesa:</span> {reserva.tableId || "-"}
+                  </p>
+                  <p>
+                    <span>Personas:</span> {reserva.people}
+                  </p>
+                  <p>
+                    <span>Email:</span> {reserva.email}
+                  </p>
+                  <p>
+                    <span>Teléfono:</span> {reserva.phone || "-"}
+                  </p>
+                  <p>
+                    <span>Estado:</span> {reserva.status}
+                  </p>
+                  <p>
+                    <span>ID:</span> {reserva.id}
+                  </p>
+                  <p>
+                    <span>Creada:</span> {reserva.createdAt || "-"}
+                  </p>
+                  <p>
+                    <span>Actualizada:</span> {reserva.updatedAt || "-"}
+                  </p>
+                </div>
+                <p>
+                  <span>Notas / alergias:</span> {reserva.notes || "-"}
+                </p>
+                <div className="actions">
+                  <button onClick={() => updateReservation(reserva.id, "CONFIRMED")}>
+                    Confirmar
+                  </button>
+                  <button onClick={() => updateReservation(reserva.id, "CANCELLED")}>
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            ))}
+            {upcomingReservations.length === 0 && <p>No hay reservas próximas.</p>}
           </div>
         </section>
 
@@ -294,7 +362,7 @@ export default function AdminDashboard() {
               </div>
 
               <label className="admin-field">
-                <span>Titulo platos combinados</span>
+                <span>Título platos combinados</span>
                 <input
                   type="text"
                   value={menu.combosTitle}
@@ -305,7 +373,7 @@ export default function AdminDashboard() {
               </label>
 
               <label className="admin-field">
-                <span>Platos combinados (uno por linea)</span>
+                <span>Platos combinados (uno por línea)</span>
                 <textarea
                   rows={6}
                   value={menu.combos.join("\n")}
@@ -329,7 +397,7 @@ export default function AdminDashboard() {
           {events && (
             <div className="admin-menu-editor">
               <label className="admin-field">
-                <span>Titulo en inicio</span>
+                <span>Título en inicio</span>
                 <input
                   type="text"
                   value={events.homeTitle}
@@ -343,7 +411,7 @@ export default function AdminDashboard() {
                   <article key={card.id} className="admin-menu-day">
                     <h3>{card.id}</h3>
                     <label className="admin-field">
-                      <span>Titulo</span>
+                      <span>Título</span>
                       <input
                         type="text"
                         value={card.title}
@@ -363,7 +431,7 @@ export default function AdminDashboard() {
                       />
                     </label>
                     <label className="admin-field">
-                      <span>Descripcion corta</span>
+                      <span>Descripción corta</span>
                       <textarea
                         rows={3}
                         value={card.note}
@@ -409,13 +477,13 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
-              <h3 className="admin-subtitle">Pagina de eventos</h3>
+              <h3 className="admin-subtitle">Página de eventos</h3>
               <div className="admin-events-list">
                 {events.pageItems.map((item) => (
                   <article key={item.id} className="admin-events-item">
                     <h3>{item.id}</h3>
                     <label className="admin-field">
-                      <span>Titulo bloque</span>
+                      <span>Título bloque</span>
                       <input
                         type="text"
                         value={item.title}
@@ -425,7 +493,7 @@ export default function AdminDashboard() {
                       />
                     </label>
                     <label className="admin-field">
-                      <span>Descripcion</span>
+                      <span>Descripción</span>
                       <textarea
                         rows={4}
                         value={item.description}
@@ -502,6 +570,8 @@ export default function AdminDashboard() {
     </>
   );
 }
+
+
 
 
 

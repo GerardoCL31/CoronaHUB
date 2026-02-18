@@ -58,7 +58,7 @@ export default function Home() {
       <section className="info-strip">
         <div className="hours">
           <h3>Horarios:</h3>
-          <p>Lunes a sabado: 8:00 am - 5:00 pm</p>
+          <p>Lunes a sábado: 8:00 am - 5:00 pm</p>
           <p>Domingo: 8:00 am - 12:00 pm</p>
         </div>
         <div className="map-card">
@@ -67,7 +67,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" />
+            <img src={mapaImg} alt="Mapa de ubicación de Bar Corona" />
           </a>
         </div>
       </section>

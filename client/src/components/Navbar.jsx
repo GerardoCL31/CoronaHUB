@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 import { logo } from "../constants/cloudinaryAssets.js";
 import coronaButtonIcon from "../../../src/assets/Corona.png";
@@ -25,7 +25,7 @@ function Navbar({ active = "inicio" }) {
           <h1>Bar Corona</h1>
         </div>
       </div>
-      <button className="nav-toggle" type="button" onClick={handleToggle} aria-expanded={isOpen} aria-label="Abrir menu">
+      <button className="nav-toggle" type="button" onClick={handleToggle} aria-expanded={isOpen} aria-label="Abrir menú">
         <img src={coronaButtonIcon} alt="" aria-hidden="true" />
       </button>
       <nav className={`nav ${isOpen ? "is-open" : ""}`}>
@@ -54,9 +54,7 @@ function Navbar({ active = "inicio" }) {
           className={`nav-pill ${active === "galeria" ? "is-active" : ""}`}
           to="/galeria"
           onClick={handleClose}
-        >
-          Galeria
-        </Link>
+        >Galería</Link>
         <Link
           className={`nav-pill ${active === "opiniones" ? "is-active" : ""}`}
           to="/contact"
@@ -77,4 +75,5 @@ function Navbar({ active = "inicio" }) {
 }
 
 export default Navbar;
+
 

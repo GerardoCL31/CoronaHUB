@@ -95,6 +95,13 @@ const sortByCreatedDesc = (items) =>
   [...items].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
 export const createId = () => `${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+const ACTIVE_RESERVATION_STATUSES = ["PENDING", "CONFIRMED"];
+const extractTableIdFromNotes = (notes) => {
+  if (!notes || typeof notes !== "string") return null;
+  const match = notes.match(/Mesa:\s*([A-Za-z0-9-]+)/i);
+  return match?.[1] || null;
+};
+const getReservationTableId = (item) => item.tableId || extractTableIdFromNotes(item.notes) || null;
 
 export const listApprovedReviews = async () => {
   const db = await getDb();
@@ -192,11 +199,41 @@ export const createReservation = async (payload) => {
   const db = await getDb();
   if (db) {
     const reservations = db.collection("reservations");
+    const sameSlotRows = await reservations
+      .find(
+        {
+          date: reservation.date,
+          time: reservation.time,
+          status: { $in: ACTIVE_RESERVATION_STATUSES },
+        },
+        { projection: { _id: 0, id: 1, tableId: 1, notes: 1 } }
+      )
+      .toArray();
+    const conflict = sameSlotRows.find(
+      (item) => getReservationTableId(item) === reservation.tableId
+    );
+    if (conflict) {
+      const error = new Error("Ya existe una reserva activa para esa fecha y hora");
+      error.code = "RESERVATION_SLOT_TAKEN";
+      throw error;
+    }
     await reservations.insertOne(reservation);
     return reservation;
   }
 
   const state = await readFileDb();
+  const conflict = state.reservations.find(
+    (item) =>
+      item.date === reservation.date &&
+      item.time === reservation.time &&
+      getReservationTableId(item) === reservation.tableId &&
+      ACTIVE_RESERVATION_STATUSES.includes(item.status)
+  );
+  if (conflict) {
+    const error = new Error("Ya existe una reserva activa para esa fecha y hora");
+    error.code = "RESERVATION_SLOT_TAKEN";
+    throw error;
+  }
   state.reservations.push(reservation);
   await writeFileDb(state);
   return reservation;
@@ -208,10 +245,34 @@ export const updateReservationStatus = async (id, status) => {
 
   if (db) {
     const reservations = db.collection("reservations");
-    const result = await reservations.updateOne({ id }, { $set: { status, updatedAt } });
-    if (result.matchedCount === 0) {
+    const existing = await reservations.findOne({ id }, { projection: { _id: 0 } });
+    if (!existing) {
       return null;
     }
+
+    if (status !== "CANCELLED") {
+      const sameSlotRows = await reservations
+        .find(
+          {
+            id: { $ne: id },
+            date: existing.date,
+            time: existing.time,
+            status: { $in: ACTIVE_RESERVATION_STATUSES },
+          },
+          { projection: { _id: 0, id: 1, tableId: 1, notes: 1 } }
+        )
+        .toArray();
+      const conflict = sameSlotRows.find(
+        (item) => getReservationTableId(item) === getReservationTableId(existing)
+      );
+      if (conflict) {
+        const error = new Error("Ese horario ya esta ocupado por otra reserva");
+        error.code = "RESERVATION_SLOT_TAKEN";
+        throw error;
+      }
+    }
+
+    await reservations.updateOne({ id }, { $set: { status, updatedAt } });
     return reservations.findOne({ id }, { projection: { _id: 0 } });
   }
 
@@ -221,6 +282,23 @@ export const updateReservationStatus = async (id, status) => {
     return null;
   }
 
+  if (status !== "CANCELLED") {
+    const current = state.reservations[index];
+    const conflict = state.reservations.find(
+      (item) =>
+        item.id !== id &&
+        item.date === current.date &&
+        item.time === current.time &&
+        getReservationTableId(item) === getReservationTableId(current) &&
+        ACTIVE_RESERVATION_STATUSES.includes(item.status)
+    );
+    if (conflict) {
+      const error = new Error("Ese horario ya esta ocupado por otra reserva");
+      error.code = "RESERVATION_SLOT_TAKEN";
+      throw error;
+    }
+  }
+
   state.reservations[index] = {
     ...state.reservations[index],
     status,
@@ -228,6 +306,28 @@ export const updateReservationStatus = async (id, status) => {
   };
   await writeFileDb(state);
   return state.reservations[index];
+};
+
+export const listActiveReservationsByDate = async (date) => {
+  const db = await getDb();
+  if (db) {
+    const reservations = db.collection("reservations");
+    const rows = await reservations
+      .find(
+        { date, status: { $in: ACTIVE_RESERVATION_STATUSES } },
+        { projection: { _id: 0, tableId: 1, time: 1, notes: 1 } }
+      )
+      .toArray();
+    return rows
+      .map((item) => ({ tableId: getReservationTableId(item), time: item.time }))
+      .filter((item) => item.tableId && item.time);
+  }
+
+  const state = await readFileDb();
+  return state.reservations
+    .filter((item) => item.date === date && ACTIVE_RESERVATION_STATUSES.includes(item.status))
+    .map((item) => ({ tableId: getReservationTableId(item), time: item.time }))
+    .filter((item) => item.tableId && item.time);
 };
 
 export const getMenu = async () => {

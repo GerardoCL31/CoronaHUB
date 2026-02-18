@@ -8,6 +8,11 @@ export async function createReservation(payload) {
   return data.data;
 }
 
+export async function getReservationAvailability(date) {
+  const data = await apiRequest(`/api/reservations/availability?date=${encodeURIComponent(date)}`);
+  return data.data || [];
+}
+
 export async function adminGetReservations() {
   const data = await apiRequest("/api/admin/reservations");
   return data.data || [];

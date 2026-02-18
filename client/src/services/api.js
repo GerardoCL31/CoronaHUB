@@ -17,7 +17,11 @@ export async function apiRequest(path, { method = "GET", body } = {}) {
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.ok === false) {
-    const message = data.message || "Error en la solicitud";
+    const fieldErrors = data?.errors?.fieldErrors;
+    const firstFieldError = fieldErrors
+      ? Object.values(fieldErrors).flat().find((item) => typeof item === "string" && item.trim())
+      : null;
+    const message = data.message || firstFieldError || "Error en la solicitud";
     throw new Error(message);
   }
   return data;

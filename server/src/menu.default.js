@@ -1,5 +1,5 @@
-export const defaultMenu = {
-  banner: "Menu diario 9EUR con bebida",
+﻿export const defaultMenu = {
+  banner: "Menú diario 9€ con bebida",
   days: [
     {
       id: "lunes",
@@ -17,16 +17,16 @@ export const defaultMenu = {
     },
     {
       id: "miercoles",
-      title: "Miercoles",
-      first: "Gazpacho / Pasta bolonesa",
+      title: "Miércoles",
+      first: "Gazpacho / Pasta boloñesa",
       second: "Pechuga empanada / Bacalao",
       dessert: "Natillas / Fruta",
     },
     {
       id: "jueves",
       title: "Jueves",
-      first: "Pure verduras / Ensalada campera",
-      second: "Albondigas / Calamares",
+      first: "Puré de verduras / Ensalada campera",
+      second: "Albóndigas / Calamares",
       dessert: "Flan / Yogur",
     },
     {
@@ -38,9 +38,9 @@ export const defaultMenu = {
     },
     {
       id: "sabado",
-      title: "Sabado",
+      title: "Sábado",
       first: "Paella / Salmorejo",
-      second: "Chuleta cerdo / Pescado del dia",
+      second: "Chuleta de cerdo / Pescado del día",
       dessert: "Natillas / Yogur",
     },
   ],

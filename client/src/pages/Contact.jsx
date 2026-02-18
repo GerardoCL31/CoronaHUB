@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import "../App.css";
 import "../opiniones.css";
 import { mesaChimenea } from "../constants/cloudinaryAssets.js";
@@ -39,10 +39,10 @@ export default function Contact() {
 
     try {
       await createReview({ name, comment, rating });
-      setStatus("Opinion enviada. Queda pendiente de moderacion.");
+      setStatus("Opinión enviada. Queda pendiente de moderación.");
       form.reset();
     } catch (err) {
-      setError(err.message || "No se pudo enviar la opinion.");
+      setError(err.message || "No se pudo enviar la opinión.");
     }
   };
 
@@ -55,7 +55,7 @@ export default function Contact() {
           <header className="opinions-header">
             <h2>Opiniones reales</h2>
             <p>
-              Comparte tu experiencia. Las opiniones pasan por moderacion antes
+              Comparte tu experiencia. Las opiniones pasan por moderación antes
               de publicarse.
             </p>
           </header>
@@ -66,8 +66,8 @@ export default function Contact() {
               <input name="name" type="text" placeholder="Tu nombre" required />
             </label>
             <fieldset className="review-field review-field--stars">
-              <legend>Puntuacion</legend>
-              <div className="star-rating" role="radiogroup" aria-label="Puntuacion">
+              <legend>Puntuación</legend>
+              <div className="star-rating" role="radiogroup" aria-label="Puntuación">
                 <input type="radio" id="star-5" name="rating" value="5" defaultChecked />
                 <label htmlFor="star-5" title="5 estrellas" aria-label="5 estrellas" />
 
@@ -89,13 +89,13 @@ export default function Contact() {
               <textarea
                 name="comment"
                 rows="3"
-                placeholder="Escribe tu opinion..."
+                placeholder="Escribe tu opinión..."
                 required
               />
             </label>
             <FormFeedback error={error} status={status} />
             <button className="review-submit" type="submit">
-              Enviar opinion
+              Enviar opinión
             </button>
           </form>
 
@@ -112,7 +112,7 @@ export default function Contact() {
               </article>
             ))}
             {reviews.length === 0 && (
-              <p className="review-meta">Aun no hay opiniones aprobadas.</p>
+              <p className="review-meta">Aún no hay opiniones aprobadas.</p>
             )}
           </div>
         </section>
@@ -129,4 +129,6 @@ export default function Contact() {
     </div>
   );
 }
+
+
 

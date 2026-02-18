@@ -1,4 +1,4 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import {
@@ -31,7 +31,7 @@ router.post("/login", (req, res) => {
   const adminPassword = process.env.ADMIN_PASSWORD || "";
 
   if (email !== adminEmail || password !== adminPassword) {
-    return res.status(401).json({ ok: false, message: "Credenciales invalidas" });
+    return res.status(401).json({ ok: false, message: "Credenciales inválidas" });
   }
 
   const token = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET || "", {
@@ -153,7 +153,7 @@ router.patch("/reviews/:id", async (req, res, next) => {
   try {
     const review = await updateReviewStatus(req.params.id, parsed.data.status);
     if (!review) {
-      return res.status(404).json({ ok: false, message: "Resena no encontrada" });
+      return res.status(404).json({ ok: false, message: "Reseña no encontrada" });
     }
 
     res.json({ ok: true, data: review });
@@ -188,8 +188,12 @@ router.patch("/reservations/:id", async (req, res, next) => {
 
     res.json({ ok: true, data: reservation });
   } catch (error) {
+    if (error?.code === "RESERVATION_SLOT_TAKEN") {
+      return res.status(409).json({ ok: false, message: error.message });
+    }
     next(error);
   }
 });
 
 export default router;
+

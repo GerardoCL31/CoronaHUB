@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import "../reserva.css";
 import { chimenea1, comidaBarra, quesoUvas } from "../constants/cloudinaryAssets.js";
@@ -6,11 +6,14 @@ import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 import ImageStack from "../components/ImageStack.jsx";
 import FormFeedback from "../components/FormFeedback.jsx";
-import { createReservation } from "../services/reservations.service.js";
+import {
+  createReservation,
+  getReservationAvailability,
+} from "../services/reservations.service.js";
 
 const tableGroups = [
   {
-    title: "Salon 1",
+    title: "Salón 1",
     key: "salon1",
     tables: [
       { id: "S1", seats: 4 },
@@ -20,7 +23,7 @@ const tableGroups = [
     ],
   },
   {
-    title: "Salon 2",
+    title: "Salón 2",
     key: "salon2",
     tables: [
       { id: "S2-1", seats: 4 },
@@ -66,6 +69,7 @@ export default function Reservation() {
   const [date, setDate] = useState(today.toISOString().slice(0, 10));
   const [time, setTime] = useState(timeSlots[2]);
   const [selectedTable, setSelectedTable] = useState(null);
+  const [availability, setAvailability] = useState([]);
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [guestPhone, setGuestPhone] = useState("");
@@ -73,8 +77,75 @@ export default function Reservation() {
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [availabilityError, setAvailabilityError] = useState("");
 
-  const todayReservations = useMemo(() => [], []);
+  useEffect(() => {
+    let mounted = true;
+    const loadAvailability = async () => {
+      try {
+        const rows = await getReservationAvailability(date);
+        if (!mounted) return;
+        setAvailability(rows);
+        setAvailabilityError("");
+      } catch {
+        if (!mounted) return;
+        setAvailability([]);
+        setAvailabilityError("No se pudo cargar disponibilidad en tiempo real.");
+      }
+    };
+    loadAvailability();
+    return () => {
+      mounted = false;
+    };
+  }, [date]);
+
+  const reservedByTable = useMemo(() => {
+    const map = new Map();
+    availability.forEach((item) => {
+      if (!item?.tableId || !item?.time) return;
+      if (!map.has(item.tableId)) {
+        map.set(item.tableId, new Set());
+      }
+      map.get(item.tableId).add(item.time);
+    });
+    return map;
+  }, [availability]);
+
+  const reservedTablesAtTime = useMemo(() => {
+    const set = new Set();
+    availability.forEach((item) => {
+      if (item?.time === time && item?.tableId) {
+        set.add(item.tableId);
+      }
+    });
+    return set;
+  }, [availability, time]);
+
+  const availableTimeSlots = useMemo(() => {
+    if (!selectedTable) return timeSlots;
+    const blocked = reservedByTable.get(selectedTable) || new Set();
+    return timeSlots.filter((slot) => !blocked.has(slot));
+  }, [reservedByTable, selectedTable]);
+  const blockedTimeSlots = useMemo(() => {
+    if (!selectedTable) return [];
+    const blocked = reservedByTable.get(selectedTable) || new Set();
+    return timeSlots.filter((slot) => blocked.has(slot));
+  }, [reservedByTable, selectedTable]);
+
+  useEffect(() => {
+    if (!selectedTable) return;
+    if (reservedTablesAtTime.has(selectedTable)) {
+      setSelectedTable(null);
+    }
+  }, [reservedTablesAtTime, selectedTable]);
+
+  useEffect(() => {
+    if (!availableTimeSlots.includes(time)) {
+      setTime(availableTimeSlots[0] || "");
+    }
+  }, [availableTimeSlots, time]);
+
+  const todayReservations = availability;
 
   const handleSelectTable = (tableId) => {
     setSelectedTable((prev) => (prev === tableId ? null : tableId));
@@ -85,22 +156,21 @@ export default function Reservation() {
     setStatus("");
 
     try {
-      const finalNotes = selectedTable
-        ? `${notes ? `${notes} ` : ""}Mesa: ${selectedTable}`
-        : notes;
+      const finalNotes = notes.trim() || null;
 
       await createReservation({
         name: guestName.trim(),
         email: guestEmail.trim(),
-        phone: guestPhone.trim() || null,
+        phone: guestPhone.trim(),
         date,
         time,
+        tableId: selectedTable,
         people: Number(people),
-        notes: finalNotes || null,
+        notes: finalNotes,
       });
 
       setStatus(
-        "Reserva enviada. Queda pendiente de confirmacion. Te enviaremos un WhatsApp para confirmar la reserva."
+        "Reserva enviada. Queda pendiente de confirmación. Te enviaremos un WhatsApp para confirmar la reserva."
       );
       setSelectedTable(null);
       setGuestName("");
@@ -108,7 +178,15 @@ export default function Reservation() {
       setGuestPhone("");
       setPeople(2);
       setNotes("");
+      try {
+        const rows = await getReservationAvailability(date);
+        setAvailability(rows);
+        setAvailabilityError("");
+      } catch {
+        setAvailabilityError("Reserva creada, pero no se pudo refrescar disponibilidad.");
+      }
     } catch (err) {
+      setStatus("");
       setError(err.message || "No se pudo enviar la reserva.");
     }
   };
@@ -134,19 +212,28 @@ export default function Reservation() {
               <strong>{formatDate(date)}</strong>
             </div>
             <div className="status-list">
-              {todayReservations.length === 0 && <p>Reserva tu mesa favorita</p>}
+              {availabilityError && <p>{availabilityError}</p>}
+              {!availabilityError && todayReservations.length === 0 && <p>Reserva tu mesa favorita</p>}
+              {!availabilityError && todayReservations.length > 0 && (
+                <p>{todayReservations.length} reservas activas ese día</p>
+              )}
+              {selectedTable && blockedTimeSlots.length > 0 && (
+                <p>
+                  {selectedTable} ocupada: {blockedTimeSlots.join(", ")}
+                </p>
+              )}
             </div>
           </div>
 
           <div className="reserva-controls">
             <label>
-              Dia
+              Día
               <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
             </label>
             <label>
               Hora
               <select value={time} onChange={(event) => setTime(event.target.value)}>
-                {timeSlots.map((slot) => (
+                {availableTimeSlots.map((slot) => (
                   <option key={slot} value={slot}>
                     {slot}
                   </option>
@@ -172,12 +259,13 @@ export default function Reservation() {
               />
             </label>
             <label>
-              Telefono
+              Teléfono
               <input
                 type="tel"
                 value={guestPhone}
                 onChange={(event) => setGuestPhone(event.target.value)}
                 placeholder="600 000 000"
+                required
               />
             </label>
             <label>
@@ -208,12 +296,14 @@ export default function Reservation() {
                 <div className="table-grid">
                   {group.tables.map((table) => {
                     const isSelected = selectedTable === table.id;
+                    const isReserved = reservedTablesAtTime.has(table.id);
                     return (
                       <button
                         type="button"
                         key={table.id}
-                        className={`table-pill ${isSelected ? "is-selected" : ""}`}
+                        className={`table-pill ${isSelected ? "is-selected" : ""} ${isReserved ? "is-reserved" : ""}`}
                         onClick={() => handleSelectTable(table.id)}
+                        disabled={isReserved}
                       >
                         <span>{table.id}</span>
                         <small>{table.seats} pax</small>
@@ -231,6 +321,10 @@ export default function Reservation() {
               Libre
             </div>
             <div className="legend-item">
+              <span className="legend-dot is-reserved" />
+              Reservada
+            </div>
+            <div className="legend-item">
               <span className="legend-dot is-selected" />
               Seleccionada
             </div>
@@ -240,7 +334,14 @@ export default function Reservation() {
             <button
               type="button"
               onClick={handleReserve}
-              disabled={!guestName.trim() || !guestEmail.trim() || !date || !time}
+              disabled={
+                !guestName.trim() ||
+                !guestEmail.trim() ||
+                !guestPhone.trim() ||
+                !date ||
+                !time ||
+                !selectedTable
+              }
             >
               Reservar mesa
             </button>
@@ -264,3 +365,5 @@ export default function Reservation() {
     </div>
   );
 }
+
+

@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+﻿import jwt from "jsonwebtoken";
 
 export const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization || "";
@@ -13,6 +13,7 @@ export const authMiddleware = (req, res, next) => {
     req.user = payload;
     return next();
   } catch {
-    return res.status(401).json({ ok: false, message: "Token invalido" });
+    return res.status(401).json({ ok: false, message: "Token inválido" });
   }
 };
+

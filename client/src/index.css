@@ -75,6 +75,23 @@ body {
   border: 1px solid rgba(212, 175, 55, 0.18);
 }
 
+.admin-details-grid {
+  display: grid;
+  gap: 6px 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-details-grid p,
+.admin-item > p {
+  margin: 0;
+}
+
+.admin-details-grid span,
+.admin-item > p span {
+  color: #c2b590;
+  font-weight: 700;
+}
+
 .admin-item .actions button {
   background: #d4af37;
   color: #1a1408;
