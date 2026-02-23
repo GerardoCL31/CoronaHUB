@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600&display=swap");
 
 :root {
   --sand: #0d0d0f;
@@ -94,8 +94,13 @@
   color: var(--muted);
 }
 
+.reserva-date-picker {
+  grid-column: 1 / -1;
+}
+
 .reserva-controls input,
-.reserva-controls select {
+.reserva-controls select,
+.reserva-controls textarea {
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid rgba(212, 175, 55, 0.3);
@@ -103,6 +108,98 @@
   color: var(--ink);
   font-family: "Manrope", sans-serif;
   font-size: 13px;
+}
+
+.reserva-controls textarea {
+  resize: none;
+  min-height: 44px;
+  height: 44px;
+}
+
+.calendar-picker {
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: #0f0f10;
+  padding: 10px;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+.calendar-header strong {
+  text-align: center;
+  font-size: 16px;
+}
+
+.calendar-nav {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: #2a210f;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.calendar-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-empty {
+  height: 36px;
+}
+
+.calendar-day {
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.calendar-day:hover:not(:disabled) {
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.calendar-day.is-selected {
+  background: #ffe500;
+  color: #111;
+}
+
+.calendar-day:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 
 .reserva-map {

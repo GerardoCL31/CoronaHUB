@@ -44,19 +44,42 @@ const tableGroups = [
 ];
 
 const timeSlots = [
-  "12:00",
-  "12:30",
   "13:00",
   "13:30",
   "14:00",
   "14:30",
   "15:00",
-  "19:30",
-  "20:00",
-  "20:30",
-  "21:00",
-  "21:30",
+  "15:30",
 ];
+
+const DATE_OPTIONS_DAYS = 90;
+const WEEKDAYS_ES = ["LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM"];
+const MONTHS_ES = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
+
+const pad2 = (value) => String(value).padStart(2, "0");
+const startOfDay = (value) => new Date(value.getFullYear(), value.getMonth(), value.getDate());
+const startOfMonth = (value) => new Date(value.getFullYear(), value.getMonth(), 1);
+const addDays = (value, amount) =>
+  new Date(value.getFullYear(), value.getMonth(), value.getDate() + amount);
+const toISODateLocal = (value) =>
+  `${value.getFullYear()}-${pad2(value.getMonth() + 1)}-${pad2(value.getDate())}`;
+const parseISODateLocal = (value) => {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
 
 const formatDate = (value) => {
   if (!value) return "";
@@ -65,9 +88,14 @@ const formatDate = (value) => {
 };
 
 export default function Reservation() {
-  const today = new Date();
-  const [date, setDate] = useState(today.toISOString().slice(0, 10));
-  const [time, setTime] = useState(timeSlots[2]);
+  const minDate = useMemo(() => startOfDay(new Date()), []);
+  const maxDate = useMemo(() => addDays(minDate, DATE_OPTIONS_DAYS - 1), [minDate]);
+  const minMonth = useMemo(() => startOfMonth(minDate), [minDate]);
+  const maxMonth = useMemo(() => startOfMonth(maxDate), [maxDate]);
+  const initialDate = useMemo(() => toISODateLocal(minDate), [minDate]);
+  const [date, setDate] = useState(initialDate);
+  const [time, setTime] = useState(timeSlots[0]);
+  const [visibleMonth, setVisibleMonth] = useState(minMonth);
   const [selectedTable, setSelectedTable] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [guestName, setGuestName] = useState("");
@@ -146,6 +174,30 @@ export default function Reservation() {
   }, [availableTimeSlots, time]);
 
   const todayReservations = availability;
+  const canGoPrevMonth = visibleMonth.getTime() > minMonth.getTime();
+  const canGoNextMonth = visibleMonth.getTime() < maxMonth.getTime();
+
+  const calendarCells = useMemo(() => {
+    const year = visibleMonth.getFullYear();
+    const month = visibleMonth.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const startOffset = (firstDay.getDay() + 6) % 7;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells = [];
+
+    for (let index = 0; index < startOffset; index += 1) {
+      cells.push({ empty: true, key: `empty-${index}` });
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const currentDate = new Date(year, month, day);
+      const iso = toISODateLocal(currentDate);
+      const disabled = currentDate < minDate || currentDate > maxDate;
+      cells.push({ empty: false, key: iso, day, iso, disabled });
+    }
+
+    return cells;
+  }, [visibleMonth, minDate, maxDate]);
 
   const handleSelectTable = (tableId) => {
     setSelectedTable((prev) => (prev === tableId ? null : tableId));
@@ -226,9 +278,66 @@ export default function Reservation() {
           </div>
 
           <div className="reserva-controls">
-            <label>
+            <label className="reserva-date-picker">
               Día
-              <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+              <div className="calendar-picker">
+                <div className="calendar-header">
+                  <button
+                    type="button"
+                    className="calendar-nav"
+                    onClick={() =>
+                      setVisibleMonth(
+                        (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+                      )
+                    }
+                    disabled={!canGoPrevMonth}
+                    aria-label="Mes anterior"
+                  >
+                    ‹
+                  </button>
+                  <strong>{`${MONTHS_ES[visibleMonth.getMonth()]} ${visibleMonth.getFullYear()}`}</strong>
+                  <button
+                    type="button"
+                    className="calendar-nav"
+                    onClick={() =>
+                      setVisibleMonth(
+                        (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+                      )
+                    }
+                    disabled={!canGoNextMonth}
+                    aria-label="Mes siguiente"
+                  >
+                    ›
+                  </button>
+                </div>
+                <div className="calendar-weekdays">
+                  {WEEKDAYS_ES.map((weekDay) => (
+                    <span key={weekDay}>{weekDay}</span>
+                  ))}
+                </div>
+                <div className="calendar-grid">
+                  {calendarCells.map((cell) => {
+                    if (cell.empty) {
+                      return <span key={cell.key} className="calendar-empty" aria-hidden="true" />;
+                    }
+                    const isSelected = date === cell.iso;
+                    return (
+                      <button
+                        type="button"
+                        key={cell.key}
+                        className={`calendar-day ${isSelected ? "is-selected" : ""}`}
+                        disabled={cell.disabled}
+                        onClick={() => {
+                          setDate(cell.iso);
+                          setVisibleMonth(startOfMonth(parseISODateLocal(cell.iso)));
+                        }}
+                      >
+                        {cell.day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </label>
             <label>
               Hora
@@ -281,7 +390,7 @@ export default function Reservation() {
             <label>
               Notas
               <textarea
-                rows="3"
+                rows="1"
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
                 placeholder="Alergias, celebraciones, etc."
