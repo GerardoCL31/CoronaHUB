@@ -3,6 +3,7 @@ import { reservationSchema } from "../validators/reservation.schema.js";
 import { buildRateLimiter } from "../middlewares/rateLimit.js";
 import { hashIp } from "../utils/hash.js";
 import { createReservation, listActiveReservationsByDate } from "../db.js";
+import { notifyNewReservation } from "../utils/telegram.js";
 
 const router = Router();
 
@@ -43,6 +44,10 @@ router.post("/", limiter, async (req, res, next) => {
       status: "PENDING",
       ipHash,
       userAgent,
+    });
+
+    notifyNewReservation(reservation).catch((telegramError) => {
+      console.warn("Telegram reservation notification failed:", telegramError.message);
     });
 
     res.status(201).json({ ok: true, data: reservation });

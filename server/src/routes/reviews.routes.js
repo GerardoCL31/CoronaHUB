@@ -3,6 +3,7 @@ import { reviewSchema } from "../validators/review.schema.js";
 import { buildRateLimiter } from "../middlewares/rateLimit.js";
 import { hashIp } from "../utils/hash.js";
 import { listApprovedReviews, createReview } from "../db.js";
+import { notifyNewReview } from "../utils/telegram.js";
 
 const router = Router();
 
@@ -33,6 +34,10 @@ router.post("/", limiter, async (req, res, next) => {
       status: "PENDING",
       ipHash,
       userAgent,
+    });
+
+    notifyNewReview(review).catch((telegramError) => {
+      console.warn("Telegram review notification failed:", telegramError.message);
     });
 
     res.status(201).json({ ok: true, data: review });
