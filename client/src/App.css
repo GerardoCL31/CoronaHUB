@@ -98,16 +98,35 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-toggle img {
+.nav-toggle-icon {
+  position: relative;
   display: block;
-  width: 78%;
-  height: 78%;
-  object-fit: contain;
-  object-position: center;
-  margin: auto;
-  transform: scale(1.18);
-  transform-origin: center;
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.35));
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--blue-dark);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.35);
+  transition: background 0.2s ease;
+}
+
+.nav-toggle-icon::before,
+.nav-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--blue-dark);
+  transition: transform 0.2s ease, top 0.2s ease, bottom 0.2s ease;
+}
+
+.nav-toggle-icon::before {
+  top: -7px;
+}
+
+.nav-toggle-icon::after {
+  bottom: -7px;
 }
 
 .nav-toggle:hover {
@@ -119,6 +138,20 @@
 .nav-toggle[aria-expanded="true"] {
   border-color: rgba(240, 207, 131, 0.95);
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.22), 0 12px 24px rgba(0, 0, 0, 0.58);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+  background: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
+  bottom: 0;
+  transform: rotate(-45deg);
 }
 
 .nav-pill {

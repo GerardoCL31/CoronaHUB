@@ -25,7 +25,7 @@ function Navbar({ active = "inicio" }) {
         </div>
       </div>
       <button className="nav-toggle" type="button" onClick={handleToggle} aria-expanded={isOpen} aria-label="Abrir menú">
-        <img src={logo} alt="" aria-hidden="true" />
+        <span className="nav-toggle-icon" aria-hidden="true" />
       </button>
       <nav className={`nav ${isOpen ? "is-open" : ""}`}>
         <Link
