@@ -2,7 +2,7 @@
 
 ## Estado actual del proyecto
 
-- Frontend en `client/` con React + Webpack (sin Vite).
+- Frontend en `client/` con React + Webpack.
 - Backend en `server/` con Express.
 - Se elimino el frontend legacy de la raiz para evitar confusiones.
 
