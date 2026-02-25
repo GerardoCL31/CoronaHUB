@@ -181,6 +181,7 @@ export default function AdminDashboard() {
 
   const pendingReviews = reviews.filter((item) => item.status === "PENDING");
   const pendingReservations = reservations.filter((item) => item.status === "PENDING");
+  const confirmedReservations = reservations.filter((item) => item.status === "CONFIRMED");
   const now = Date.now();
   const upcomingReservations = reservations
     .filter(
@@ -205,57 +206,87 @@ export default function AdminDashboard() {
       <main className="admin-main">
         {error && <p className="error">{error}</p>}
 
-        <section className="card admin-card">
-          <h2>Opiniones pendientes</h2>
-          <div className="list admin-list">
-            {pendingReviews.map((review) => (
-              <div key={review.id} className="card admin-item">
-                <strong>{review.name}</strong>
-                <span className="badge">{review.rating} / 5</span>
-                <p>{review.comment}</p>
-                <div className="actions">
-                  <button onClick={() => updateReview(review.id, "APPROVED")}>
-                    Aprobar
-                  </button>
-                  <button onClick={() => updateReview(review.id, "REJECTED")}>
-                    Rechazar
-                  </button>
-                </div>
-              </div>
-            ))}
-            {pendingReviews.length === 0 && <p>No hay pendientes.</p>}
-          </div>
+        <section className="admin-kpis">
+          <article className="admin-kpi-card">
+            <p>Pendientes de opiniones</p>
+            <strong>{pendingReviews.length}</strong>
+          </article>
+          <article className="admin-kpi-card">
+            <p>Reservas pendientes</p>
+            <strong>{pendingReservations.length}</strong>
+          </article>
+          <article className="admin-kpi-card">
+            <p>Reservas confirmadas</p>
+            <strong>{confirmedReservations.length}</strong>
+          </article>
+          <article className="admin-kpi-card">
+            <p>Próximas reservas</p>
+            <strong>{upcomingReservations.length}</strong>
+          </article>
         </section>
 
-        <section className="card admin-card" style={{ marginTop: 16 }}>
-          <h2>Reservas pendientes</h2>
-          <div className="list admin-list">
-            {pendingReservations.map((reserva) => (
-              <div key={reserva.id} className="card admin-item">
-                <strong>{reserva.name}</strong>
-                <p>
-                  {reserva.date} {reserva.time} · {reserva.people} personas
-                </p>
-                <p>{reserva.email}</p>
-                {reserva.tableId && <p>Mesa: {reserva.tableId}</p>}
-                {reserva.phone && <p>Teléfono: {reserva.phone}</p>}
-                {reserva.notes && <p>Alergias / notas: {reserva.notes}</p>}
-                <div className="actions">
-                  <button onClick={() => updateReservation(reserva.id, "CONFIRMED")}>
-                    Confirmar
-                  </button>
-                  <button onClick={() => updateReservation(reserva.id, "CANCELLED")}>
-                    Cancelar
-                  </button>
+        <div className="admin-grid-two">
+          <section className="card admin-card admin-section">
+            <div className="admin-section-head">
+              <h2>Opiniones pendientes</h2>
+              <span>{pendingReviews.length}</span>
+            </div>
+            <div className="list admin-list">
+              {pendingReviews.map((review) => (
+                <div key={review.id} className="card admin-item">
+                  <strong>{review.name}</strong>
+                  <span className="badge">{review.rating} / 5</span>
+                  <p>{review.comment}</p>
+                  <div className="actions">
+                    <button onClick={() => updateReview(review.id, "APPROVED")}>
+                      Aprobar
+                    </button>
+                    <button onClick={() => updateReview(review.id, "REJECTED")}>
+                      Rechazar
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-            {pendingReservations.length === 0 && <p>No hay pendientes.</p>}
-          </div>
-        </section>
+              ))}
+              {pendingReviews.length === 0 && <p>No hay pendientes.</p>}
+            </div>
+          </section>
 
-        <section className="card admin-card" style={{ marginTop: 16 }}>
-          <h2>Próximas reservas</h2>
+          <section className="card admin-card admin-section">
+            <div className="admin-section-head">
+              <h2>Reservas pendientes</h2>
+              <span>{pendingReservations.length}</span>
+            </div>
+            <div className="list admin-list">
+              {pendingReservations.map((reserva) => (
+                <div key={reserva.id} className="card admin-item">
+                  <strong>{reserva.name}</strong>
+                  <p>
+                    {reserva.date} {reserva.time} · {reserva.people} personas
+                  </p>
+                  <p>{reserva.email}</p>
+                  {reserva.tableId && <p>Mesa: {reserva.tableId}</p>}
+                  {reserva.phone && <p>Teléfono: {reserva.phone}</p>}
+                  {reserva.notes && <p>Alergias / notas: {reserva.notes}</p>}
+                  <div className="actions">
+                    <button onClick={() => updateReservation(reserva.id, "CONFIRMED")}>
+                      Confirmar
+                    </button>
+                    <button onClick={() => updateReservation(reserva.id, "CANCELLED")}>
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {pendingReservations.length === 0 && <p>No hay pendientes.</p>}
+            </div>
+          </section>
+        </div>
+
+        <section className="card admin-card admin-section">
+          <div className="admin-section-head">
+            <h2>Próximas reservas</h2>
+            <span>{upcomingReservations.length}</span>
+          </div>
           <div className="list admin-list">
             {upcomingReservations.map((reserva) => (
               <div key={reserva.id} className="card admin-item">
@@ -309,263 +340,269 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        <section className="card admin-card" style={{ marginTop: 16 }}>
-          <h2>Editar carta</h2>
-          {!menu && <p>Cargando carta...</p>}
-          {menu && (
-            <div className="admin-menu-editor">
-              <label className="admin-field">
-                <span>Banner</span>
-                <input
-                  type="text"
-                  value={menu.banner}
-                  onChange={(event) => updateMenuField("banner", event.target.value)}
-                />
-              </label>
-
-              <div className="admin-menu-grid">
-                {menu.days.map((day) => (
-                  <article key={day.id} className="admin-menu-day">
-                    <h3>{day.title}</h3>
-                    <label className="admin-field">
-                      <span>Primer plato</span>
-                      <input
-                        type="text"
-                        value={day.first}
-                        onChange={(event) =>
-                          updateDay(day.id, "first", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>Segundo plato</span>
-                      <input
-                        type="text"
-                        value={day.second}
-                        onChange={(event) =>
-                          updateDay(day.id, "second", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>Postre</span>
-                      <input
-                        type="text"
-                        value={day.dessert}
-                        onChange={(event) =>
-                          updateDay(day.id, "dessert", event.target.value)
-                        }
-                      />
-                    </label>
-                  </article>
-                ))}
-              </div>
-
-              <label className="admin-field">
-                <span>Título platos combinados</span>
-                <input
-                  type="text"
-                  value={menu.combosTitle}
-                  onChange={(event) =>
-                    updateMenuField("combosTitle", event.target.value)
-                  }
-                />
-              </label>
-
-              <label className="admin-field">
-                <span>Platos combinados (uno por línea)</span>
-                <textarea
-                  rows={6}
-                  value={menu.combos.join("\n")}
-                  onChange={(event) => updateCombos(event.target.value)}
-                />
-              </label>
-
-              <div className="actions">
-                <button type="button" onClick={saveMenu} disabled={menuState.saving}>
-                  {menuState.saving ? "Guardando..." : "Guardar carta"}
-                </button>
-              </div>
-              {menuState.message && <p>{menuState.message}</p>}
+        <div className="admin-grid-two admin-grid-editors">
+          <section className="card admin-card admin-section">
+            <div className="admin-section-head">
+              <h2>Editar carta</h2>
             </div>
-          )}
-        </section>
+            {!menu && <p>Cargando carta...</p>}
+            {menu && (
+              <div className="admin-menu-editor">
+                <label className="admin-field">
+                  <span>Banner</span>
+                  <input
+                    type="text"
+                    value={menu.banner}
+                    onChange={(event) => updateMenuField("banner", event.target.value)}
+                  />
+                </label>
 
-        <section className="card admin-card" style={{ marginTop: 16 }}>
-          <h2>Editar eventos</h2>
-          {!events && <p>Cargando eventos...</p>}
-          {events && (
-            <div className="admin-menu-editor">
-              <label className="admin-field">
-                <span>Título en inicio</span>
-                <input
-                  type="text"
-                  value={events.homeTitle}
-                  onChange={(event) => updateEventsField("homeTitle", event.target.value)}
-                />
-              </label>
-
-              <h3 className="admin-subtitle">Eventos de inicio</h3>
-              <div className="admin-menu-grid">
-                {events.homeCards.map((card) => (
-                  <article key={card.id} className="admin-menu-day">
-                    <h3>{card.id}</h3>
-                    <label className="admin-field">
-                      <span>Título</span>
-                      <input
-                        type="text"
-                        value={card.title}
-                        onChange={(event) =>
-                          updateHomeCard(card.id, "title", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>Horario</span>
-                      <input
-                        type="text"
-                        value={card.schedule}
-                        onChange={(event) =>
-                          updateHomeCard(card.id, "schedule", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>Descripción corta</span>
-                      <textarea
-                        rows={3}
-                        value={card.note}
-                        onChange={(event) =>
-                          updateHomeCard(card.id, "note", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>URL icono (opcional)</span>
-                      <div className="admin-inline-input">
+                <div className="admin-menu-grid">
+                  {menu.days.map((day) => (
+                    <article key={day.id} className="admin-menu-day">
+                      <h3>{day.title}</h3>
+                      <label className="admin-field">
+                        <span>Primer plato</span>
                         <input
-                          type="url"
-                          value={card.imageUrl}
+                          type="text"
+                          value={day.first}
                           onChange={(event) =>
-                            updateHomeCard(card.id, "imageUrl", event.target.value)
+                            updateDay(day.id, "first", event.target.value)
                           }
-                          placeholder="https://..."
                         />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            pasteFromClipboard((value) =>
-                              updateHomeCard(card.id, "imageUrl", value)
-                            )
+                      </label>
+                      <label className="admin-field">
+                        <span>Segundo plato</span>
+                        <input
+                          type="text"
+                          value={day.second}
+                          onChange={(event) =>
+                            updateDay(day.id, "second", event.target.value)
                           }
-                        >
-                          Pegar
-                        </button>
-                      </div>
-                    </label>
-                    <label className="admin-field">
-                      <span>Texto alternativo</span>
-                      <input
-                        type="text"
-                        value={card.imageAlt}
-                        onChange={(event) =>
-                          updateHomeCard(card.id, "imageAlt", event.target.value)
-                        }
-                      />
-                    </label>
-                  </article>
-                ))}
+                        />
+                      </label>
+                      <label className="admin-field">
+                        <span>Postre</span>
+                        <input
+                          type="text"
+                          value={day.dessert}
+                          onChange={(event) =>
+                            updateDay(day.id, "dessert", event.target.value)
+                          }
+                        />
+                      </label>
+                    </article>
+                  ))}
+                </div>
+
+                <label className="admin-field">
+                  <span>Título platos combinados</span>
+                  <input
+                    type="text"
+                    value={menu.combosTitle}
+                    onChange={(event) =>
+                      updateMenuField("combosTitle", event.target.value)
+                    }
+                  />
+                </label>
+
+                <label className="admin-field">
+                  <span>Platos combinados (uno por línea)</span>
+                  <textarea
+                    rows={6}
+                    value={menu.combos.join("\n")}
+                    onChange={(event) => updateCombos(event.target.value)}
+                  />
+                </label>
+
+                <div className="actions">
+                  <button type="button" onClick={saveMenu} disabled={menuState.saving}>
+                    {menuState.saving ? "Guardando..." : "Guardar carta"}
+                  </button>
+                </div>
+                {menuState.message && <p>{menuState.message}</p>}
               </div>
+            )}
+          </section>
 
-              <h3 className="admin-subtitle">Página de eventos</h3>
-              <div className="admin-events-list">
-                {events.pageItems.map((item) => (
-                  <article key={item.id} className="admin-events-item">
-                    <h3>{item.id}</h3>
-                    <label className="admin-field">
-                      <span>Título bloque</span>
-                      <input
-                        type="text"
-                        value={item.title}
-                        onChange={(event) =>
-                          updatePageItem(item.id, "title", event.target.value)
-                        }
-                      />
-                    </label>
-                    <label className="admin-field">
-                      <span>Descripción</span>
-                      <textarea
-                        rows={4}
-                        value={item.description}
-                        onChange={(event) =>
-                          updatePageItem(item.id, "description", event.target.value)
-                        }
-                      />
-                    </label>
+          <section className="card admin-card admin-section">
+            <div className="admin-section-head">
+              <h2>Editar eventos</h2>
+            </div>
+            {!events && <p>Cargando eventos...</p>}
+            {events && (
+              <div className="admin-menu-editor">
+                <label className="admin-field">
+                  <span>Título en inicio</span>
+                  <input
+                    type="text"
+                    value={events.homeTitle}
+                    onChange={(event) => updateEventsField("homeTitle", event.target.value)}
+                  />
+                </label>
 
-                    <div className="admin-photo-grid">
-                      {item.photos.map((photo) => (
-                        <div key={photo.id} className="admin-menu-day">
-                          <h3>{photo.id}</h3>
-                          <label className="admin-field">
-                            <span>URL imagen (opcional)</span>
-                            <div className="admin-inline-input">
+                <h3 className="admin-subtitle">Eventos de inicio</h3>
+                <div className="admin-menu-grid">
+                  {events.homeCards.map((card) => (
+                    <article key={card.id} className="admin-menu-day">
+                      <h3>{card.id}</h3>
+                      <label className="admin-field">
+                        <span>Título</span>
+                        <input
+                          type="text"
+                          value={card.title}
+                          onChange={(event) =>
+                            updateHomeCard(card.id, "title", event.target.value)
+                          }
+                        />
+                      </label>
+                      <label className="admin-field">
+                        <span>Horario</span>
+                        <input
+                          type="text"
+                          value={card.schedule}
+                          onChange={(event) =>
+                            updateHomeCard(card.id, "schedule", event.target.value)
+                          }
+                        />
+                      </label>
+                      <label className="admin-field">
+                        <span>Descripción corta</span>
+                        <textarea
+                          rows={3}
+                          value={card.note}
+                          onChange={(event) =>
+                            updateHomeCard(card.id, "note", event.target.value)
+                          }
+                        />
+                      </label>
+                      <label className="admin-field">
+                        <span>URL icono (opcional)</span>
+                        <div className="admin-inline-input">
+                          <input
+                            type="url"
+                            value={card.imageUrl}
+                            onChange={(event) =>
+                              updateHomeCard(card.id, "imageUrl", event.target.value)
+                            }
+                            placeholder="https://..."
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              pasteFromClipboard((value) =>
+                                updateHomeCard(card.id, "imageUrl", value)
+                              )
+                            }
+                          >
+                            Pegar
+                          </button>
+                        </div>
+                      </label>
+                      <label className="admin-field">
+                        <span>Texto alternativo</span>
+                        <input
+                          type="text"
+                          value={card.imageAlt}
+                          onChange={(event) =>
+                            updateHomeCard(card.id, "imageAlt", event.target.value)
+                          }
+                        />
+                      </label>
+                    </article>
+                  ))}
+                </div>
+
+                <h3 className="admin-subtitle">Página de eventos</h3>
+                <div className="admin-events-list">
+                  {events.pageItems.map((item) => (
+                    <article key={item.id} className="admin-events-item">
+                      <h3>{item.id}</h3>
+                      <label className="admin-field">
+                        <span>Título bloque</span>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(event) =>
+                            updatePageItem(item.id, "title", event.target.value)
+                          }
+                        />
+                      </label>
+                      <label className="admin-field">
+                        <span>Descripción</span>
+                        <textarea
+                          rows={4}
+                          value={item.description}
+                          onChange={(event) =>
+                            updatePageItem(item.id, "description", event.target.value)
+                          }
+                        />
+                      </label>
+
+                      <div className="admin-photo-grid">
+                        {item.photos.map((photo) => (
+                          <div key={photo.id} className="admin-menu-day">
+                            <h3>{photo.id}</h3>
+                            <label className="admin-field">
+                              <span>URL imagen (opcional)</span>
+                              <div className="admin-inline-input">
+                                <input
+                                  type="url"
+                                  value={photo.imageUrl}
+                                  onChange={(event) =>
+                                    updatePhoto(
+                                      item.id,
+                                      photo.id,
+                                      "imageUrl",
+                                      event.target.value
+                                    )
+                                  }
+                                  placeholder="https://..."
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    pasteFromClipboard((value) =>
+                                      updatePhoto(item.id, photo.id, "imageUrl", value)
+                                    )
+                                  }
+                                >
+                                  Pegar
+                                </button>
+                              </div>
+                            </label>
+                            <label className="admin-field">
+                              <span>Texto alternativo</span>
                               <input
-                                type="url"
-                                value={photo.imageUrl}
+                                type="text"
+                                value={photo.imageAlt}
                                 onChange={(event) =>
                                   updatePhoto(
                                     item.id,
                                     photo.id,
-                                    "imageUrl",
+                                    "imageAlt",
                                     event.target.value
                                   )
                                 }
-                                placeholder="https://..."
                               />
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  pasteFromClipboard((value) =>
-                                    updatePhoto(item.id, photo.id, "imageUrl", value)
-                                  )
-                                }
-                              >
-                                Pegar
-                              </button>
-                            </div>
-                          </label>
-                          <label className="admin-field">
-                            <span>Texto alternativo</span>
-                            <input
-                              type="text"
-                              value={photo.imageAlt}
-                              onChange={(event) =>
-                                updatePhoto(
-                                  item.id,
-                                  photo.id,
-                                  "imageAlt",
-                                  event.target.value
-                                )
-                              }
-                            />
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
 
-              <div className="actions">
-                <button type="button" onClick={saveEvents} disabled={eventsState.saving}>
-                  {eventsState.saving ? "Guardando..." : "Guardar eventos"}
-                </button>
+                <div className="actions">
+                  <button type="button" onClick={saveEvents} disabled={eventsState.saving}>
+                    {eventsState.saving ? "Guardando..." : "Guardar eventos"}
+                  </button>
+                </div>
+                {eventsState.message && <p>{eventsState.message}</p>}
               </div>
-              {eventsState.message && <p>{eventsState.message}</p>}
-            </div>
-          )}
-        </section>
+            )}
+          </section>
+        </div>
       </main>
     </>
   );
