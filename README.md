@@ -1,25 +1,24 @@
 # CoronaHUB Monorepo
 
-## Estado actual del proyecto
+## Current Architecture
 
-- Frontend en `client/` con React + Webpack.
-- Backend en `server/` con Express.
-- Se elimino el frontend legacy de la raiz para evitar confusiones.
+- `client/`: React + Webpack frontend
+- `server/`: Express backend
 
-## Requisitos
+## Requirements
 
 - Node.js 18+
 - npm
 - Git
-- MongoDB Community Server (si usas `DB_MODE=mongo` o `DB_MODE=auto`)
+- MongoDB Community Server (required for `DB_MODE=mongo`, optional for `DB_MODE=auto`)
 
-Opcional:
+Optional:
 - MongoDB Compass
 
-## Setup rapido
+## Quick Start
 
 ```bash
-git clone <TU_REPO>
+git clone <https://github.com/GerardoCL31/CoronaHUB.git>
 cd CoronaHUB
 npm install
 npm run install:all
@@ -27,50 +26,47 @@ cp server/.env.example server/.env
 npm run dev
 ```
 
-URLs:
+App URLs:
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:4000`
-- Health: `http://localhost:4000/api/health`
+- Healthcheck: `http://localhost:4000/api/health`
 
-## Variables backend (`server/.env`)
+## Backend Environment (`server/.env`)
 
-Ejemplo:
+Example:
 
 ```env
 PORT=4000
 CORS_ORIGIN=http://localhost:5173
 DB_MODE=auto
-JWT_SECRET=cambia_esto_por_un_secret_largo
+JWT_SECRET=change_this_to_a_long_random_secret
 ADMIN_EMAIL=admin@coronahub.local
-ADMIN_PASSWORD=cambia_esto_por_password_seguro
-IP_HASH_SALT=cambia_esto_por_un_salt_seguro
+ADMIN_PASSWORD=change_this_password
+IP_HASH_SALT=change_this_salt
 MONGODB_URI=mongodb://127.0.0.1:27017
 MONGODB_DB=coronahub
 ```
 
-Modos de DB:
-- `DB_MODE=mongo`: solo MongoDB.
-- `DB_MODE=file`: `server/data/db.json`.
-- `DB_MODE=auto`: intenta Mongo y si falla usa archivo.
+Database modes:
+- `DB_MODE=mongo`: MongoDB only (recommended when you want strict Mongo usage)
+- `DB_MODE=file`: uses `server/data/db.json`
+- `DB_MODE=auto`: tries MongoDB, falls back to file DB if Mongo is unavailable
 
-## MongoDB paso a paso (detallado)
+## MongoDB Setup (Detailed)
 
-### 1) Instalar MongoDB Community Server
+### 1) Install MongoDB Community Server
 
 Windows:
-1. Descarga MongoDB Community Server (MSI) desde la web oficial.
-2. En el instalador marca:
+1. Download MongoDB Community Server (MSI) from the official MongoDB website.
+2. During install, select:
 - `Complete`
 - `Install MongoD as a Service`
-3. Termina la instalacion.
+3. Finish installation.
 
-Linux (Ubuntu/Debian):
-1. Instala MongoDB Community Server segun la documentacion oficial de tu version.
-2. Asegurate de tener el servicio `mongod`.
 
-### 2) Levantar el servicio de MongoDB
+### 2) Start MongoDB service
 
-Windows (PowerShell como administrador):
+Windows (PowerShell as Administrator):
 
 ```powershell
 Get-Service MongoDB
@@ -78,7 +74,7 @@ Start-Service MongoDB
 Get-Service MongoDB
 ```
 
-Si el servicio no aparece como `MongoDB`, prueba:
+If service name is different:
 
 ```powershell
 Get-Service *mongo*
@@ -91,9 +87,9 @@ sudo systemctl start mongod
 sudo systemctl status mongod
 ```
 
-### 3) Configurar el proyecto para usar Mongo
+### 3) Force the app to use MongoDB
 
-En `server/.env` usa:
+Set this in `server/.env`:
 
 ```env
 DB_MODE=mongo
@@ -101,63 +97,61 @@ MONGODB_URI=mongodb://127.0.0.1:27017
 MONGODB_DB=coronahub
 ```
 
-Notas:
-- `DB_MODE=mongo` obliga a usar MongoDB (si Mongo no arranca, el backend falla).
-- `DB_MODE=auto` intenta Mongo y, si no puede conectar, usa archivo local.
+Why this matters:
+- `DB_MODE=mongo` guarantees the backend will fail fast if MongoDB is not reachable.
+- `DB_MODE=auto` can hide Mongo issues because it silently falls back to file DB.
 
-### 4) Arrancar proyecto
+### 4) Run the project
 
-Desde la raiz:
+From repo root:
 
 ```bash
 npm run dev
 ```
 
-### 5) Verificar que Mongo esta funcionando con la app
+### 5) Verify MongoDB is actually being used
 
-1. Comprueba salud backend:
+1. Open backend health endpoint:
 - `http://localhost:4000/api/health`
-2. Crea una reserva/opinion desde la app.
-3. Abre MongoDB Compass y conecta a:
+2. Create at least one reservation/review from the app.
+3. Open MongoDB Compass and connect to:
 - `mongodb://127.0.0.1:27017`
-4. Verifica que existe la base `coronahub` y colecciones como `reservations`/`reviews`.
+4. Confirm database `coronahub` exists and contains collections like:
+- `reservations`
+- `reviews`
+- `settings`
 
-### 6) Errores tipicos y solucion
+## Common MongoDB Errors
 
 - `ECONNREFUSED 127.0.0.1:27017`
-  - MongoDB no esta levantado.
-  - Solucion: iniciar servicio (`Start-Service MongoDB` o `systemctl start mongod`).
+  - MongoDB is not running.
+  - Fix: start service (`Start-Service MongoDB` or `sudo systemctl start mongod`).
 
 - `NoServiceFoundForGivenName`
-  - El nombre del servicio no coincide o Mongo no esta instalado.
-  - Solucion: buscar con `Get-Service *mongo*` y arrancar el nombre correcto.
+  - MongoDB service name is different or Mongo is not installed.
+  - Fix: run `Get-Service *mongo*` and start the correct service.
 
-- `mongosh no se reconoce`
-  - Falta `mongosh` en PATH.
-  - No bloquea el proyecto; puedes usar Compass para verificar datos.
+- `mongosh is not recognized`
+  - `mongosh` is not in PATH.
+  - This does not block the app; use Compass instead.
 
-- El backend arranca pero guarda en archivo y no en Mongo
-  - Seguramente `DB_MODE=auto` y Mongo esta caido.
-  - Solucion: usa `DB_MODE=mongo` para forzar Mongo y detectar el fallo al instante.
+- Backend starts but still writes to file DB
+  - Usually `DB_MODE=auto` + MongoDB unavailable.
+  - Fix: set `DB_MODE=mongo` to force MongoDB usage.
 
-## Scripts utiles
+## Useful Scripts
 
-Raiz:
-- `npm run dev`: levanta client + server.
-- `npm run dev:client`: levanta solo frontend.
-- `npm run dev:server`: levanta solo backend.
+Root:
+- `npm run dev`: run client + server
+- `npm run dev:client`: run frontend only
+- `npm run dev:server`: run backend only
 
 Client:
-- `npm run dev --prefix client`: desarrollo Webpack.
-- `npm run build --prefix client`: build produccion.
-- `npm run preview --prefix client`: servidor de preview.
+- `npm run dev --prefix client`: Webpack dev server
+- `npm run build --prefix client`: production build
+- `npm run preview --prefix client`: preview server
 
-## Verificacion
-
-1. Abrir `http://localhost:4000/api/health` y comprobar `{"ok": true}`.
-2. Abrir `http://localhost:5173`.
-
-## Endpoints principales
+## API Endpoints
 
 - POST `/api/reviews`
 - GET `/api/reviews`
