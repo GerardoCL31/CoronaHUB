@@ -185,7 +185,7 @@ export default function AdminDashboard() {
   const upcomingReservations = reservations
     .filter(
       (item) =>
-        ["PENDING", "CONFIRMED"].includes(item.status) &&
+        item.status === "CONFIRMED" &&
         Number.isFinite(toTimestamp(item)) &&
         toTimestamp(item) >= now
     )

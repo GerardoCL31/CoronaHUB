@@ -1,4 +1,4 @@
-const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const baseUrl = process.env.VITE_API_URL || "http://localhost:4000";
 
 const getToken = () => localStorage.getItem("coronahub_token");
 

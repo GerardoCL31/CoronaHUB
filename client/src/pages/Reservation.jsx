@@ -106,6 +106,7 @@ export default function Reservation() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [availabilityError, setAvailabilityError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -204,8 +205,10 @@ export default function Reservation() {
   };
 
   const handleReserve = async () => {
+    if (isSubmitting) return;
     setError("");
     setStatus("");
+    setIsSubmitting(true);
 
     try {
       const finalNotes = notes.trim() || null;
@@ -240,6 +243,8 @@ export default function Reservation() {
     } catch (err) {
       setStatus("");
       setError(err.message || "No se pudo enviar la reserva.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -444,6 +449,7 @@ export default function Reservation() {
               type="button"
               onClick={handleReserve}
               disabled={
+                isSubmitting ||
                 !guestName.trim() ||
                 !guestEmail.trim() ||
                 !guestPhone.trim() ||
@@ -452,7 +458,7 @@ export default function Reservation() {
                 !selectedTable
               }
             >
-              Reservar mesa
+              {isSubmitting ? "Enviando..." : "Reservar mesa"}
             </button>
             {selectedTable && (
               <p>

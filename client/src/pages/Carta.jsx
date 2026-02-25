@@ -4,7 +4,7 @@ import { mesaComida } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const API_URL = process.env.VITE_API_URL || "http://localhost:4000";
 
 const fallbackMenu = {
   banner: "Menú diario 9€ con bebida",

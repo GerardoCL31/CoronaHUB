@@ -1,48 +1,74 @@
 # CoronaHUB Monorepo
 
-## Estructura
+## Estado actual del proyecto
 
-- `client/`: frontend React + Vite
-- `server/`: backend Express
+- Frontend en `client/` con React + Webpack (sin Vite).
+- Backend en `server/` con Express.
+- Se elimino el frontend legacy de la raiz para evitar confusiones.
 
 ## Requisitos
 
 - Node.js 18+
 - npm
-- MongoDB Community Server (si usas `DB_MODE=mongo` o `DB_MODE=auto` con Mongo activo)
+- Git
+- MongoDB Community Server (si usas `DB_MODE=mongo` o `DB_MODE=auto`)
 
-## Configuracion rapida
+Opcional:
+- MongoDB Compass
 
-1. Instala dependencias:
+## Setup rapido
 
 ```bash
+git clone <TU_REPO>
+cd CoronaHUB
 npm install
 npm run install:all
-```
-
-2. Crea el archivo de entorno backend:
-
-```bash
 cp server/.env.example server/.env
-```
-
-3. Ajusta `server/.env` (secretos, credenciales, modo DB).
-
-4. Inicia el proyecto:
-
-```bash
 npm run dev
 ```
 
-- Client: http://localhost:5173
-- Server: http://localhost:4000
-- Health: http://localhost:4000/api/health
+URLs:
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:4000`
+- Health: `http://localhost:4000/api/health`
 
-## Modos de base de datos (`server/.env`)
+## Variables backend (`server/.env`)
 
-- `DB_MODE=mongo`: usa MongoDB siempre (produccion recomendada).
-- `DB_MODE=file`: usa `server/data/db.json`.
-- `DB_MODE=auto`: intenta MongoDB y si falla usa archivo.
+Ejemplo:
+
+```env
+PORT=4000
+CORS_ORIGIN=http://localhost:5173
+DB_MODE=auto
+JWT_SECRET=cambia_esto_por_un_secret_largo
+ADMIN_EMAIL=admin@coronahub.local
+ADMIN_PASSWORD=cambia_esto_por_password_seguro
+IP_HASH_SALT=cambia_esto_por_un_salt_seguro
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB=coronahub
+```
+
+Modos de DB:
+- `DB_MODE=mongo`: solo MongoDB.
+- `DB_MODE=file`: `server/data/db.json`.
+- `DB_MODE=auto`: intenta Mongo y si falla usa archivo.
+
+## Scripts utiles
+
+Raiz:
+- `npm run dev`: levanta client + server.
+- `npm run dev:client`: levanta solo frontend.
+- `npm run dev:server`: levanta solo backend.
+
+Client:
+- `npm run dev --prefix client`: desarrollo Webpack.
+- `npm run build --prefix client`: build produccion.
+- `npm run preview --prefix client`: servidor de preview.
+
+## Verificacion
+
+1. Abrir `http://localhost:4000/api/health` y comprobar `{"ok": true}`.
+2. Abrir `http://localhost:5173`.
 
 ## Endpoints principales
 
@@ -58,7 +84,3 @@ npm run dev
 - PATCH `/api/admin/reviews/:id`
 - GET `/api/admin/reservations`
 - PATCH `/api/admin/reservations/:id`
-
-## Guia completa
-
-Revisa [SETUP.md](./SETUP.md) para el paso a paso detallado y solucion de errores.
