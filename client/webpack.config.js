@@ -43,7 +43,7 @@ module.exports = {
       template: path.resolve(__dirname, "index.html"),
     }),
     new webpack.DefinePlugin({
-      "process.env.VITE_API_URL": JSON.stringify(process.env.VITE_API_URL || ""),
+      "process.env.API_URL": JSON.stringify(process.env.API_URL || ""),
     }),
   ],
   devServer: {
@@ -53,3 +53,4 @@ module.exports = {
     open: false,
   },
 };
+

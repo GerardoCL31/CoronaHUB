@@ -1,4 +1,4 @@
-const baseUrl = process.env.VITE_API_URL || "http://localhost:4000";
+const baseUrl = process.env.API_URL || "http://localhost:4000";
 
 const getToken = () => localStorage.getItem("coronahub_token");
 
@@ -26,3 +26,4 @@ export async function apiRequest(path, { method = "GET", body } = {}) {
   }
   return data;
 }
+

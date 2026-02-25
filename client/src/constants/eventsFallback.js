@@ -1,8 +1,19 @@
 ﻿import {
+  abanico2,
+  CasaFundada,
+  chimenea1,
+  chimenea2,
   CorazonSanValetin as corazonSanValentin,
+  mesa1,
+  mesa2,
   navidadSalon,
   navidadSalon2,
+  quesoAceitunasJamon,
+  saborConTradicion,
+  saborConTradicion2,
+  salon,
   sanValentinSalon,
+  TostasdaJamon,
 } from "./cloudinaryAssets.js";
 
 export const fallbackEvents = {
@@ -63,6 +74,19 @@ export const fallbackEvents = {
       ],
     },
   ],
+  gallery: [
+    { id: "gallery-left", imageUrl: "", imageAlt: "Sabor con tradición" },
+    { id: "gallery-grid-1", imageUrl: "", imageAlt: "Tabla de quesos, aceitunas y jamón" },
+    { id: "gallery-grid-2", imageUrl: "", imageAlt: "Mesa con brasas y tapas" },
+    { id: "gallery-grid-3", imageUrl: "", imageAlt: "Tabla de jamón" },
+    { id: "gallery-grid-4", imageUrl: "", imageAlt: "Salón del bar" },
+    { id: "gallery-grid-5", imageUrl: "", imageAlt: "Mesa preparada" },
+    { id: "gallery-grid-6", imageUrl: "", imageAlt: "Mesa lista para servir" },
+    { id: "gallery-right", imageUrl: "", imageAlt: "Sabor con tradición en plato" },
+    { id: "gallery-bottom-1", imageUrl: "", imageAlt: "Picoteo y vino" },
+    { id: "gallery-bottom-2", imageUrl: "", imageAlt: "Casa fundada Bar Corona" },
+    { id: "gallery-bottom-3", imageUrl: "", imageAlt: "Tostadas con jamón" },
+  ],
 };
 
 const fallbackPhotos = {
@@ -72,6 +96,18 @@ const fallbackPhotos = {
   "page-1-photo-2": sanValentinSalon,
   "page-2-photo-1": navidadSalon,
   "page-2-photo-2": navidadSalon2,
+  "gallery-left": saborConTradicion,
+  "gallery-grid-1": quesoAceitunasJamon,
+  "gallery-grid-2": chimenea1,
+  "gallery-grid-3": abanico2,
+  "gallery-grid-4": salon,
+  "gallery-grid-5": mesa1,
+  "gallery-grid-6": mesa2,
+  "gallery-right": saborConTradicion2,
+  "gallery-bottom-1": chimenea2,
+  "gallery-bottom-2": CasaFundada,
+  "gallery-bottom-3": TostasdaJamon,
 };
 
 export const resolveEventImage = ({ id, imageUrl }) => imageUrl?.trim() || fallbackPhotos[id] || "";
+export const resolveGalleryImage = ({ id, imageUrl }) => imageUrl?.trim() || fallbackPhotos[id] || "";

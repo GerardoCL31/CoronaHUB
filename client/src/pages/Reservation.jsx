@@ -80,6 +80,12 @@ const parseISODateLocal = (value) => {
   const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
 };
+const slotToDate = (isoDate, slot) => {
+  const [hours, minutes] = slot.split(":").map(Number);
+  const value = parseISODateLocal(isoDate);
+  value.setHours(hours, minutes, 0, 0);
+  return value;
+};
 
 const formatDate = (value) => {
   if (!value) return "";
@@ -150,16 +156,21 @@ export default function Reservation() {
     return set;
   }, [availability, time]);
 
+  const validTimeSlots = useMemo(
+    () => timeSlots.filter((slot) => slotToDate(date, slot).getTime() > Date.now()),
+    [date]
+  );
+
   const availableTimeSlots = useMemo(() => {
-    if (!selectedTable) return timeSlots;
+    if (!selectedTable) return validTimeSlots;
     const blocked = reservedByTable.get(selectedTable) || new Set();
-    return timeSlots.filter((slot) => !blocked.has(slot));
-  }, [reservedByTable, selectedTable]);
+    return validTimeSlots.filter((slot) => !blocked.has(slot));
+  }, [reservedByTable, selectedTable, validTimeSlots]);
   const blockedTimeSlots = useMemo(() => {
     if (!selectedTable) return [];
     const blocked = reservedByTable.get(selectedTable) || new Set();
-    return timeSlots.filter((slot) => blocked.has(slot));
-  }, [reservedByTable, selectedTable]);
+    return validTimeSlots.filter((slot) => blocked.has(slot));
+  }, [reservedByTable, selectedTable, validTimeSlots]);
 
   useEffect(() => {
     if (!selectedTable) return;
@@ -279,6 +290,9 @@ export default function Reservation() {
                   {selectedTable} ocupada: {blockedTimeSlots.join(", ")}
                 </p>
               )}
+              {!availabilityError && validTimeSlots.length === 0 && (
+                <p>Ya no quedan horas disponibles para hoy.</p>
+              )}
             </div>
           </div>
 
@@ -346,12 +360,20 @@ export default function Reservation() {
             </label>
             <label>
               Hora
-              <select value={time} onChange={(event) => setTime(event.target.value)}>
-                {availableTimeSlots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
+              <select
+                value={time}
+                onChange={(event) => setTime(event.target.value)}
+                disabled={availableTimeSlots.length === 0}
+              >
+                {availableTimeSlots.length === 0 ? (
+                  <option value="">Sin horas disponibles</option>
+                ) : (
+                  availableTimeSlots.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))
+                )}
               </select>
             </label>
             <label>
@@ -417,7 +439,7 @@ export default function Reservation() {
                         key={table.id}
                         className={`table-pill ${isSelected ? "is-selected" : ""} ${isReserved ? "is-reserved" : ""}`}
                         onClick={() => handleSelectTable(table.id)}
-                        disabled={isReserved}
+                        disabled={isReserved || availableTimeSlots.length === 0}
                       >
                         <span>{table.id}</span>
                         <small>{table.seats} pax</small>
@@ -455,7 +477,8 @@ export default function Reservation() {
                 !guestPhone.trim() ||
                 !date ||
                 !time ||
-                !selectedTable
+                !selectedTable ||
+                availableTimeSlots.length === 0
               }
             >
               {isSubmitting ? "Enviando..." : "Reservar mesa"}
