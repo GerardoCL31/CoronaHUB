@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+﻿import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = Number(process.env.PORT || 4000);
 const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
@@ -99,3 +100,5 @@ app.listen(PORT, () => {
     console.log("Telegram polling enabled");
   }
 });
+
+
