@@ -74,6 +74,14 @@ const startOfDay = (value) => new Date(value.getFullYear(), value.getMonth(), va
 const startOfMonth = (value) => new Date(value.getFullYear(), value.getMonth(), 1);
 const addDays = (value, amount) =>
   new Date(value.getFullYear(), value.getMonth(), value.getDate() + amount);
+const isSunday = (value) => value.getDay() === 0;
+const getFirstOpenDate = (value) => {
+  let current = startOfDay(value);
+  while (isSunday(current)) {
+    current = addDays(current, 1);
+  }
+  return current;
+};
 const toISODateLocal = (value) =>
   `${value.getFullYear()}-${pad2(value.getMonth() + 1)}-${pad2(value.getDate())}`;
 const parseISODateLocal = (value) => {
@@ -98,7 +106,7 @@ export default function Reservation() {
   const maxDate = useMemo(() => addDays(minDate, DATE_OPTIONS_DAYS - 1), [minDate]);
   const minMonth = useMemo(() => startOfMonth(minDate), [minDate]);
   const maxMonth = useMemo(() => startOfMonth(maxDate), [maxDate]);
-  const initialDate = useMemo(() => toISODateLocal(minDate), [minDate]);
+  const initialDate = useMemo(() => toISODateLocal(getFirstOpenDate(minDate)), [minDate]);
   const [date, setDate] = useState(initialDate);
   const [time, setTime] = useState(timeSlots[0]);
   const [visibleMonth, setVisibleMonth] = useState(minMonth);
@@ -204,7 +212,7 @@ export default function Reservation() {
     for (let day = 1; day <= daysInMonth; day += 1) {
       const currentDate = new Date(year, month, day);
       const iso = toISODateLocal(currentDate);
-      const disabled = currentDate < minDate || currentDate > maxDate;
+      const disabled = currentDate < minDate || currentDate > maxDate || isSunday(currentDate);
       cells.push({ empty: false, key: iso, day, iso, disabled });
     }
 

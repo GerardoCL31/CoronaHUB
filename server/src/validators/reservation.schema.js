@@ -6,6 +6,13 @@ const isFutureDateTime = (date, time) => {
   return Number.isFinite(dateTime.valueOf()) && dateTime.getTime() > Date.now();
 };
 
+const isNotSunday = (date) => {
+  if (!date) return false;
+  const [year, month, day] = String(date).split("-").map(Number);
+  const value = new Date(year, month - 1, day);
+  return value.getDay() !== 0;
+};
+
 export const reservationSchema = z
   .object({
     name: z.string().min(2).max(50),
@@ -19,5 +26,9 @@ export const reservationSchema = z
   })
   .refine((data) => isFutureDateTime(data.date, data.time), {
     message: "La fecha y hora deben ser futuras",
+    path: ["date"],
+  })
+  .refine((data) => isNotSunday(data.date), {
+    message: "Los domingos el restaurante está cerrado",
     path: ["date"],
   });
