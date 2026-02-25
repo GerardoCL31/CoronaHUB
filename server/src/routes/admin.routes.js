@@ -80,10 +80,17 @@ const eventPageItemSchema = z.object({
   photos: z.array(eventPhotoSchema).length(2),
 });
 
+const galleryPhotoSchema = z.object({
+  id: z.string().min(1),
+  imageUrl: z.string().max(500),
+  imageAlt: z.string().min(1).max(120),
+});
+
 const eventsSchema = z.object({
   homeTitle: z.string().min(1).max(80),
   homeCards: z.array(eventHomeCardSchema).length(2),
   pageItems: z.array(eventPageItemSchema).length(2),
+  gallery: z.array(galleryPhotoSchema).length(11).optional(),
 });
 
 router.get("/menu", async (_req, res, next) => {

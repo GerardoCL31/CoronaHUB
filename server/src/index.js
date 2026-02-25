@@ -20,10 +20,22 @@ dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
 
 const app = express();
 const PORT = Number(process.env.PORT || 4000);
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
 
 app.use(helmet());
-app.use(cors({ origin: CORS_ORIGIN }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Allow non-browser requests (curl, health checks).
+      if (!origin) return callback(null, true);
+      if (corsOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS origin not allowed"));
+    },
+  })
+);
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => {

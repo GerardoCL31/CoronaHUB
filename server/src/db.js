@@ -366,12 +366,20 @@ export const setMenu = async (menu) => {
 };
 
 export const getEvents = async () => {
+  const withDefaults = (value) => ({
+    ...clone(defaultEvents),
+    ...value,
+    homeCards: Array.isArray(value?.homeCards) ? value.homeCards : clone(defaultEvents.homeCards),
+    pageItems: Array.isArray(value?.pageItems) ? value.pageItems : clone(defaultEvents.pageItems),
+    gallery: Array.isArray(value?.gallery) ? value.gallery : clone(defaultEvents.gallery),
+  });
+
   const db = await getDb();
   if (db) {
     const settings = db.collection("settings");
     const doc = await settings.findOne({ _id: "events" }, { projection: { _id: 0, value: 1 } });
     if (doc?.value) {
-      return doc.value;
+      return withDefaults(doc.value);
     }
     const fallback = clone(defaultEvents);
     await settings.updateOne(
@@ -387,7 +395,7 @@ export const getEvents = async () => {
     state.events = clone(defaultEvents);
     await writeFileDb(state);
   }
-  return state.events;
+  return withDefaults(state.events);
 };
 
 export const setEvents = async (events) => {
