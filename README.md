@@ -53,6 +53,93 @@ Modos de DB:
 - `DB_MODE=file`: `server/data/db.json`.
 - `DB_MODE=auto`: intenta Mongo y si falla usa archivo.
 
+## MongoDB paso a paso (detallado)
+
+### 1) Instalar MongoDB Community Server
+
+Windows:
+1. Descarga MongoDB Community Server (MSI) desde la web oficial.
+2. En el instalador marca:
+- `Complete`
+- `Install MongoD as a Service`
+3. Termina la instalacion.
+
+Linux (Ubuntu/Debian):
+1. Instala MongoDB Community Server segun la documentacion oficial de tu version.
+2. Asegurate de tener el servicio `mongod`.
+
+### 2) Levantar el servicio de MongoDB
+
+Windows (PowerShell como administrador):
+
+```powershell
+Get-Service MongoDB
+Start-Service MongoDB
+Get-Service MongoDB
+```
+
+Si el servicio no aparece como `MongoDB`, prueba:
+
+```powershell
+Get-Service *mongo*
+```
+
+Linux:
+
+```bash
+sudo systemctl start mongod
+sudo systemctl status mongod
+```
+
+### 3) Configurar el proyecto para usar Mongo
+
+En `server/.env` usa:
+
+```env
+DB_MODE=mongo
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB=coronahub
+```
+
+Notas:
+- `DB_MODE=mongo` obliga a usar MongoDB (si Mongo no arranca, el backend falla).
+- `DB_MODE=auto` intenta Mongo y, si no puede conectar, usa archivo local.
+
+### 4) Arrancar proyecto
+
+Desde la raiz:
+
+```bash
+npm run dev
+```
+
+### 5) Verificar que Mongo esta funcionando con la app
+
+1. Comprueba salud backend:
+- `http://localhost:4000/api/health`
+2. Crea una reserva/opinion desde la app.
+3. Abre MongoDB Compass y conecta a:
+- `mongodb://127.0.0.1:27017`
+4. Verifica que existe la base `coronahub` y colecciones como `reservations`/`reviews`.
+
+### 6) Errores tipicos y solucion
+
+- `ECONNREFUSED 127.0.0.1:27017`
+  - MongoDB no esta levantado.
+  - Solucion: iniciar servicio (`Start-Service MongoDB` o `systemctl start mongod`).
+
+- `NoServiceFoundForGivenName`
+  - El nombre del servicio no coincide o Mongo no esta instalado.
+  - Solucion: buscar con `Get-Service *mongo*` y arrancar el nombre correcto.
+
+- `mongosh no se reconoce`
+  - Falta `mongosh` en PATH.
+  - No bloquea el proyecto; puedes usar Compass para verificar datos.
+
+- El backend arranca pero guarda en archivo y no en Mongo
+  - Seguramente `DB_MODE=auto` y Mongo esta caido.
+  - Solucion: usa `DB_MODE=mongo` para forzar Mongo y detectar el fallo al instante.
+
 ## Scripts utiles
 
 Raiz:
