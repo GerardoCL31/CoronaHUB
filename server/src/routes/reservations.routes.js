@@ -1,13 +1,10 @@
 ﻿import { Router } from "express";
 import { reservationSchema } from "../validators/reservation.schema.js";
-import { buildRateLimiter } from "../middlewares/rateLimit.js";
 import { hashIp } from "../utils/hash.js";
 import { createReservation, listActiveReservationsByDate } from "../db.js";
 import { notifyNewReservation } from "../utils/telegram.js";
 
 const router = Router();
-
-const limiter = buildRateLimiter({ windowMs: 10 * 60 * 1000, max: 20 });
 
 router.get("/availability", async (req, res, next) => {
   const { date } = req.query;
@@ -23,7 +20,7 @@ router.get("/availability", async (req, res, next) => {
   }
 });
 
-router.post("/", limiter, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   const parsed = reservationSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ ok: false, errors: parsed.error.flatten() });
@@ -60,4 +57,6 @@ router.post("/", limiter, async (req, res, next) => {
 });
 
 export default router;
+
+
 
