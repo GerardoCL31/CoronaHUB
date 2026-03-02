@@ -12,6 +12,7 @@ import { cerveza, sol } from "../../constants/cloudinaryAssets.js";
 import { resolveEventImage, resolveGalleryImage } from "../../constants/eventsFallback.js";
 
 const toTimestamp = (item) => new Date(`${item.date}T${item.time}:00`).getTime();
+const UPCOMING_WINDOW_DAYS = 7;
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -57,11 +58,6 @@ export default function AdminDashboard() {
     [reservations]
   );
 
-  const confirmedReservations = useMemo(
-    () => reservations.filter((item) => item.status === "CONFIRMED"),
-    [reservations]
-  );
-
   const upcomingReservations = useMemo(() => {
     const now = Date.now();
     return reservations
@@ -72,6 +68,17 @@ export default function AdminDashboard() {
           toTimestamp(item) >= now
       )
       .sort((a, b) => toTimestamp(a) - toTimestamp(b));
+  }, [reservations]);
+
+  const upcomingWindowReservations = useMemo(() => {
+    const now = Date.now();
+    const windowLimit = now + UPCOMING_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+
+    return reservations.filter((item) => {
+      if (item.status !== "CONFIRMED") return false;
+      const reservationTimestamp = toTimestamp(item);
+      return Number.isFinite(reservationTimestamp) && reservationTimestamp >= now && reservationTimestamp <= windowLimit;
+    });
   }, [reservations]);
 
   const handleLogout = () => {
@@ -771,11 +778,11 @@ export default function AdminDashboard() {
             <strong>{pendingReservations.length}</strong>
           </article>
           <article className="admin-kpi-card">
-            <p>Reservas confirmadas</p>
-            <strong>{confirmedReservations.length}</strong>
+            <p>Reservas próximas ({UPCOMING_WINDOW_DAYS} días)</p>
+            <strong>{upcomingWindowReservations.length}</strong>
           </article>
           <article className="admin-kpi-card">
-            <p>Próximas reservas</p>
+            <p>Reservas futuras</p>
             <strong>{upcomingReservations.length}</strong>
           </article>
         </section>
