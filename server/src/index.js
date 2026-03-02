@@ -26,13 +26,28 @@ const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .map((item) => item.trim())
   .filter(Boolean);
 
+const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+
+function normalizeOrigin(origin) {
+  try {
+    const url = new URL(origin);
+    const host = LOCAL_HOSTS.has(url.hostname) ? "localhost" : url.hostname;
+    const port = url.port || (url.protocol === "https:" ? "443" : "80");
+    return `${url.protocol}//${host}:${port}`;
+  } catch {
+    return origin;
+  }
+}
+
+const allowedOrigins = new Set(corsOrigins.map(normalizeOrigin));
+
 app.use(helmet());
 app.use(
   cors({
     origin(origin, callback) {
       // Allow non-browser requests (curl, health checks).
       if (!origin) return callback(null, true);
-      if (corsOrigins.includes(origin)) return callback(null, true);
+      if (allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
       return callback(new Error("CORS origin not allowed"));
     },
   })
@@ -78,6 +93,7 @@ app.listen(PORT, () => {
   const pollingEnabled = String(process.env.TELEGRAM_POLLING_ENABLED || "").toLowerCase() === "true";
   if (hasTelegramToken && pollingEnabled) {
     let updateOffset = 0;
+    let pollingTimer = null;
 
     const poll = async () => {
       try {
@@ -92,11 +108,19 @@ app.listen(PORT, () => {
           }
         }
       } catch (error) {
+        if (error.message.includes("can't use getUpdates method while webhook is active")) {
+          if (pollingTimer) {
+            clearInterval(pollingTimer);
+            pollingTimer = null;
+          }
+          console.warn("Telegram polling disabled: the bot already has an active webhook.");
+          return;
+        }
         console.warn("Telegram polling failed:", error.message);
       }
     };
 
-    setInterval(poll, 3000);
+    pollingTimer = setInterval(poll, 3000);
     console.log("Telegram polling enabled");
   }
 });

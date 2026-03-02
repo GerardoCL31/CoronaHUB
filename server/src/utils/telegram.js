@@ -27,7 +27,7 @@ const sendTelegramRequest = async (method, payload = {}) => {
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data?.ok === false) {
-    throw new Error(`Telegram ${method} failed`);
+    throw new Error(data?.description || `Telegram ${method} failed`);
   }
   return data;
 };
