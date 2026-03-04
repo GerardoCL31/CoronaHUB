@@ -94,8 +94,8 @@ export default function Carta() {
             {menu.days.map((day) => (
               <article key={day.id} className="carta-card">
                 <span className="carta-pill-title">{day.title}</span>
-                <p>1º: {day.first}</p>
-                <p>2º: {day.second}</p>
+                <p>Primero: {day.first}</p>
+                <p>Segundo: {day.second}</p>
                 <p>Postre: {day.dessert}</p>
               </article>
             ))}

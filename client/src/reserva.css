@@ -41,10 +41,11 @@
 
 .reserva-side img {
   width: 100%;
+  display: block;
   border-radius: 20px;
   object-fit: cover;
   box-shadow: 0 16px 28px rgba(34, 28, 18, 0.18);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border: none;
 }
 
 .reserva-center {
@@ -350,7 +351,11 @@
 
 @media (max-width: 600px) {
   .reserva-page {
-    padding: 24px 16px 48px;
+    padding: 20px 12px 40px;
+  }
+
+  .reserva-main {
+    gap: 14px;
   }
 
   .reserva-controls {
@@ -359,5 +364,12 @@
 
   .reserva-side {
     grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 0 -2px;
+  }
+
+  .reserva-side img {
+    border-radius: 16px;
+    box-shadow: 0 10px 18px rgba(34, 28, 18, 0.14);
   }
 }

@@ -95,10 +95,10 @@ body {
 }
 
 .carta-combos ul {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 0;
   margin: 10px 0 0;
-  text-align: left;
+  text-align: center;
   font-size: 14px;
 }
 
@@ -120,7 +120,7 @@ body {
   border-radius: 20px;
   object-fit: cover;
   aspect-ratio: 3 / 6;
-  border: 6px solid #d4af37;
+  border: none;
   background: #121214;
 }
 
