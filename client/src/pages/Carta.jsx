@@ -3,8 +3,7 @@ import "../carta.css";
 import { mesaComida } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
-
-const API_URL = process.env.API_URL || "http://localhost:4000";
+import { getApiBaseUrl } from "../services/api.js";
 
 const fallbackMenu = {
   banner: "Menú diario 9€ con bebida",
@@ -68,7 +67,7 @@ export default function Carta() {
   useEffect(() => {
     const loadMenu = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/menu`);
+        const response = await fetch(`${getApiBaseUrl()}/api/menu`);
         const data = await response.json();
         if (response.ok && data?.ok && data?.data) {
           setMenu(data.data);

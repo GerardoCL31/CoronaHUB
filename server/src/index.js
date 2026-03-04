@@ -11,7 +11,11 @@ import menuRoutes from "./routes/menu.routes.js";
 import eventsRoutes from "./routes/events.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import telegramRoutes from "./routes/telegram.routes.js";
-import { getTelegramUpdates, setTelegramWebhook } from "./utils/telegram.js";
+import {
+  deleteTelegramWebhook,
+  getTelegramUpdates,
+  setTelegramWebhook,
+} from "./utils/telegram.js";
 import { handleTelegramCallback } from "./services/telegramActions.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -76,8 +80,9 @@ app.listen(PORT, () => {
   const webhookBaseUrl = (process.env.TELEGRAM_WEBHOOK_BASE_URL || "").trim();
   const webhookToken = (process.env.TELEGRAM_WEBHOOK_TOKEN || "").trim();
   const hasTelegramToken = Boolean((process.env.TELEGRAM_BOT_TOKEN || "").trim());
+  const hasWebhookConfig = Boolean(hasTelegramToken && webhookBaseUrl && webhookToken);
 
-  if (hasTelegramToken && webhookBaseUrl && webhookToken) {
+  if (hasWebhookConfig) {
     const base = webhookBaseUrl.replace(/\/+$/, "");
     const webhookUrl = `${base}/api/telegram/webhook/${webhookToken}`;
 
@@ -91,7 +96,9 @@ app.listen(PORT, () => {
   }
 
   const pollingEnabled = String(process.env.TELEGRAM_POLLING_ENABLED || "").toLowerCase() === "true";
-  if (hasTelegramToken && pollingEnabled) {
+  const shouldUsePolling = hasTelegramToken && (pollingEnabled || !hasWebhookConfig);
+
+  if (shouldUsePolling) {
     let updateOffset = 0;
     let pollingTimer = null;
 
@@ -120,8 +127,28 @@ app.listen(PORT, () => {
       }
     };
 
-    pollingTimer = setInterval(poll, 3000);
-    console.log("Telegram polling enabled");
+    const startPolling = async () => {
+      if (!hasWebhookConfig) {
+        try {
+          await deleteTelegramWebhook();
+          console.log("Telegram webhook cleared for polling");
+        } catch (error) {
+          console.warn("Telegram webhook clear failed:", error.message);
+        }
+      }
+
+      await poll();
+      pollingTimer = setInterval(poll, 3000);
+      console.log(
+        hasWebhookConfig
+          ? "Telegram polling enabled"
+          : "Telegram polling enabled (webhook not configured)"
+      );
+    };
+
+    startPolling().catch((error) => {
+      console.warn("Telegram polling startup failed:", error.message);
+    });
   }
 });
 

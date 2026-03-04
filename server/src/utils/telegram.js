@@ -108,6 +108,11 @@ export const setTelegramWebhook = async (url) =>
     drop_pending_updates: false,
   });
 
+export const deleteTelegramWebhook = async () =>
+  sendTelegramRequest("deleteWebhook", {
+    drop_pending_updates: false,
+  });
+
 export const getTelegramUpdates = async (offset) =>
   sendTelegramRequest("getUpdates", {
     offset,

@@ -53,10 +53,9 @@ export default function Contact() {
       <main className="opiniones-main" id="opiniones">
         <section className="opinions-panel">
           <header className="opinions-header">
-            <h2>Opiniones reales</h2>
+            <h2>Cuéntanos qué te ha parecido</h2>
             <p>
-              Comparte tu experiencia. Las opiniones pasan por moderación antes
-              de publicarse.
+              Déjanos tu experiencia vivida en nuestro restaurante.
             </p>
           </header>
 
