@@ -3,10 +3,14 @@
     <footer className="footer footer--small">
       <p>&copy; 2026 BarCorona. Todos los derechos reservados.</p>
       <p>Teléfono móvil: 615 486 712</p>
-      <p>Correo electrónico: barcoronatrajano@hotmail.com</p>
+      <p>barcoronatrajano@hotmail.com</p>
+      <p>
+        <a href="/legal" target="_blank" rel="noopener noreferrer">
+          Aviso legal y privacidad
+        </a>
+      </p>
     </footer>
   );
 }
 
 export default FooterSmall;
-

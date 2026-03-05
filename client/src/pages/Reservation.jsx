@@ -1,11 +1,13 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import "../reserva.css";
+import "sweetalert2/dist/sweetalert2.min.css";
 import { chimenea1, comidaBarra, quesoUvas } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 import ImageStack from "../components/ImageStack.jsx";
 import FormFeedback from "../components/FormFeedback.jsx";
+import Swal from "sweetalert2";
 import {
   createReservation,
   getReservationAvailability,
@@ -232,7 +234,7 @@ export default function Reservation() {
     try {
       const finalNotes = notes.trim() || null;
 
-      await createReservation({
+      const reservation = await createReservation({
         name: guestName.trim(),
         email: guestEmail.trim(),
         phone: guestPhone.trim(),
@@ -242,6 +244,38 @@ export default function Reservation() {
         people: Number(people),
         notes: finalNotes,
       });
+
+      const reservationId = reservation?.id || "N/A";
+      const result = await Swal.fire({
+        icon: "success",
+        title: "Reserva enviada",
+        html: `
+          <p>ID de reserva: <strong>${reservationId}</strong></p>
+          <p>Se recomienda guardar esta ID.</p>
+        `,
+        confirmButtonText: "OK",
+        showDenyButton: true,
+        denyButtonText: "Copiar ID",
+      });
+
+      if (result.isDenied && reservationId !== "N/A") {
+        try {
+          await navigator.clipboard.writeText(reservationId);
+          await Swal.fire({
+            icon: "success",
+            title: "ID copiada",
+            text: "La ID de reserva se copió al portapapeles.",
+            confirmButtonText: "OK",
+          });
+        } catch {
+          await Swal.fire({
+            icon: "error",
+            title: "No se pudo copiar",
+            text: "Copia manualmente la ID de reserva.",
+            confirmButtonText: "OK",
+          });
+        }
+      }
 
       setStatus(
         "Reserva enviada. Queda pendiente de confirmación. Te enviaremos un WhatsApp para confirmar la reserva."
@@ -511,5 +545,10 @@ export default function Reservation() {
     </div>
   );
 }
+
+
+
+
+
 
 

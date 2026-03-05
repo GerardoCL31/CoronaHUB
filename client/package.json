@@ -11,7 +11,8 @@
     "coronahub": "file:..",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.26.2",
+    "sweetalert2": "^11.26.21"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",

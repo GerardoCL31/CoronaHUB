@@ -41,6 +41,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index.html"),
+      favicon: path.resolve(__dirname, "src/assets/favicom.png"),
     }),
     new webpack.DefinePlugin({
       "process.env.API_URL": JSON.stringify(process.env.API_URL || ""),

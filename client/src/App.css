@@ -52,6 +52,11 @@
   width: 140%;
   height: 140%;
   object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.logo-badge:hover img {
+  transform: scale(1.35);
 }
 
 .brand-title {
@@ -342,6 +347,39 @@
 .footer.footer--small {
   margin-top: 8px;
   font-size: 10px;
+}
+
+.footer a {
+  color: var(--blue-dark);
+}
+
+.legal-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(24, 24, 25, 0.92);
+  border: 1px solid rgba(212, 175, 55, 0.24);
+  border-radius: 20px;
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.legal-card h2 {
+  margin: 0 0 8px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.legal-card h3 {
+  margin: 0 0 6px;
+  font-family: "Manrope", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 14px;
+}
+
+.legal-card p {
+  margin: 0;
+  color: var(--ink);
 }
 
 @media (max-width: 960px) {

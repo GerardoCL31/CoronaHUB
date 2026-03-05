@@ -5,6 +5,7 @@ import Contact from "./pages/Contact.jsx";
 import Reservation from "./pages/Reservation.jsx";
 import Eventos from "./pages/Eventos.jsx";
 import Galeria from "./pages/Galeria.jsx";
+import Legal from "./pages/Legal.jsx";
 import AdminLogin from "./pages/admin/Login.jsx";
 import AdminDashboard from "./pages/admin/Dashboard.jsx";
 
@@ -27,6 +28,7 @@ export default function AppRouter() {
         <Route path="/galeria" element={<Galeria />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/reservation" element={<Reservation />} />
+        <Route path="/legal" element={<Legal />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin/dashboard"

@@ -1,12 +1,14 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import "../opiniones.css";
+import "sweetalert2/dist/sweetalert2.min.css";
 import { mesaChimenea } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
 import ImageStack from "../components/ImageStack.jsx";
 import FormFeedback from "../components/FormFeedback.jsx";
 import { createReview, getApprovedReviews } from "../services/reviews.service.js";
+import Swal from "sweetalert2";
 
 export default function Contact() {
   const [reviews, setReviews] = useState([]);
@@ -38,7 +40,17 @@ export default function Contact() {
     const rating = Number(formData.get("rating") || 5);
 
     try {
-      await createReview({ name, comment, rating });
+      const review = await createReview({ name, comment, rating });
+      try {
+        await Swal.fire({
+          icon: "success",
+          title: "Reseva enviada",
+          text: `Tu id de reserva es ${review.id || "N/A"}`,
+          confirmButtonText: "Vale",
+        });
+      } catch (_swalError) {
+        window.alert(`Reseva enviada. Tu id de reserva es ${review.id || "N/A"}`);
+      }
       setStatus("Opinión enviada. Queda pendiente de moderación.");
       form.reset();
     } catch (err) {
@@ -53,9 +65,9 @@ export default function Contact() {
       <main className="opiniones-main" id="opiniones">
         <section className="opinions-panel">
           <header className="opinions-header">
-            <h2>Cuéntanos qué te ha parecido</h2>
+            <h2>Cuentanos que te ha parecido</h2>
             <p>
-              Déjanos tu experiencia vivida en nuestro restaurante.
+              Dejanos tu experiencia vivida en nuestro restaurante.
             </p>
           </header>
 
@@ -66,7 +78,7 @@ export default function Contact() {
             </label>
             <fieldset className="review-field review-field--stars">
               <legend>Puntuación</legend>
-              <div className="star-rating" role="radiogroup" aria-label="Puntuación">
+              <div className="star-rating" role="radiogroup" aria-label="Puntuaci�n">
                 <input type="radio" id="star-5" name="rating" value="5" defaultChecked />
                 <label htmlFor="star-5" title="5 estrellas" aria-label="5 estrellas" />
 
@@ -128,6 +140,3 @@ export default function Contact() {
     </div>
   );
 }
-
-
-
