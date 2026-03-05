@@ -38,6 +38,31 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand:focus-visible {
+  outline: 3px solid #f0cf83;
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -44px;
+  background: #f0cf83;
+  color: #1a1408;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 12px;
 }
 
 .logo-badge {
@@ -338,14 +363,14 @@
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 44px;
   text-align: center;
   font-size: 12px;
   color: var(--muted);
 }
 
 .footer.footer--small {
-  margin-top: 8px;
+  margin-top: 24px;
   font-size: 10px;
 }
 

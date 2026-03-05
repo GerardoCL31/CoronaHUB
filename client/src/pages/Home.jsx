@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import "../App.css";
 import { cerveza, mapa as mapaImg, portada, sol } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
@@ -34,43 +34,46 @@ export default function Home() {
     <div className="page">
       <Navbar active="inicio" />
 
-      <section className="hero" id="inicio">
-        <div className="hero-media">
-          <img className="hero-photo" src={portada} alt="Fachada de Bar Corona" />
-        </div>
-        <aside className="events" id="eventos">
-          <h2>{eventsData.homeTitle}</h2>
-          {eventsData.homeCards.map((card, index) => (
-            <div className="event-card" key={card.id}>
-              <div className="event-icon" aria-hidden="true">
-                <img src={getHomeIcon(card, index)} alt="" />
+      <main id="main-content" tabIndex={-1}>
+        <section className="hero" id="inicio">
+          <div className="hero-media">
+            <img className="hero-photo" src={portada} alt="Fachada de Bar Corona" />
+          </div>
+          <aside className="events" id="eventos">
+            <h2>{eventsData.homeTitle}</h2>
+            {eventsData.homeCards.map((card, index) => (
+              <div className="event-card" key={card.id}>
+                <div className="event-icon" aria-hidden="true">
+                  <img src={getHomeIcon(card, index)} alt="" loading="lazy" decoding="async" />
+                </div>
+                <div>
+                  <h3>{card.title}</h3>
+                  <p>{card.schedule}</p>
+                  <p className="event-note">{card.note}</p>
+                </div>
               </div>
-              <div>
-                <h3>{card.title}</h3>
-                <p>{card.schedule}</p>
-                <p className="event-note">{card.note}</p>
-              </div>
-            </div>
-          ))}
-        </aside>
-      </section>
+            ))}
+          </aside>
+        </section>
 
-      <section className="info-strip">
-        <div className="hours">
-          <h3>Horarios:</h3>
-          <p>Lunes a sábado: 8:00 am - 5:00 pm</p>
-          <p>Domingo: 8:00 am - 12:00 pm</p>
-        </div>
-        <div className="map-card">
-          <a
-            href="https://share.google/fyJ2NpJ85uG2Vk8NH"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src={mapaImg} alt="Mapa de ubicación de Bar Corona" />
-          </a>
-        </div>
-      </section>
+        <section className="info-strip">
+          <div className="hours">
+            <h3>Horarios:</h3>
+            <p>Lunes a sabado: 8:00 am - 5:00 pm</p>
+            <p>Domingo: 8:00 am - 12:00 pm</p>
+          </div>
+          <div className="map-card">
+            <a
+              href="https://share.google/fyJ2NpJ85uG2Vk8NH"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Abrir ubicacion en Google Maps (se abre en nueva ventana)"
+            >
+              <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" loading="lazy" decoding="async" />
+            </a>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>

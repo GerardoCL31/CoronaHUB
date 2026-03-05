@@ -305,7 +305,7 @@ export default function Reservation() {
     <div className="reserva-page">
       <Navbar active="reserva" />
 
-      <main className="reserva-main">
+      <main className="reserva-main" id="main-content" tabIndex={-1}>
         <ImageStack
           as="aside"
           className="reserva-side"
@@ -321,7 +321,7 @@ export default function Reservation() {
               <span>Mesas disponibles</span>
               <strong>{formatDate(date)}</strong>
             </div>
-            <div className="status-list">
+            <div className="status-list" role="status" aria-live="polite">
               {availabilityError && <p>{availabilityError}</p>}
               {!availabilityError && todayReservations.length === 0 && <p>Reserva tu mesa favorita</p>}
               {!availabilityError && todayReservations.length > 0 && (
@@ -387,6 +387,7 @@ export default function Reservation() {
                         type="button"
                         key={cell.key}
                         className={`calendar-day ${isSelected ? "is-selected" : ""}`}
+                        aria-pressed={isSelected}
                         disabled={cell.disabled}
                         onClick={() => {
                           setDate(cell.iso);
@@ -422,6 +423,7 @@ export default function Reservation() {
               Nombre
               <input
                 type="text"
+                autoComplete="name"
                 value={guestName}
                 onChange={(event) => setGuestName(event.target.value)}
                 placeholder="Tu nombre"
@@ -431,6 +433,7 @@ export default function Reservation() {
               Correo
               <input
                 type="email"
+                autoComplete="email"
                 value={guestEmail}
                 onChange={(event) => setGuestEmail(event.target.value)}
                 placeholder="tu@correo.com"
@@ -440,6 +443,8 @@ export default function Reservation() {
               Teléfono
               <input
                 type="tel"
+                autoComplete="tel"
+                inputMode="tel"
                 value={guestPhone}
                 onChange={(event) => setGuestPhone(event.target.value)}
                 placeholder="600 000 000"
@@ -480,6 +485,8 @@ export default function Reservation() {
                         type="button"
                         key={table.id}
                         className={`table-pill ${isSelected ? "is-selected" : ""} ${isReserved ? "is-reserved" : ""}`}
+                        aria-pressed={isSelected}
+                        aria-label={`Mesa ${table.id}, ${table.seats} personas${isReserved ? ", reservada" : ""}${isSelected ? ", seleccionada" : ""}`}
                         onClick={() => handleSelectTable(table.id)}
                         disabled={isReserved || availableTimeSlots.length === 0}
                       >
@@ -526,7 +533,7 @@ export default function Reservation() {
               {isSubmitting ? "Enviando..." : "Reservar mesa"}
             </button>
             {selectedTable && (
-              <p>
+              <p role="status" aria-live="polite">
                 Mesa <strong>{selectedTable}</strong> para el {formatDate(date)} a las {time}
               </p>
             )}
@@ -545,6 +552,8 @@ export default function Reservation() {
     </div>
   );
 }
+
+
 
 
 

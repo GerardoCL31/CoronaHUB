@@ -84,7 +84,7 @@ export default function Carta() {
     <div className="carta-page">
       <Navbar active="carta" />
 
-      <main className="carta-main">
+      <main className="carta-main" id="main-content" tabIndex={-1}>
         <div className="carta-left">
           <div className="carta-banner">
             <span>{menu.banner}</span>
@@ -110,7 +110,7 @@ export default function Carta() {
         </div>
 
         <aside className="carta-photo">
-          <img src={mesaComida} alt="Mesa preparada en Bar Corona" />
+          <img src={mesaComida} alt="Mesa preparada en Bar Corona" loading="lazy" decoding="async" />
         </aside>
       </main>
 
@@ -118,6 +118,8 @@ export default function Carta() {
     </div>
   );
 }
+
+
 
 
 

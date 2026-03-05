@@ -328,14 +328,14 @@
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 44px;
   text-align: center;
   font-size: 12px;
   color: var(--muted);
 }
 
 .footer.footer--small {
-  margin-top: 8px;
+  margin-top: 24px;
   font-size: 10px;
 }
 

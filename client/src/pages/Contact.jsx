@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import "../App.css";
 import "../opiniones.css";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -44,17 +44,17 @@ export default function Contact() {
       try {
         await Swal.fire({
           icon: "success",
-          title: "Reseva enviada",
+          title: "Resena enviada",
           text: `Tu id de reserva es ${review.id || "N/A"}`,
           confirmButtonText: "Vale",
         });
       } catch (_swalError) {
-        window.alert(`Reseva enviada. Tu id de reserva es ${review.id || "N/A"}`);
+        window.alert(`Resena enviada. Tu id de reserva es ${review.id || "N/A"}`);
       }
-      setStatus("Opinión enviada. Queda pendiente de moderación.");
+      setStatus("OpiniÃ³n enviada. Queda pendiente de moderaciÃ³n.");
       form.reset();
     } catch (err) {
-      setError(err.message || "No se pudo enviar la opinión.");
+      setError(err.message || "No se pudo enviar la opiniÃ³n.");
     }
   };
 
@@ -62,7 +62,7 @@ export default function Contact() {
     <div className="opiniones-page">
       <Navbar active="opiniones" />
 
-      <main className="opiniones-main" id="opiniones">
+      <main className="opiniones-main" id="main-content" tabIndex={-1}>
         <section className="opinions-panel">
           <header className="opinions-header">
             <h2>Cuentanos que te ha parecido</h2>
@@ -74,11 +74,11 @@ export default function Contact() {
           <form className="review-form" onSubmit={handleAddReview}>
             <label className="review-field">
               Nombre
-              <input name="name" type="text" placeholder="Tu nombre" required />
+              <input name="name" type="text" placeholder="Tu nombre" autoComplete="name" required />
             </label>
             <fieldset className="review-field review-field--stars">
               <legend>Puntuación</legend>
-              <div className="star-rating" role="radiogroup" aria-label="Puntuaci�n">
+              <div className="star-rating" role="radiogroup" aria-label="Puntuaciï¿½n">
                 <input type="radio" id="star-5" name="rating" value="5" defaultChecked />
                 <label htmlFor="star-5" title="5 estrellas" aria-label="5 estrellas" />
 
@@ -123,7 +123,7 @@ export default function Contact() {
               </article>
             ))}
             {reviews.length === 0 && (
-              <p className="review-meta">Aún no hay opiniones aprobadas.</p>
+              <p className="review-meta">AÃºn no hay opiniones aprobadas.</p>
             )}
           </div>
         </section>
@@ -140,3 +140,4 @@ export default function Contact() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+﻿import { Fragment, useEffect, useState } from "react";
 import "../eventos.css";
 import Navbar from "../components/Navbar.jsx";
 import FooterSmall from "../components/FooterSmall.jsx";
@@ -28,7 +28,7 @@ export default function Eventos() {
     <div className="eventos-page">
       <Navbar active="eventos" />
 
-      <main className="eventos-main">
+      <main className="eventos-main" id="main-content" tabIndex={-1}>
         {eventsData.pageItems.map((item, index) => (
           <Fragment key={item.id}>
             <section className="eventos-column">
@@ -55,3 +55,4 @@ export default function Eventos() {
     </div>
   );
 }
+

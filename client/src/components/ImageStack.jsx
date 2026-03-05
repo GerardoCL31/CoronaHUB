@@ -13,6 +13,8 @@ export default function ImageStack({ as = "div", className = "", imageClassName 
           className={imageClassName || undefined}
           src={image.src}
           alt={image.alt}
+          loading={index === 0 ? "eager" : "lazy"}
+          decoding="async"
         />
       ))}
     </Tag>
