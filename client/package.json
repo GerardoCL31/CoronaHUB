@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "preview": "webpack serve --mode production"
+    "preview": "webpack serve --mode production",
+    "one": "powershell -ExecutionPolicy Bypass -File ./scripts/build-one.ps1"
   },
   "dependencies": {
     "coronahub": "file:..",

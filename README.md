@@ -17,7 +17,18 @@
 Optional:
 - MongoDB Compass
 
-## Quick Start
+## Quick Start (Windows PowerShell)
+
+```bash
+git clone <https://github.com/GerardoCL31/CoronaHUB.git>
+cd CoronaHUB
+npm.cmd install
+npm.cmd run install:all
+Copy-Item server/.env.example server/.env
+npm.cmd run dev
+```
+
+## Quick Start (macOS/Linux)
 
 ```bash
 git clone <https://github.com/GerardoCL31/CoronaHUB.git>
@@ -152,6 +163,44 @@ Client:
 - `npm run dev --prefix client`: Webpack dev server
 - `npm run build --prefix client`: production build
 - `npm run preview --prefix client`: preview server
+- `npm run one --prefix client`: build + create `client/dist-one.zip` ready to upload to One.com
+
+## Frontend Deploy to One.com
+
+### Option A (recommended): one command + ZIP
+
+Windows PowerShell:
+
+```powershell
+npm.cmd run one --prefix client
+```
+
+This command:
+- Builds the frontend in `client/dist`
+- Creates `client/dist-one.zip` (ready to upload)
+
+Upload the content of this ZIP to your One.com web root (`public_html`).
+
+### Option B: manual build
+
+```bash
+npm run build --prefix client
+```
+
+Upload all files inside `client/dist` to `public_html`.
+
+### SPA routing (`react-router-dom`)
+
+If you use frontend routes, add this `.htaccess` in `public_html`:
+
+```apache
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+```
 
 ## API Endpoints
 

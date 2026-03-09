@@ -31,6 +31,7 @@ const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .filter(Boolean);
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+const PRIVATE_IPV4_REGEX = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/;
 
 function normalizeOrigin(origin) {
   try {
@@ -43,6 +44,22 @@ function normalizeOrigin(origin) {
   }
 }
 
+function isLocalDevOrigin(origin) {
+  try {
+    const url = new URL(origin);
+    const host = url.hostname;
+    const isMachineHost = !host.includes(".") && !/^\d+$/.test(host);
+    return (
+      LOCAL_HOSTS.has(host) ||
+      PRIVATE_IPV4_REGEX.test(host) ||
+      host.endsWith(".local") ||
+      isMachineHost
+    );
+  } catch {
+    return false;
+  }
+}
+
 const allowedOrigins = new Set(corsOrigins.map(normalizeOrigin));
 
 app.use(helmet());
@@ -52,6 +69,7 @@ app.use(
       // Allow non-browser requests (curl, health checks).
       if (!origin) return callback(null, true);
       if (allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
+      if (isLocalDevOrigin(origin)) return callback(null, true);
       return callback(new Error("CORS origin not allowed"));
     },
   })
