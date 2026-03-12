@@ -251,7 +251,7 @@ export default function Reservation() {
         title: "Reserva enviada",
         html: `
           <p>ID de reserva: <strong>${reservationId}</strong></p>
-          <p>Se recomienda guardar esta ID.</p>
+          <p>Se recomienda guardar este ID.</p>
         `,
         confirmButtonText: "OK",
         showDenyButton: true,

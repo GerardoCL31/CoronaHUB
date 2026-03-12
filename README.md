@@ -52,6 +52,7 @@ Example:
 PORT=4000
 CORS_ORIGIN=http://localhost:5173
 DB_MODE=auto
+NODE_ENV=development
 JWT_SECRET=change_this_to_a_long_random_secret
 ADMIN_EMAIL=admin@coronahub.local
 ADMIN_PASSWORD=change_this_password
@@ -64,6 +65,11 @@ Database modes:
 - `DB_MODE=mongo`: MongoDB only (recommended when you want strict Mongo usage)
 - `DB_MODE=file`: uses `server/data/db.json`
 - `DB_MODE=auto`: tries MongoDB, falls back to file DB if Mongo is unavailable
+
+Production safety:
+- In `NODE_ENV=production`, `DB_MODE=auto` no longer falls back silently to file DB.
+- If you really want file fallback in production, set `ALLOW_FILE_DB_IN_PRODUCTION=true`.
+- Recommended for Render/production: `DB_MODE=mongo`.
 
 ## MongoDB Setup (Detailed)
 

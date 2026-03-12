@@ -44,17 +44,17 @@ export default function Contact() {
       try {
         await Swal.fire({
           icon: "success",
-          title: "Resena enviada",
-          text: `Tu id de reserva es ${review.id || "N/A"}`,
+          title: "Reseña enviada",
+          text: `Tu ID de opinión es ${review.id || "N/A"}`,
           confirmButtonText: "Vale",
         });
       } catch (_swalError) {
-        window.alert(`Resena enviada. Tu id de reserva es ${review.id || "N/A"}`);
+        window.alert(`Reseña enviada. Tu ID de opinión es ${review.id || "N/A"}`);
       }
-      setStatus("OpiniÃ³n enviada. Queda pendiente de moderaciÃ³n.");
+      setStatus("Opinión enviada. Queda pendiente de moderación.");
       form.reset();
     } catch (err) {
-      setError(err.message || "No se pudo enviar la opiniÃ³n.");
+      setError(err.message || "No se pudo enviar la opinión.");
     }
   };
 
@@ -65,9 +65,9 @@ export default function Contact() {
       <main className="opiniones-main" id="main-content" tabIndex={-1}>
         <section className="opinions-panel">
           <header className="opinions-header">
-            <h2>Cuentanos que te ha parecido</h2>
+            <h2>Cuéntanos qué te ha parecido</h2>
             <p>
-              Dejanos tu experiencia vivida en nuestro restaurante.
+              Déjanos tu experiencia en nuestro restaurante.
             </p>
           </header>
 
@@ -78,7 +78,7 @@ export default function Contact() {
             </label>
             <fieldset className="review-field review-field--stars">
               <legend>Puntuación</legend>
-              <div className="star-rating" role="radiogroup" aria-label="Puntuaciï¿½n">
+              <div className="star-rating" role="radiogroup" aria-label="Puntuación">
                 <input type="radio" id="star-5" name="rating" value="5" defaultChecked />
                 <label htmlFor="star-5" title="5 estrellas" aria-label="5 estrellas" />
 
@@ -123,7 +123,7 @@ export default function Contact() {
               </article>
             ))}
             {reviews.length === 0 && (
-              <p className="review-meta">AÃºn no hay opiniones aprobadas.</p>
+              <p className="review-meta">Aún no hay opiniones aprobadas.</p>
             )}
           </div>
         </section>
@@ -140,4 +140,3 @@ export default function Contact() {
     </div>
   );
 }
-
