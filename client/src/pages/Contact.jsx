@@ -14,6 +14,7 @@ export default function Contact() {
   const [reviews, setReviews] = useState([]);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const googleReviewsUrl = "https://share.google/RfVolAMQMid244A2F";
 
   const loadReviews = async () => {
     try {
@@ -63,7 +64,37 @@ export default function Contact() {
       <Navbar active="opiniones" />
 
       <main className="opiniones-main" id="main-content" tabIndex={-1}>
-        <section className="opinions-panel">
+        <section className="opinions-content">
+          <section className="google-reviews-banner" aria-label="Reseñas de Google">
+            <div className="google-reviews-copy">
+              <span className="google-reviews-eyebrow">Google Reviews</span>
+              <h2>Valoraciones de clientes</h2>
+              <p>
+                Descubre por qué tantos clientes repiten en Bar Corona y echa un vistazo a
+                nuestras reseñas en Google.
+              </p>
+            </div>
+
+            <div className="google-reviews-cta">
+              <div className="google-reviews-stars" aria-label="Cinco estrellas">
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+              </div>
+              <a
+                className="google-reviews-button"
+                href={googleReviewsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver reseñas
+              </a>
+            </div>
+          </section>
+
+          <section className="opinions-panel">
           <header className="opinions-header">
             <h2>Cuentanos que te ha parecido</h2>
             <p>
@@ -126,6 +157,7 @@ export default function Contact() {
               <p className="review-meta">AÃºn no hay opiniones aprobadas.</p>
             )}
           </div>
+          </section>
         </section>
 
         <ImageStack
