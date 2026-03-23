@@ -16,10 +16,6 @@ function Navbar({ active = "inicio" }) {
 
   return (
     <header className="topbar">
-      <a className="skip-link" href="#main-content">
-        Saltar al contenido principal
-      </a>
-
       <Link className="brand" to="/" onClick={handleClose} aria-label="Ir a inicio">
         <div className="logo-badge">
           <img src={logo} alt="Logotipo de Bar Corona" />

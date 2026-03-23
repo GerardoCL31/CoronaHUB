@@ -441,6 +441,10 @@
     padding: 24px 16px 48px;
   }
 
+  .skip-link {
+    display: none;
+  }
+
   .hero {
     gap: 18px;
   }

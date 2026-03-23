@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && node ./scripts/postbuild.js",
     "preview": "webpack serve --mode production",
     "one": "powershell -ExecutionPolicy Bypass -File ./scripts/build-one.ps1",
     "test": "node --test --test-isolation=none ../tests/client/api.test.cjs ../tests/client/services.test.cjs"

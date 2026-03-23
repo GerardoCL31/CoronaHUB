@@ -4,7 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
 Write-Host "Building production bundle..."
-npx webpack --mode production
+npm run build
 
 $zipPath = Join-Path $root "dist-one.zip"
 if (Test-Path $zipPath) {
@@ -12,6 +12,6 @@ if (Test-Path $zipPath) {
 }
 
 Write-Host "Creating dist-one.zip..."
-Compress-Archive -Path (Join-Path $root "dist\*") -DestinationPath $zipPath
+Compress-Archive -Path (Join-Path $root "dist\*"), (Join-Path $root "dist\.htaccess") -DestinationPath $zipPath
 
 Write-Host "Done: $zipPath"
