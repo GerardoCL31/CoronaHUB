@@ -10,6 +10,10 @@ const __dirname = path.dirname(__filename);
 const fileDbPath = path.resolve(__dirname, "..", "data", "db.json");
 const rawDbMode = (process.env.DB_MODE || "auto").trim().toLowerCase();
 const DB_MODE = ["auto", "mongo", "file"].includes(rawDbMode) ? rawDbMode : "auto";
+const NODE_ENV = (process.env.NODE_ENV || "").trim().toLowerCase();
+const isProduction = NODE_ENV === "production";
+const allowFileFallbackInProduction =
+  String(process.env.ALLOW_FILE_DB_IN_PRODUCTION || "").trim().toLowerCase() === "true";
 
 let clientPromise;
 let mongoUnavailable = false;
@@ -48,13 +52,30 @@ const writeFileDb = async (state) => {
   await fs.writeFile(fileDbPath, `${JSON.stringify(state, null, 2)}\n`, "utf8");
 };
 
+const shouldUseFileFallback = () => {
+  if (DB_MODE !== "auto") {
+    return false;
+  }
+
+  if (!isProduction) {
+    return true;
+  }
+
+  if (allowFileFallbackInProduction) {
+    console.warn("DB_MODE=auto en producción con fallback a file DB habilitado explícitamente.");
+    return true;
+  }
+
+  return false;
+};
+
 const getClient = async () => {
   if (DB_MODE === "file") {
     return null;
   }
 
   if (mongoUnavailable) {
-    if (DB_MODE === "mongo") {
+    if (DB_MODE === "mongo" || !shouldUseFileFallback()) {
       throw new Error("MongoDB no disponible y DB_MODE=mongo. Revisa MONGODB_URI.");
     }
     return null;
@@ -70,8 +91,10 @@ const getClient = async () => {
     return await clientPromise;
   } catch (error) {
     mongoUnavailable = true;
-    if (DB_MODE === "mongo") {
-      throw new Error(`MongoDB no disponible y DB_MODE=mongo: ${error.message}`);
+    if (DB_MODE === "mongo" || !shouldUseFileFallback()) {
+      const modeLabel =
+        DB_MODE === "mongo" ? "DB_MODE=mongo" : "DB_MODE=auto sin fallback a file DB en producción";
+      throw new Error(`MongoDB no disponible y ${modeLabel}: ${error.message}`);
     }
     if (!mongoFallbackWarned) {
       console.warn("MongoDB no disponible, usando file DB fallback", error.message);
