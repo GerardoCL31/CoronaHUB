@@ -25,6 +25,18 @@
   padding: 36px 20px 60px;
 }
 
+.route-loader {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(180deg, #050505 0%, #111112 40%, #1a1510 100%);
+  color: var(--ink);
+  font-family: "Manrope", sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .topbar {
   display: flex;
   align-items: center;

@@ -6,7 +6,10 @@
     "install:all": "npm install --prefix client && npm install --prefix server",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "npm run dev --prefix client",
-    "dev:server": "npm run dev --prefix server"
+    "dev:server": "npm run dev --prefix server",
+    "test": "node --test --test-isolation=none tests/server/api.test.mjs tests/client/api.test.cjs tests/client/services.test.cjs",
+    "test:server": "node --test --test-isolation=none tests/server/api.test.mjs",
+    "test:client": "node --test --test-isolation=none tests/client/api.test.cjs tests/client/services.test.cjs"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

@@ -1,4 +1,4 @@
-﻿import {
+import {
   abanico2,
   CasaFundada,
   chimenea1,
@@ -14,28 +14,12 @@
   salon,
   sanValentinSalon,
   TostasdaJamon,
+  transformCloudinaryUrl,
 } from "./cloudinaryAssets.js";
+import { fallbackHomeEvents } from "./homeEventsFallback.js";
 
 export const fallbackEvents = {
-  homeTitle: "Próximos eventos",
-  homeCards: [
-    {
-      id: "home-1",
-      title: "Cervecitas a mediodía",
-      schedule: "Viernes - 13:00 a 16:00",
-      note: "Cervezas frías, tapas y buen ambiente al mediodía.",
-      imageUrl: "",
-      imageAlt: "Cena romántica en Bar Corona",
-    },
-    {
-      id: "home-2",
-      title: "Brunch con música chill",
-      schedule: "Sábado - 11:00 a 14:30",
-      note: "Brunch con música chill, cafés especiales y buen rollo.",
-      imageUrl: "",
-      imageAlt: "Mesa navideña en Bar Corona",
-    },
-  ],
+  ...fallbackHomeEvents,
   pageItems: [
     {
       id: "page-1",
@@ -109,5 +93,8 @@ const fallbackPhotos = {
   "gallery-bottom-3": TostasdaJamon,
 };
 
-export const resolveEventImage = ({ id, imageUrl }) => imageUrl?.trim() || fallbackPhotos[id] || "";
-export const resolveGalleryImage = ({ id, imageUrl }) => imageUrl?.trim() || fallbackPhotos[id] || "";
+export const resolveEventImage = ({ id, imageUrl }) =>
+  transformCloudinaryUrl(imageUrl?.trim(), "f_auto,q_auto,w_900,c_limit") || fallbackPhotos[id] || "";
+
+export const resolveGalleryImage = ({ id, imageUrl }) =>
+  transformCloudinaryUrl(imageUrl?.trim(), "f_auto,q_auto,w_900,c_limit") || fallbackPhotos[id] || "";

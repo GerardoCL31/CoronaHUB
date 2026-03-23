@@ -22,14 +22,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
 
-const app = express();
-app.set("trust proxy", 1);
-const PORT = Number(process.env.PORT || 4000);
-const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
-  .split(",")
-  .map((item) => item.trim())
-  .filter(Boolean);
-
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 const PRIVATE_IPV4_REGEX = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/;
 
@@ -60,114 +52,136 @@ function isLocalDevOrigin(origin) {
   }
 }
 
-const allowedOrigins = new Set(corsOrigins.map(normalizeOrigin));
+const PORT = Number(process.env.PORT || 4000);
+const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
 
-app.use(helmet());
-app.use(
-  cors({
-    origin(origin, callback) {
-      // Allow non-browser requests (curl, health checks).
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
-      if (isLocalDevOrigin(origin)) return callback(null, true);
-      return callback(new Error("CORS origin not allowed"));
-    },
-  })
-);
-app.use(express.json());
+export function createApp() {
+  const app = express();
+  const allowedOrigins = new Set(corsOrigins.map(normalizeOrigin));
 
-app.get("/api/health", (_req, res) => {
-  res.json({ ok: true });
-});
+  app.set("trust proxy", 1);
+  app.use(helmet());
+  app.use(
+    cors({
+      origin(origin, callback) {
+        // Allow non-browser requests (curl, health checks).
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
+        if (isLocalDevOrigin(origin)) return callback(null, true);
+        return callback(new Error("CORS origin not allowed"));
+      },
+    })
+  );
+  app.use(express.json());
 
-app.use("/api/reviews", reviewsRoutes);
-app.use("/api/reservations", reservationsRoutes);
-app.use("/api/menu", menuRoutes);
-app.use("/api/events", eventsRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/telegram", telegramRoutes);
+  app.get("/api/health", (_req, res) => {
+    res.json({ ok: true });
+  });
 
-app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).json({ ok: false, message: "Error interno" });
-});
+  app.use("/api/reviews", reviewsRoutes);
+  app.use("/api/reservations", reservationsRoutes);
+  app.use("/api/menu", menuRoutes);
+  app.use("/api/events", eventsRoutes);
+  app.use("/api/admin", adminRoutes);
+  app.use("/api/telegram", telegramRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  app.use((err, _req, res, _next) => {
+    console.error(err);
+    res.status(500).json({ ok: false, message: "Error interno" });
+  });
 
-  const webhookBaseUrl = (process.env.TELEGRAM_WEBHOOK_BASE_URL || "").trim();
-  const webhookToken = (process.env.TELEGRAM_WEBHOOK_TOKEN || "").trim();
-  const hasTelegramToken = Boolean((process.env.TELEGRAM_BOT_TOKEN || "").trim());
-  const hasWebhookConfig = Boolean(hasTelegramToken && webhookBaseUrl && webhookToken);
+  return app;
+}
 
-  if (hasWebhookConfig) {
-    const base = webhookBaseUrl.replace(/\/+$/, "");
-    const webhookUrl = `${base}/api/telegram/webhook/${webhookToken}`;
+export function startServer(port = PORT) {
+  const app = createApp();
+  const server = app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 
-    setTelegramWebhook(webhookUrl)
-      .then(() => {
-        console.log(`Telegram webhook configured: ${webhookUrl}`);
-      })
-      .catch((error) => {
-        console.warn("Telegram webhook auto-config failed:", error.message);
-      });
-  }
+    const webhookBaseUrl = (process.env.TELEGRAM_WEBHOOK_BASE_URL || "").trim();
+    const webhookToken = (process.env.TELEGRAM_WEBHOOK_TOKEN || "").trim();
+    const hasTelegramToken = Boolean((process.env.TELEGRAM_BOT_TOKEN || "").trim());
+    const hasWebhookConfig = Boolean(hasTelegramToken && webhookBaseUrl && webhookToken);
 
-  const pollingEnabled = String(process.env.TELEGRAM_POLLING_ENABLED || "").toLowerCase() === "true";
-  const shouldUsePolling = hasTelegramToken && (pollingEnabled || !hasWebhookConfig);
+    if (hasWebhookConfig) {
+      const base = webhookBaseUrl.replace(/\/+$/, "");
+      const webhookUrl = `${base}/api/telegram/webhook/${webhookToken}`;
 
-  if (shouldUsePolling) {
-    let updateOffset = 0;
-    let pollingTimer = null;
+      setTelegramWebhook(webhookUrl)
+        .then(() => {
+          console.log(`Telegram webhook configured: ${webhookUrl}`);
+        })
+        .catch((error) => {
+          console.warn("Telegram webhook auto-config failed:", error.message);
+        });
+    }
 
-    const poll = async () => {
-      try {
-        const response = await getTelegramUpdates(updateOffset);
-        const updates = Array.isArray(response?.result) ? response.result : [];
-        for (const update of updates) {
-          if (typeof update.update_id === "number") {
-            updateOffset = update.update_id + 1;
-          }
-          if (update?.callback_query) {
-            await handleTelegramCallback(update.callback_query);
-          }
-        }
-      } catch (error) {
-        if (error.message.includes("can't use getUpdates method while webhook is active")) {
-          if (pollingTimer) {
-            clearInterval(pollingTimer);
-            pollingTimer = null;
-          }
-          console.warn("Telegram polling disabled: the bot already has an active webhook.");
-          return;
-        }
-        console.warn("Telegram polling failed:", error.message);
-      }
-    };
+    const pollingEnabled =
+      String(process.env.TELEGRAM_POLLING_ENABLED || "").toLowerCase() === "true";
+    const shouldUsePolling = hasTelegramToken && (pollingEnabled || !hasWebhookConfig);
 
-    const startPolling = async () => {
-      if (!hasWebhookConfig) {
+    if (shouldUsePolling) {
+      let updateOffset = 0;
+      let pollingTimer = null;
+
+      const poll = async () => {
         try {
-          await deleteTelegramWebhook();
-          console.log("Telegram webhook cleared for polling");
+          const response = await getTelegramUpdates(updateOffset);
+          const updates = Array.isArray(response?.result) ? response.result : [];
+          for (const update of updates) {
+            if (typeof update.update_id === "number") {
+              updateOffset = update.update_id + 1;
+            }
+            if (update?.callback_query) {
+              await handleTelegramCallback(update.callback_query);
+            }
+          }
         } catch (error) {
-          console.warn("Telegram webhook clear failed:", error.message);
+          if (error.message.includes("can't use getUpdates method while webhook is active")) {
+            if (pollingTimer) {
+              clearInterval(pollingTimer);
+              pollingTimer = null;
+            }
+            console.warn("Telegram polling disabled: the bot already has an active webhook.");
+            return;
+          }
+          console.warn("Telegram polling failed:", error.message);
         }
-      }
+      };
 
-      await poll();
-      pollingTimer = setInterval(poll, 3000);
-      console.log(
-        hasWebhookConfig
-          ? "Telegram polling enabled"
-          : "Telegram polling enabled (webhook not configured)"
-      );
-    };
+      const startPolling = async () => {
+        if (!hasWebhookConfig) {
+          try {
+            await deleteTelegramWebhook();
+            console.log("Telegram webhook cleared for polling");
+          } catch (error) {
+            console.warn("Telegram webhook clear failed:", error.message);
+          }
+        }
 
-    startPolling().catch((error) => {
-      console.warn("Telegram polling startup failed:", error.message);
-    });
-  }
-});
+        await poll();
+        pollingTimer = setInterval(poll, 3000);
+        console.log(
+          hasWebhookConfig
+            ? "Telegram polling enabled"
+            : "Telegram polling enabled (webhook not configured)"
+        );
+      };
+
+      startPolling().catch((error) => {
+        console.warn("Telegram polling startup failed:", error.message);
+      });
+    }
+  });
+
+  return server;
+}
+
+if ((process.env.NODE_ENV || "").trim().toLowerCase() !== "test") {
+  startServer();
+}
 
 

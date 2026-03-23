@@ -7,7 +7,9 @@ import { defaultEvents } from "./events.default.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const fileDbPath = path.resolve(__dirname, "..", "data", "db.json");
+const fileDbPath = process.env.FILE_DB_PATH
+  ? path.resolve(process.env.FILE_DB_PATH)
+  : path.resolve(__dirname, "..", "data", "db.json");
 const rawDbMode = (process.env.DB_MODE || "auto").trim().toLowerCase();
 const DB_MODE = ["auto", "mongo", "file"].includes(rawDbMode) ? rawDbMode : "auto";
 const NODE_ENV = (process.env.NODE_ENV || "").trim().toLowerCase();

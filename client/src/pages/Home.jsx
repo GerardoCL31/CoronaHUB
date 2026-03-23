@@ -1,9 +1,9 @@
 ﻿import { useEffect, useState } from "react";
 import "../App.css";
-import { cerveza, mapa as mapaImg, portada, sol } from "../constants/cloudinaryAssets.js";
+import { cerveza, mapa as mapaImg, portada, portadaMobile, sol } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import { fallbackEvents } from "../constants/eventsFallback.js";
+import { fallbackHomeEvents } from "../constants/homeEventsFallback.js";
 import { getEvents } from "../services/events.service.js";
 
 const getHomeIcon = (card, index) => {
@@ -13,7 +13,7 @@ const getHomeIcon = (card, index) => {
 };
 
 export default function Home() {
-  const [eventsData, setEventsData] = useState(fallbackEvents);
+  const [eventsData, setEventsData] = useState(fallbackHomeEvents);
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -37,7 +37,16 @@ export default function Home() {
       <main id="main-content" tabIndex={-1}>
         <section className="hero" id="inicio">
           <div className="hero-media">
-            <img className="hero-photo" src={portada} alt="Fachada de Bar Corona" />
+            <img
+              className="hero-photo"
+              src={portada}
+              srcSet={`${portadaMobile} 720w, ${portada} 1400w`}
+              sizes="(max-width: 600px) 100vw, (max-width: 1100px) 70vw, 800px"
+              alt="Fachada de Bar Corona"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+            />
           </div>
           <aside className="events" id="eventos">
             <h2>{eventsData.homeTitle}</h2>
