@@ -86,7 +86,7 @@ export default function Carta() {
 
       <main className="carta-main" id="main-content" tabIndex={-1}>
         <div className="carta-banner">
-          <span className="carta-banner-kicker">Mediodia</span>
+          <span className="carta-banner-kicker">Mediodía</span>
           <strong>{menu.banner}</strong>
         </div>
 

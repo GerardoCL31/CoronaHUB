@@ -23,7 +23,7 @@ export default function AdminLogin() {
     <div className="admin-login-shell">
       <header>
         <div className="admin-login-topbar">
-          <strong>CoronaHUB</strong>
+          <strong>Bar Corona</strong>
           <nav>
             <Link to="/">Home</Link>
             <Link to="/contact">Opiniones</Link>

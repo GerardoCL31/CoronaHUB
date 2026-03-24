@@ -756,7 +756,7 @@ export default function AdminDashboard() {
   return (
     <>
       <header className="admin-header">
-        <strong>CoronaHUB Admin</strong>
+        <strong>Bar Corona Admin</strong>
         <nav>
           <Link to="/">Home</Link>
           <button type="button" onClick={handleLogout}>

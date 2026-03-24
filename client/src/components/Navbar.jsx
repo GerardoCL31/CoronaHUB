@@ -31,13 +31,13 @@ function Navbar({ active = "inicio" }) {
         type="button"
         onClick={handleToggle}
         aria-expanded={isOpen}
-        aria-label={isOpen ? "Cerrar menu" : "Abrir menu"}
+        aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         aria-controls={navId}
       >
         <span className="nav-toggle-icon" aria-hidden="true" />
       </button>
 
-      <nav id={navId} className={`nav ${isOpen ? "is-open" : ""}`} aria-label="Navegacion principal">
+      <nav id={navId} className={`nav ${isOpen ? "is-open" : ""}`} aria-label="Navegación principal">
         <Link
           className={`nav-pill ${active === "inicio" ? "is-active" : ""}`}
           to="/"
@@ -68,7 +68,7 @@ function Navbar({ active = "inicio" }) {
           onClick={handleClose}
           aria-current={active === "galeria" ? "page" : undefined}
         >
-          Galeria
+          Galería
         </Link>
         <Link
           className={`nav-pill ${active === "opiniones" ? "is-active" : ""}`}

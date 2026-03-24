@@ -25,7 +25,7 @@ export default function Home() {
           setEventsData(data);
         }
       } catch {
-        // Keep local fallback if API is not reachable.
+        
       }
     };
 
@@ -51,7 +51,13 @@ export default function Home() {
             />
             <div className="home-hero-copy">
               <p className="home-eyebrow">Bar Corona</p>
-              <h2>Desayunos, tapas y buen ambiente en Trajano.</h2>
+              <h2>
+                Desayunos, tapas{" "}
+                <br className="home-title-break" />
+                y buen ambiente{" "}
+                <br className="home-title-break" />
+                en Trajano.
+              </h2>
               <p className="home-lead">
                 Un sitio sencillo para desayunar, tomar algo y quedar con amigos sin complicarte.
               </p>
@@ -70,12 +76,12 @@ export default function Home() {
         <section className="home-summary">
           <article className="home-summary-card">
             <span>Horario</span>
-            <strong>Lunes a sabado</strong>
+            <strong>Lunes a sábado</strong>
             <p>8:00 - 17:00</p>
           </article>
           <article className="home-summary-card">
             <span>Domingo</span>
-            <strong>Solo manana</strong>
+            <strong>Solo mañana</strong>
             <p>8:00 - 12:00</p>
           </article>
         </section>
@@ -83,7 +89,7 @@ export default function Home() {
         <section className="home-section" id="eventos">
           <div className="home-section-heading">
             <p className="home-section-kicker">Eventos</p>
-            <h2>{eventsData.homeTitle || "Proximos eventos"}</h2>
+            <h2>{eventsData.homeTitle || "Próximos eventos"}</h2>
           </div>
           <div className="home-events-grid">
             {homeCards.map((card, index) => (
@@ -108,7 +114,7 @@ export default function Home() {
 
         <section className="home-map-section">
           <div className="home-map-copy">
-            <p className="home-section-kicker">Como llegar</p>
+            <p className="home-section-kicker">Cómo llegar</p>
             <h2>Estamos donde tienes que estar.</h2>
             <p>Si quieres venir directo, abre el mapa y listo.</p>
           </div>
@@ -117,9 +123,9 @@ export default function Home() {
             href="https://share.google/fyJ2NpJ85uG2Vk8NH"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Abrir ubicacion en Google Maps"
+            aria-label="Abrir ubicación en Google Maps"
           >
-            <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" loading="lazy" decoding="async" />
+            <img src={mapaImg} alt="Mapa de ubicación de Bar Corona" loading="lazy" decoding="async" />
           </a>
         </section>
       </main>

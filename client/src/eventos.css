@@ -32,6 +32,13 @@ body {
     #121214;
   border: 1px solid rgba(212, 175, 55, 0.14);
   box-shadow: 0 24px 40px rgba(0, 0, 0, 0.28);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.eventos-column:hover {
+  transform: scale(1.02);
+  box-shadow: 0 28px 46px rgba(0, 0, 0, 0.34);
+  border-color: rgba(212, 175, 55, 0.26);
 }
 
 .eventos-text h2 {

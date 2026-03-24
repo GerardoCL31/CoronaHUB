@@ -1,3 +1,6 @@
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .css .js .mjs .json .txt .svg
+
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.html$ - [L]
