@@ -14,7 +14,7 @@ export default function Contact() {
   const [reviews, setReviews] = useState([]);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const googleReviewsUrl = "https://share.google/RfVolAMQMid244A2F";
+  const googleReviewsUrl = "https://share.google/4HxGGgsYOzzImlmr1";
 
   const loadReviews = async () => {
     try {

@@ -120,7 +120,7 @@ export default function Home() {
           </div>
           <a
             className="map-card"
-            href="https://share.google/fyJ2NpJ85uG2Vk8NH"
+            href="https://share.google/VY9LonShiFjDVR94C"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir ubicación en Google Maps"
