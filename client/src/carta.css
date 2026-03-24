@@ -10,6 +10,8 @@
   --gold: #d4af37;
   --ink: #f5ecd6;
   --muted: #c2b590;
+  --carta-side-width: 310px;
+  --carta-layout-gap: 28px;
 }
 
 * {
@@ -32,78 +34,135 @@ body {
   max-width: 1100px;
   margin: 0 auto 30px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 310px;
-  gap: 28px;
+  gap: 20px;
+}
+
+.carta-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--carta-side-width);
+  gap: var(--carta-layout-gap);
   align-items: start;
 }
 
 .carta-left {
   display: grid;
-  gap: 16px;
+  gap: 0;
 }
 
 .carta-banner {
   justify-self: center;
-  width: min(360px, 90%);
+  width: min(420px, 92%);
   background: #2a210f;
-  border-radius: 20px;
-  padding: 16px 20px;
+  border-radius: 24px;
+  padding: 14px 24px 18px;
   text-align: center;
+  display: grid;
+  gap: 4px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  transform: translateX(calc((var(--carta-side-width) + var(--carta-layout-gap)) / -2));
+}
+
+.carta-banner-kicker {
+  color: #f0cf83;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.carta-banner strong {
   font-family: "Cormorant Garamond", serif;
-  font-size: 18px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .carta-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .carta-card {
   background: #181819;
-  border-radius: 18px;
-  padding: 20px 22px;
+  border-radius: 24px;
+  padding: 22px 24px;
   text-align: center;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.carta-card::before {
+  content: "";
+  position: absolute;
+  inset: auto 24px 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.22) 50%, transparent 100%);
 }
 
 .carta-card p {
-  margin: 6px 0;
-  font-size: 14px;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #f6ecd8;
 }
 
 .carta-pill-title {
   display: inline-block;
-  background: #120f0a;
+  background: rgba(17, 14, 9, 0.95);
   color: var(--gold);
-  padding: 6px 22px;
+  padding: 10px 28px;
   border-radius: 999px;
   font-family: "Cormorant Garamond", serif;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.32);
+}
+
+.carta-card-lines {
+  display: grid;
+  gap: 14px;
+}
+
+.carta-line {
+  display: grid;
+  gap: 6px;
+  padding: 10px 0;
+}
+
+.carta-line + .carta-line {
+  border-top: 1px solid rgba(212, 175, 55, 0.12);
+}
+
+.carta-line span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f0cf83;
 }
 
 .carta-combos {
   grid-column: span 2;
-  padding-bottom: 18px;
+  padding-bottom: 24px;
 }
 
 .carta-combos ul {
   list-style: none;
   padding-left: 0;
-  margin: 10px 0 0;
+  margin: 4px 0 0;
   text-align: center;
-  font-size: 14px;
+  font-size: 18px;
+  display: grid;
+  gap: 10px;
 }
 
 .carta-combos li {
-  margin: 6px 0;
+  margin: 0;
 }
 
 .carta-photo {
@@ -133,7 +192,15 @@ body {
   }
 
   .carta-main {
+    gap: 16px;
+  }
+
+  .carta-content {
     grid-template-columns: 1fr;
+  }
+
+  .carta-banner {
+    transform: none;
   }
 
   .carta-photo {
@@ -142,12 +209,25 @@ body {
 }
 
 @media (max-width: 720px) {
+  .carta-banner strong {
+    font-size: 28px;
+  }
+
   .carta-grid {
     grid-template-columns: 1fr;
   }
 
   .carta-combos {
     grid-column: span 1;
+  }
+
+  .carta-card {
+    padding: 20px 18px;
+  }
+
+  .carta-card p,
+  .carta-combos ul {
+    font-size: 16px;
   }
 
   .carta-page {

@@ -1,6 +1,6 @@
-﻿function FooterSmall() {
+function FooterSmall() {
   return (
-    <footer className="footer footer--small">
+    <footer className="footer">
       <p>&copy; 2026 BarCorona. Todos los derechos reservados.</p>
       <p>Teléfono móvil: 615 486 712</p>
       <p>barcoronatrajano@hotmail.com</p>

@@ -1,4 +1,5 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../App.css";
 import { cerveza, mapa as mapaImg, portada, portadaMobile, sol } from "../constants/cloudinaryAssets.js";
 import Navbar from "../components/Navbar.jsx";
@@ -14,6 +15,7 @@ const getHomeIcon = (card, index) => {
 
 export default function Home() {
   const [eventsData, setEventsData] = useState(fallbackHomeEvents);
+  const homeCards = Array.isArray(eventsData.homeCards) ? eventsData.homeCards.slice(0, 2) : [];
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -35,52 +37,90 @@ export default function Home() {
       <Navbar active="inicio" />
 
       <main id="main-content" tabIndex={-1}>
-        <section className="hero" id="inicio">
-          <div className="hero-media">
+        <section className="home-hero" id="inicio">
+          <div className="hero-media home-hero-media">
             <img
               className="hero-photo"
               src={portada}
               srcSet={`${portadaMobile} 720w, ${portada} 1400w`}
-              sizes="(max-width: 600px) 100vw, (max-width: 1100px) 70vw, 800px"
+              sizes="100vw"
               alt="Fachada de Bar Corona"
               fetchPriority="high"
               loading="eager"
               decoding="async"
             />
-          </div>
-          <aside className="events" id="eventos">
-            <h2>{eventsData.homeTitle}</h2>
-            {eventsData.homeCards.map((card, index) => (
-              <div className="event-card" key={card.id}>
-                <div className="event-icon" aria-hidden="true">
-                  <img src={getHomeIcon(card, index)} alt="" loading="lazy" decoding="async" />
-                </div>
-                <div>
-                  <h3>{card.title}</h3>
-                  <p>{card.schedule}</p>
-                  <p className="event-note">{card.note}</p>
-                </div>
+            <div className="home-hero-copy">
+              <p className="home-eyebrow">Bar Corona</p>
+              <h2>Desayunos, tapas y buen ambiente en Trajano.</h2>
+              <p className="home-lead">
+                Un sitio sencillo para desayunar, tomar algo y quedar con amigos sin complicarte.
+              </p>
+              <div className="home-actions">
+                <Link className="home-cta home-cta-primary" to="/reservation">
+                  Reservar
+                </Link>
+                <Link className="home-cta home-cta-secondary" to="/carta">
+                  Ver carta
+                </Link>
               </div>
-            ))}
-          </aside>
+            </div>
+          </div>
         </section>
 
-        <section className="info-strip">
-          <div className="hours">
-            <h3>Horarios:</h3>
-            <p>Lunes a sabado: 8:00 am - 5:00 pm</p>
-            <p>Domingo: 8:00 am - 12:00 pm</p>
+        <section className="home-summary">
+          <article className="home-summary-card">
+            <span>Horario</span>
+            <strong>Lunes a sabado</strong>
+            <p>8:00 - 17:00</p>
+          </article>
+          <article className="home-summary-card">
+            <span>Domingo</span>
+            <strong>Solo manana</strong>
+            <p>8:00 - 12:00</p>
+          </article>
+        </section>
+
+        <section className="home-section" id="eventos">
+          <div className="home-section-heading">
+            <p className="home-section-kicker">Eventos</p>
+            <h2>{eventsData.homeTitle || "Proximos eventos"}</h2>
           </div>
-          <div className="map-card">
-            <a
-              href="https://share.google/fyJ2NpJ85uG2Vk8NH"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Abrir ubicacion en Google Maps (se abre en nueva ventana)"
-            >
-              <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" loading="lazy" decoding="async" />
-            </a>
+          <div className="home-events-grid">
+            {homeCards.map((card, index) => (
+              <article className="home-event-card" key={card.id}>
+                <div className="home-event-icon">
+                  <img
+                    src={getHomeIcon(card, index)}
+                    alt={card.imageAlt || card.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="home-event-copy">
+                  <h3>{card.title}</h3>
+                  <p className="home-event-meta">{card.schedule}</p>
+                  <p>{card.note}</p>
+                </div>
+              </article>
+            ))}
           </div>
+        </section>
+
+        <section className="home-map-section">
+          <div className="home-map-copy">
+            <p className="home-section-kicker">Como llegar</p>
+            <h2>Estamos donde tienes que estar.</h2>
+            <p>Si quieres venir directo, abre el mapa y listo.</p>
+          </div>
+          <a
+            className="map-card"
+            href="https://share.google/fyJ2NpJ85uG2Vk8NH"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir ubicacion en Google Maps"
+          >
+            <img src={mapaImg} alt="Mapa de ubicacion de Bar Corona" loading="lazy" decoding="async" />
+          </a>
         </section>
       </main>
 

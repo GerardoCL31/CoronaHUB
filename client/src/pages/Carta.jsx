@@ -85,33 +85,48 @@ export default function Carta() {
       <Navbar active="carta" />
 
       <main className="carta-main" id="main-content" tabIndex={-1}>
-        <div className="carta-left">
-          <div className="carta-banner">
-            <span>{menu.banner}</span>
-          </div>
-          <section className="carta-grid">
-            {menu.days.map((day) => (
-              <article key={day.id} className="carta-card">
-                <span className="carta-pill-title">{day.title}</span>
-                <p>Primero: {day.first}</p>
-                <p>Segundo: {day.second}</p>
-                <p>Postre: {day.dessert}</p>
-              </article>
-            ))}
-            <article className="carta-card carta-combos">
-              <span className="carta-pill-title">{menu.combosTitle}</span>
-              <ul>
-                {menu.combos.map((combo, index) => (
-                  <li key={`${combo}-${index}`}>{combo}</li>
-                ))}
-              </ul>
-            </article>
-          </section>
+        <div className="carta-banner">
+          <span className="carta-banner-kicker">Mediodia</span>
+          <strong>{menu.banner}</strong>
         </div>
 
-        <aside className="carta-photo">
-          <img src={mesaComida} alt="Mesa preparada en Bar Corona" loading="lazy" decoding="async" />
-        </aside>
+        <div className="carta-content">
+          <div className="carta-left">
+            <section className="carta-grid">
+              {menu.days.map((day) => (
+                <article key={day.id} className="carta-card">
+                  <span className="carta-pill-title">{day.title}</span>
+                  <div className="carta-card-lines">
+                    <div className="carta-line">
+                      <span>Primero</span>
+                      <p>{day.first}</p>
+                    </div>
+                    <div className="carta-line">
+                      <span>Segundo</span>
+                      <p>{day.second}</p>
+                    </div>
+                    <div className="carta-line">
+                      <span>Postre</span>
+                      <p>{day.dessert}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+              <article className="carta-card carta-combos">
+                <span className="carta-pill-title">{menu.combosTitle}</span>
+                <ul>
+                  {menu.combos.map((combo, index) => (
+                    <li key={`${combo}-${index}`}>{combo}</li>
+                  ))}
+                </ul>
+              </article>
+            </section>
+          </div>
+
+          <aside className="carta-photo">
+            <img src={mesaComida} alt="Mesa preparada en Bar Corona" loading="lazy" decoding="async" />
+          </aside>
+        </div>
       </main>
 
       <FooterSmall />
