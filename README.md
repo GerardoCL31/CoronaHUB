@@ -1,5 +1,6 @@
 # CoronaHUB Monorepo
-<img width="1914" height="954" alt="image" src="https://github.com/user-attachments/assets/128a374b-a558-41f1-8135-91e372722477" />
+<img width="1866" height="887" alt="image" src="https://github.com/user-attachments/assets/2b34242e-350f-4692-851b-18b6c15e1a7f" />
+
 
 
 ## Current Architecture
