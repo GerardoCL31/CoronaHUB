@@ -7,6 +7,45 @@
 
 - `client/`: React + Webpack frontend
 - `server/`: Express backend
+- `tests/`: automated backend and frontend service tests
+
+## Final Delivery Summary
+
+CoronaHUB is a full-stack web app for Bar Corona with public pages, reservations, reviews, menu and events management, plus an admin area.
+
+Included functionality:
+- Public website with home, menu, events, gallery, contact/legal information and reservation flow.
+- Reservation availability endpoint to avoid duplicate active bookings for the same table/date/time.
+- Review submission flow with moderation before public display.
+- Admin login protected with JWT, rate-limited login attempts and CRUD-style moderation/update endpoints.
+- Editable menu and events content persisted in MongoDB or the local JSON fallback.
+- Optional Telegram notifications and action buttons for new reservations and reviews.
+- Production frontend build workflow for One.com, including SPA `.htaccess` routing support.
+
+Code quality and structure:
+- Frontend split into pages, reusable components, constants and service modules.
+- Backend split into routes, validators, middleware, database access, Telegram utilities and default data.
+- Shared API helper centralizes base URL resolution, auth headers, JSON serialization and error handling.
+- Zod schemas validate external input before persistence.
+- Environment-driven configuration keeps secrets out of source code.
+
+Styling and UX:
+- Responsive React layout with dedicated CSS files per major page/area.
+- Cloudinary/static image constants centralize media usage.
+- Accessible navigation targets and descriptive image alt text are used across the main pages.
+
+Testing:
+- Server integration tests cover health, menu/events data, reviews, admin auth and reservations.
+- Client unit tests cover API base URL resolution, error handling and service endpoint calls.
+- The current verification command is:
+
+```bash
+npm test
+```
+
+Latest local verification:
+- `npm.cmd test`: 14 tests passing.
+- `npm.cmd run build --prefix client`: production build completed successfully.
 
 ## Requirements
 
@@ -52,14 +91,19 @@ Example:
 ```env
 PORT=4000
 CORS_ORIGIN=http://localhost:5173
-DB_MODE=auto
 NODE_ENV=development
+DB_MODE=auto
 JWT_SECRET=change_this_to_a_long_random_secret
 ADMIN_EMAIL=admin@coronahub.local
 ADMIN_PASSWORD=change_this_password
 IP_HASH_SALT=change_this_salt
 MONGODB_URI=mongodb://127.0.0.1:27017
 MONGODB_DB=coronahub
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+TELEGRAM_WEBHOOK_BASE_URL=
+TELEGRAM_WEBHOOK_TOKEN=
+TELEGRAM_POLLING_ENABLED=false
 ```
 
 Database modes:
@@ -165,6 +209,7 @@ Root:
 - `npm run dev`: run client + server
 - `npm run dev:client`: run frontend only
 - `npm run dev:server`: run backend only
+- `npm test`: run server and client automated tests
 
 Client:
 - `npm run dev --prefix client`: Webpack dev server
