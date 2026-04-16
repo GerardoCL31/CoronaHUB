@@ -29,16 +29,20 @@ body {
   border-radius: 16px;
   padding: 8px;
   box-shadow: 0 12px 24px rgba(35, 33, 24, 0.22);
+  overflow: hidden;
 }
 
 .galeria-left img,
 .galeria-right img {
+  position: relative;
   width: 100%;
   height: 100%;
   display: block;
   border-radius: 12px;
   object-fit: cover;
   aspect-ratio: 3 / 7;
+  transition: transform 220ms ease, filter 220ms ease;
+  will-change: transform;
 }
 
 .galeria-grid {
@@ -47,7 +51,13 @@ body {
   gap: 16px;
 }
 
+.galeria-grid,
+.galeria-bottom {
+  overflow: visible;
+}
+
 .galeria-grid img {
+  position: relative;
   width: 100%;
   height: 100%;
   display: block;
@@ -55,6 +65,8 @@ body {
   object-fit: cover;
   aspect-ratio: 4 / 3;
   box-shadow: 0 10px 18px rgba(35, 33, 24, 0.18);
+  transition: transform 220ms ease, filter 220ms ease, box-shadow 220ms ease;
+  will-change: transform;
 }
 
 .galeria-bottom {
@@ -65,6 +77,7 @@ body {
 }
 
 .galeria-bottom img {
+  position: relative;
   width: 100%;
   height: 100%;
   display: block;
@@ -72,6 +85,31 @@ body {
   object-fit: cover;
   aspect-ratio: 4 / 3;
   box-shadow: 0 10px 18px rgba(35, 33, 24, 0.18);
+  transition: transform 220ms ease, filter 220ms ease, box-shadow 220ms ease;
+  will-change: transform;
+}
+
+.galeria-left img:hover,
+.galeria-right img:hover,
+.galeria-grid img:hover,
+.galeria-bottom img:hover {
+  filter: brightness(1.06);
+  transform: scale(1.06);
+}
+
+.galeria-grid img:hover,
+.galeria-bottom img:hover {
+  box-shadow: 0 16px 28px rgba(35, 33, 24, 0.28);
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galeria-left img,
+  .galeria-right img,
+  .galeria-grid img,
+  .galeria-bottom img {
+    transition: none;
+  }
 }
 
 @media (max-width: 1100px) {
