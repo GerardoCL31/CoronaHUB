@@ -105,6 +105,14 @@ const eventsSchema = z.object({
   gallery: z.array(galleryPhotoSchema).length(11).optional(),
 });
 
+const reviewStatusSchema = z.object({
+  status: z.enum(["APPROVED", "REJECTED", "PENDING"]),
+});
+
+const reservationStatusSchema = z.object({
+  status: z.enum(["CONFIRMED", "CANCELLED", "PENDING"]),
+});
+
 router.get("/menu", async (_req, res, next) => {
   try {
     const menu = await getMenu();
@@ -161,10 +169,7 @@ router.get("/reviews", async (_req, res, next) => {
 });
 
 router.patch("/reviews/:id", async (req, res, next) => {
-  const statusSchema = z.object({
-    status: z.enum(["APPROVED", "REJECTED", "PENDING"]),
-  });
-  const parsed = statusSchema.safeParse(req.body);
+  const parsed = reviewStatusSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ ok: false, errors: parsed.error.flatten() });
   }
@@ -191,10 +196,7 @@ router.get("/reservations", async (_req, res, next) => {
 });
 
 router.patch("/reservations/:id", async (req, res, next) => {
-  const statusSchema = z.object({
-    status: z.enum(["CONFIRMED", "CANCELLED", "PENDING"]),
-  });
-  const parsed = statusSchema.safeParse(req.body);
+  const parsed = reservationStatusSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ ok: false, errors: parsed.error.flatten() });
   }

@@ -10,7 +10,6 @@
     "test": "node --test --test-isolation=none ../tests/client/api.test.cjs ../tests/client/services.test.cjs"
   },
   "dependencies": {
-    "coronahub": "file:..",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^6.26.2",

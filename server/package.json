@@ -9,7 +9,6 @@
     "test": "node --test --test-isolation=none ../tests/server/api.test.mjs"
   },
   "dependencies": {
-    "coronahub": "file:..",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.19.2",
